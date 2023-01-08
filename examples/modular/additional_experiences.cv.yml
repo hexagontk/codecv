@@ -1,0 +1,22 @@
+
+$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+Personal Projects:
+  - Title: Pied Piper
+    Website: https://example.com
+    From: 2010-01
+    To: 2011-05
+    Summary: The Google of music.
+    Roles: [ Creator, Developer ]
+    Skills: [ C++ ]
+
+Volunteering:
+  - Position: Teacher
+    Company:
+      Name: CoderDojo
+      Website: https://coderdojo.com
+    Projects:
+      - Title: Kids Coding Teaching
+        From: 2012-01
+        To: 2013-01
+        Highlights: [ Awarded 'Teacher of the Month' ]

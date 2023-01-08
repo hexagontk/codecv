@@ -1,0 +1,17 @@
+#!/usr/bin/env cv
+
+$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+Locale: en_US
+Resources:
+  - file:examples/modular/common.cv.yml
+  - file:examples/modular/additional_experiences.cv.yml
+  - file:examples/modular/courses.cv.yml
+
+Variables:
+  gaFont: family=Roboto+Slab:wght@400;500;700
+  colorPrimary: '#087cfa'
+  gridMaxWidth: 100rem
+  gridGutter: 1.5rem
+  fontSize: 1.4rem
+  fontFamilySans: Roboto Slab

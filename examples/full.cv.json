@@ -1,0 +1,303 @@
+{
+  "$schema" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
+
+  "Job Status" : "not moving",
+
+  "Locale" : "en_US",
+  "Last Update" : "2022-12-27",
+  "Templates" : [ "file:templates/cv.html" ],
+  "Variables" : {
+    "gaFont" : "family=Roboto+Slab:wght@400;500;700",
+    "colorPrimary" : "#087cfa",
+    "gridMaxWidth" : "100rem",
+    "gridGutter" : "1.5rem",
+    "fontSize" : "1.4rem",
+    "fontFamilySans" : "Roboto Slab"
+  },
+
+  "Personal" : {
+    "Given Name" : "Richard",
+    "Family Name" : "Hendricks",
+    "Native Language" : "en",
+    "Pronoun" : "masculine",
+    "Gender" : "man",
+    "Birth" : "1988-08-16",
+    "Birth Country" : "US",
+    "Alias" : "Bitchard",
+    "Website" : "https://example.net",
+    "Photo" : "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg",
+    "Avatar" : "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg",
+    "Nationalities" : [ "US" ],
+    "Disabilities" : [
+      {
+        "Type" : "visual",
+        "Level" : 0.1,
+        "Summary" : "Can't set font size less than 16."
+      }
+    ],
+    "Driving Licenses" : [
+      {
+        "Country" : "US",
+        "License" : "Class B"
+      }
+    ],
+    "Ids" : [
+      {
+        "Country" : "US",
+        "Document" : "Passport",
+        "Id" : "A012BC34"
+      }
+    ]
+  },
+
+  "Residence" : {
+    "Country" : "US",
+    "Region" : "California",
+    "City" : "San Francisco",
+    "Postcode" : "CA 94115",
+    "Address" : "2712 Broadway St"
+  },
+
+  "Contact" : {
+    "Mobile" : "+1 654 12 34 56",
+    "Landline" : "91 259 11 29",
+    "Email" : "richard@piedpiper.com"
+  },
+
+  "Target Job" : {
+    "Salary" : {
+      "Money" : { "Amount" : 120000.0, "Currency" : "USD" },
+      "Period" : "1y",
+      "Gross" : true
+    },
+    "Remote" : { "Days" : "4d", "Period" : "7d" },
+    "Roles" : [ "Developer", "CEO" ],
+    "Operating Systems" : [ "linux", "macos" ],
+    "Features" : [ "Courses platform" ],
+    "Desired Skills" : [ "C", "Java" ],
+    "Excluded Skills" : [ "Node JS" ],
+    "Locations" : [
+      {
+        "Country" : "US",
+        "Region" : "California",
+        "City" : "San Francisco",
+        "Postcode" : "CA 94115",
+        "Address" : "2712 Broadway St"
+      }
+    ]
+  },
+
+  "Bio" : "Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and\nStanford. (Go Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as\na part-time software developer. His work focuses on applied information theory, mostly\noptimizing lossless compression schema of both the length-limited and adaptive variants.",
+
+  "Goals" : [
+    "Change the Internet",
+    "Make the world a better place"
+  ],
+
+  "Top Skills" : [
+    "Systems Design",
+    "Data structures and Algorithms",
+    "Low level Programming"
+  ],
+
+  "Social Profiles" : [
+    "https://github.com/hexagonkt/hexagon",
+    "https://twitter.com/hexagon_kt",
+    "https://dev.to/hexagonkt"
+  ],
+
+  "Languages" : [
+    {
+      "Language" : "fr",
+      "Listening" : "a1",
+      "Reading" : "a2",
+      "Spoken" : "b1",
+      "Written" : "b2"
+    }
+  ],
+
+  "Personal Projects" : [
+    {
+      "Title" : "Pied Piper",
+      "Website" : "https://example.com",
+      "From" : "2010-01",
+      "To" : "2011-05",
+      "Summary" : "The Google of music.",
+      "Roles" : [ "Creator", "Developer" ],
+      "Skills" : [ "C++" ]
+    }
+  ],
+
+  "Volunteering" : [
+    {
+      "Position" : "Teacher",
+      "Company" : {
+        "Name" : "CoderDojo",
+        "Website" : "https://coderdojo.com"
+      },
+      "Projects" : [
+        {
+          "Title" : "Kids Coding Teaching",
+          "From" : "2012-01",
+          "To" : "2013-01",
+          "Highlights" : [ "Awarded 'Teacher of the Month'" ]
+        }
+      ]
+    }
+  ],
+
+  "Experience" : [
+    {
+      "Position" : "Founder",
+      "Company" : {
+        "Name" : "Pied Piper",
+        "Website" : "https://example.net",
+        "Type" : "Startup",
+        "Industry" : "Software"
+      },
+      "From" : "2013-12",
+      "To" : "2014-12",
+      "Location" : {
+        "Country" : "US",
+        "City" : "San Francisco"
+      },
+      "Summary" : "Evolving Internet... And making the world a better place.",
+      "Quit Reason" : "Rats",
+      "Projects" : [
+        {
+          "Title" : "Middle-out",
+          "Website" : "https://example.com",
+          "From" : "2010-01",
+          "Persons" : 6,
+          "Type" : "Library",
+          "To" : "2011-05",
+          "Summary" : "Groundbreaking compression algorithm.",
+          "Client" : {
+            "Name" : "Pied Piper",
+            "Website" : "https://example.net",
+            "Type" : "Startup",
+            "Industry" : "Software"
+          },
+          "Production" : true,
+          "Highlights" : [ "Techcrunch Disrupt Winner" ],
+          "Roles" : [ "Developer", "CEO" ],
+          "Skills" : [ "C" ]
+        }
+      ]
+    }
+  ],
+
+  "Education" : [
+    {
+      "Title" : "Bachelor's Degree in Computer Science",
+      "Type" : "Bachelor",
+      "Institution" : {
+        "Name" : "University of Oklahoma",
+        "Website" : "https://example.net"
+      },
+      "From" : "1996-09",
+      "Website" : "https://example.org",
+      "To" : "2000-06",
+      "Area" : "Computer Science",
+      "Location" : {
+        "Country" : "US",
+        "Region" : "Oklahoma",
+        "City" : "Norman"
+      },
+      "Summary" : "Computer science and internship at Hooli.",
+      "Score" : "A+",
+      "Subjects" : [
+        "DB1101 - Basic SQL",
+        "CS2011 - Java Introduction"
+      ]
+    }
+  ],
+
+  "Courses" : [
+    {
+      "Title" : "Cloud Deployment and Monitoring",
+      "Institution" : {
+        "Name" : "Bachman Consulting",
+        "Website" : "https://example.org"
+      },
+      "From" : "2014-06-01",
+      "To" : "2014-06-05",
+      "Website" : "https://example.org",
+      "Area" : "DevOps",
+      "Location" : {
+        "Country" : "US",
+        "City" : "San Francisco"
+      },
+      "Summary" : "Infrastructure as code, continuous monitoring and alerting, container.",
+      "Company" : "Pied Piper",
+      "Hours" : 35,
+      "Score" : "A",
+      "Subjects" : [ "Kubernetes", "Docker", "Grafana" ]
+    }
+  ],
+
+  "Achievements" : [
+    {
+      "Type" : "award",
+      "Title" : "Digital Compression Pioneer Award",
+      "Date" : "2014-11-01",
+      "Website" : "https://example.com",
+      "Summary" : "There is no spoon.",
+      "Issuer" : {
+        "Name" : "Techcrunch"
+      }
+    },
+    {
+      "Type" : "presentation",
+      "Title" : "Building an algorithm for copy right infringement detection",
+      "Date" : "2012-09-05"
+    },
+    {
+      "Type" : "publication",
+      "Title" : "Video compression for 3d media",
+      "Date" : "2014-10-01",
+      "Website" : "http://example.net",
+      "Summary" : "Innovative middle-out compression algorithm that changes the way we store data.",
+      "Issuer" : {
+        "Name" : "Hooli"
+      }
+    }
+  ],
+
+  "References" : [
+    {
+      "Full Name" : "Erlich Bachman",
+      "Summary" : "It is my pleasure to recommend Richard, his performance working as a consultant for\nBachman Consulting proved that he will be a valuable addition to any company.",
+      "Type" : "manager",
+      "Contact" : {
+        "Mobile" : "+1 678 20 41 05",
+        "Landline" : "91 106 28 01",
+        "Email" : "erlich@aviato.com"
+      },
+      "Social Profiles" : [ "https://github.com/hexagonkt/hexagon" ],
+      "Projects" : [ "middle-out" ]
+    }
+  ],
+
+  "Technical Skills" : [
+    {
+      "Title" : "Compression",
+      "Skills" : [ "Mpeg", "MP4", "GIF" ]
+    },
+    {
+      "Title" : "Systems Programming"
+    }
+  ],
+
+  "Common Skills" : [
+    {
+      "Title" : "Productivity",
+      "Skills" : [ "Vim", "Typewriting" ]
+    }
+  ],
+
+  "Other Facts" : [
+    "Interested in quantum computing and chaos theory",
+    "Wildlife, specially ferrets and unicorns"
+  ]
+}

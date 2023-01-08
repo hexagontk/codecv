@@ -1,0 +1,23 @@
+
+$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+Courses:
+  - Title: Cloud Deployment and Monitoring
+    Institution:
+      Name: Bachman Consulting
+      Website: https://example.org
+    From: 2014-06-01
+    To: 2014-06-05
+    Website: https://example.org
+    Area: DevOps
+    Location:
+      Country: US
+      City: San Francisco
+    Summary: Infrastructure as code, continuous monitoring and alerting, container.
+    Company: Pied Piper
+    Hours: 35
+    Score: A
+    Subjects:
+      - Kubernetes
+      - Docker
+      - Grafana

@@ -1,0 +1,1060 @@
+{
+  "$schema" : "https://json-schema.org/draft-07/schema",
+  "$id" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
+  "$ref" : "#/$defs/Cv",
+  "$defs" : {
+    "Language" : {
+      "type" : "string",
+      "pattern" : "[a-z]{2}"
+    },
+    "Country" : {
+      "type" : "string",
+      "pattern" : "[A-Z]{2}"
+    },
+    "NullableCountry" : {
+      "type" : [
+        "string",
+        "null"
+      ],
+      "pattern" : "[A-Z]{2}"
+    },
+    "Disability" : {
+      "type" : "object",
+      "required" : [
+        "Type"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Type" : {
+          "type" : "string",
+          "enum" : [
+            "visual",
+            "auditory",
+            "movement",
+            "mental"
+          ]
+        },
+        "Level" : {
+          "$ref" : "#/$defs/NullableNumber"
+        },
+        "Summary" : {
+          "$ref" : "#/$defs/NullableString"
+        }
+      }
+    },
+    "DrivingLicense" : {
+      "type" : "object",
+      "required" : [
+        "Country",
+        "License"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Country" : {
+          "$ref" : "#/$defs/Country"
+        },
+        "License" : {
+          "type" : "string"
+        }
+      }
+    },
+    "IdDocument" : {
+      "type" : "object",
+      "required" : [
+        "Country",
+        "Document",
+        "Id"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Country" : {
+          "$ref" : "#/$defs/Country"
+        },
+        "Document" : {
+          "type" : "string"
+        },
+        "Id" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Personal" : {
+      "type" : "object",
+      "required" : [
+        "Given Name",
+        "Family Name",
+        "Native Language"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Given Name" : {
+          "type" : "string"
+        },
+        "Family Name" : {
+          "type" : "string"
+        },
+        "Native Language" : {
+          "$ref" : "#/$defs/Language"
+        },
+        "Pronoun" : {
+          "type" : [
+            "null",
+            "string"
+          ],
+          "enum" : [
+            "feminine",
+            "masculine",
+            "neutral"
+          ]
+        },
+        "Gender" : {
+          "type" : [
+            "null",
+            "string"
+          ],
+          "enum" : [
+            "woman",
+            "man",
+            "lesbian",
+            "gay",
+            "transgender woman",
+            "transgender man",
+            "bisexual",
+            "intersexual",
+            "queer",
+            "agender",
+            "other"
+          ]
+        },
+        "Birth" : {
+          "$ref" : "#/$defs/NullableDate"
+        },
+        "Birth Country" : {
+          "$ref" : "#/$defs/NullableCountry"
+        },
+        "Alias" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Website" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Photo" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Avatar" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Nationalities" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/$defs/Country"
+          }
+        },
+        "Disabilities" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Disability"
+          }
+        },
+        "Driving Licenses" : {
+          "title" : "Country code to list of driving permissions",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/DrivingLicense"
+          }
+        },
+        "Ids" : {
+          "title" : "Map that reflects different nationalities (passports)",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/IdDocument"
+          }
+        }
+      }
+    },
+    "Location" : {
+      "type" : "object",
+      "required" : [
+        "Country"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Country" : {
+          "$ref" : "#/$defs/Country"
+        },
+        "Region" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "City" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Postcode" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Address" : {
+          "$ref" : "#/$defs/NullableString"
+        }
+      }
+    },
+    "NullableLocation" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Country"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Country" : {
+          "$ref" : "#/$defs/Country"
+        },
+        "Region" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "City" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Postcode" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Address" : {
+          "$ref" : "#/$defs/NullableString"
+        }
+      }
+    },
+    "NullableEmail" : {
+      "type" : [
+        "string",
+        "null"
+      ],
+      "format" : "EMAIL"
+    },
+    "Contact" : {
+      "title" : "Contact information for a person",
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "Mobile" : {
+          "title" : "Mobile phone number",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Landline" : {
+          "title" : "Number of the landline phone",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Email" : {
+          "title" : "Email address",
+          "$ref" : "#/$defs/NullableEmail"
+        }
+      }
+    },
+    "NullableContact" : {
+      "title" : "Contact information for a person",
+      "type" : [
+        "object",
+        "null"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Mobile" : {
+          "title" : "Mobile phone number",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Landline" : {
+          "title" : "Number of the landline phone",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Email" : {
+          "title" : "Email address",
+          "$ref" : "#/$defs/NullableEmail"
+        }
+      }
+    },
+    "Money" : {
+      "type" : "object",
+      "required" : [
+        "Amount",
+        "Currency"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Amount" : {
+          "type" : "number"
+        },
+        "Currency" : {
+          "type" : "string"
+        }
+      }
+    },
+    "NullableSalary" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Money"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Money" : {
+          "$ref" : "#/$defs/Money"
+        },
+        "Period" : {
+          "$ref" : "#/$defs/Period"
+        },
+        "Gross" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "NullableRemote" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Days",
+        "Period"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Days" : {
+          "$ref" : "#/$defs/Period"
+        },
+        "Period" : {
+          "$ref" : "#/$defs/Period"
+        }
+      }
+    },
+    "TargetJob" : {
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "Salary" : {
+          "$ref" : "#/$defs/NullableSalary"
+        },
+        "Remote" : {
+          "$ref" : "#/$defs/NullableRemote"
+        },
+        "Roles" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Operating Systems" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string",
+            "enum" : [
+              "linux",
+              "macos",
+              "windows"
+            ]
+          }
+        },
+        "Features" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Desired Skills" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Excluded Skills" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Locations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Location"
+          }
+        }
+      }
+    },
+    "LanguageSkill" : {
+      "type" : "object",
+      "required" : [
+        "Language",
+        "Listening",
+        "Reading",
+        "Spoken",
+        "Written"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Language" : {
+          "$ref" : "#/$defs/Language"
+        },
+        "Listening" : {
+          "type" : "string",
+          "enum" : [
+            "a1",
+            "a2",
+            "b1",
+            "b2",
+            "c1",
+            "c2"
+          ]
+        },
+        "Reading" : {
+          "type" : "string",
+          "enum" : [
+            "a1",
+            "a2",
+            "b1",
+            "b2",
+            "c1",
+            "c2"
+          ]
+        },
+        "Spoken" : {
+          "type" : "string",
+          "enum" : [
+            "a1",
+            "a2",
+            "b1",
+            "b2",
+            "c1",
+            "c2"
+          ]
+        },
+        "Written" : {
+          "type" : "string",
+          "enum" : [
+            "a1",
+            "a2",
+            "b1",
+            "b2",
+            "c1",
+            "c2"
+          ]
+        }
+      }
+    },
+    "Organization" : {
+      "type" : "object",
+      "required" : [
+        "Name"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Name" : {
+          "type" : "string"
+        },
+        "Website" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Type" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Industry" : {
+          "$ref" : "#/$defs/NullableString"
+        }
+      }
+    },
+    "NullableOrganization" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Name"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Name" : {
+          "type" : "string"
+        },
+        "Website" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Type" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Industry" : {
+          "$ref" : "#/$defs/NullableString"
+        }
+      }
+    },
+    "Project" : {
+      "type" : "object",
+      "required" : [
+        "Title"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Title" : {
+          "type" : "string"
+        },
+        "Website" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "From" : {
+          "$ref" : "#/$defs/NullableYearMonth"
+        },
+        "Persons" : {
+          "type" : "number"
+        },
+        "Type" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "To" : {
+          "$ref" : "#/$defs/NullableYearMonth"
+        },
+        "Summary" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Client" : {
+          "$ref" : "#/$defs/NullableOrganization"
+        },
+        "Production" : {
+          "type" : [
+            "null",
+            "boolean"
+          ]
+        },
+        "Highlights" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Roles" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Skills" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Experience" : {
+      "type" : "object",
+      "required" : [
+        "Position"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Position" : {
+          "type" : "string"
+        },
+        "Company" : {
+          "$ref" : "#/$defs/NullableOrganization"
+        },
+        "From" : {
+          "$ref" : "#/$defs/NullableYearMonth"
+        },
+        "To" : {
+          "$ref" : "#/$defs/NullableYearMonth"
+        },
+        "Location" : {
+          "$ref" : "#/$defs/NullableLocation"
+        },
+        "Summary" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Quit Reason" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Projects" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Project"
+          }
+        }
+      }
+    },
+    "Education" : {
+      "type" : "object",
+      "required" : [
+        "Title",
+        "Type",
+        "Institution",
+        "From"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Title" : {
+          "type" : "string"
+        },
+        "Type" : {
+          "type" : "string"
+        },
+        "Institution" : {
+          "$ref" : "#/$defs/Organization"
+        },
+        "From" : {
+          "$ref" : "#/$defs/YearMonth"
+        },
+        "Website" : {
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "To" : {
+          "$ref" : "#/$defs/NullableYearMonth"
+        },
+        "Area" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Location" : {
+          "$ref" : "#/$defs/NullableLocation"
+        },
+        "Summary" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Score" : {
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Subjects" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Course" : {
+      "title" : "Training course, as opposed to formal education",
+      "type" : "object",
+      "required" : [
+        "Title",
+        "Institution",
+        "From",
+        "To"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Title" : {
+          "title" : "Course title",
+          "description" : "Course title. Can not be blank",
+          "type" : "string"
+        },
+        "Institution" : {
+          "title" : "Organization which run the course and/or award its certificate",
+          "$ref" : "#/$defs/Organization"
+        },
+        "From" : {
+          "title" : "Start date of the course",
+          "description" : "Start date of the course. It must be a date before the end date",
+          "$ref" : "#/$defs/Date"
+        },
+        "To" : {
+          "title" : "End date of the course",
+          "description" : "End date of the course. Should be set to a date before today",
+          "$ref" : "#/$defs/Date"
+        },
+        "Website" : {
+          "title" : "URL with more information about the course",
+          "description" : "URL with more information about the course. The URL must return a success code",
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Area" : {
+          "title" : "Course subject",
+          "description" : "Course subject. If set, it cannot be blank",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Location" : {
+          "title" : "Location where the training took place",
+          "$ref" : "#/$defs/NullableLocation"
+        },
+        "Summary" : {
+          "title" : "Brief description of the course",
+          "description" : "Brief description of the course. Blank values other than 'null' aren't allowed",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Company" : {
+          "title" : "Name of the company paying for the course",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Hours" : {
+          "title" : "Number of effective hours of this course",
+          "description" : "Number of effective hours of this course. If set, should be greater than zero",
+          "$ref" : "#/$defs/NullableNumber"
+        },
+        "Score" : {
+          "title" : "Score of the course (if any)",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Subjects" : {
+          "title" : "Set of topics covered in the course",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Achievement" : {
+      "title" : "Professional achievement",
+      "description" : "Professional achievement. Achievement accomplished at a given date. Publications must be owned by external parties in order to be an achievement, posts on social networks or personal blogs are listed in other CV sections",
+      "type" : "object",
+      "required" : [
+        "Type",
+        "Title",
+        "Date"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Type" : {
+          "title" : "Type of achievement",
+          "type" : "string",
+          "enum" : [
+            "certification",
+            "award",
+            "publication",
+            "presentation",
+            "conference",
+            "workshop",
+            "other"
+          ]
+        },
+        "Title" : {
+          "title" : "Descriptive title of the achievement",
+          "description" : "Descriptive title of the achievement. Cannot be blank",
+          "type" : "string"
+        },
+        "Date" : {
+          "title" : "Data in which the achievement was accomplished",
+          "description" : "Data in which the achievement was accomplished. Cannot be after today",
+          "$ref" : "#/$defs/Date"
+        },
+        "Website" : {
+          "title" : "Link with further information of the achievement, I",
+          "description" : "Link with further information of the achievement, I.e.: the URL of a publication. The URL must exist and be readable",
+          "$ref" : "#/$defs/NullableUri"
+        },
+        "Summary" : {
+          "title" : "Detailed description of the achievement",
+          "description" : "Detailed description of the achievement. It cannot be blank",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Issuer" : {
+          "title" : "Organization that awarded this achievement",
+          "$ref" : "#/$defs/NullableOrganization"
+        }
+      }
+    },
+    "Reference" : {
+      "type" : "object",
+      "required" : [
+        "Full Name",
+        "Summary"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Full Name" : {
+          "type" : "string"
+        },
+        "Summary" : {
+          "type" : "string"
+        },
+        "Type" : {
+          "type" : [
+            "null",
+            "string"
+          ],
+          "enum" : [
+            "colleague",
+            "manager",
+            "subordinate",
+            "client",
+            "provider"
+          ]
+        },
+        "Contact" : {
+          "$ref" : "#/$defs/NullableContact"
+        },
+        "Social Profiles" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/$defs/Uri"
+          }
+        },
+        "Projects" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "SkillSet" : {
+      "type" : "object",
+      "required" : [
+        "Title"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Title" : {
+          "type" : "string"
+        },
+        "Skills" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Cv" : {
+      "title" : "CV data grouped by topics",
+      "description" : "CV data grouped by topics. Most of the fields are optional. When the model is rendered, the fields are passed to the template context with the names in camel case. Read only properties are meant only for use in templates, and cannot be defined in the document",
+      "type" : "object",
+      "additionalProperties" : false,
+      "properties" : {
+        "$schema" : {
+          "title" : "Schema used for the CV",
+          "description" : "Used to deal with different versions. It also eases the use on some editors",
+          "type" : "string",
+          "format" : "URI"
+        },
+        "Job Status" : {
+          "title" : "Job search status",
+          "type" : [
+            "null",
+            "string"
+          ],
+          "enum" : [
+            "active search",
+            "open to challenges",
+            "not moving"
+          ]
+        },
+        "Locale" : {
+          "title" : "Locale representing the CV's content",
+          "$ref" : "#/$defs/Locale"
+        },
+        "Last Update" : {
+          "title" : "Date of the CV's latest modification",
+          "$ref" : "#/$defs/NullableDate"
+        },
+        "Resources" : {
+          "title" : "List of resources to be included in this CV",
+          "description" : "List of resources to be included in this CV. Allows CV modularization",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/$defs/Uri"
+          }
+        },
+        "Templates" : {
+          "title" : "Templates used to render this CV",
+          "description" : "Templates used to render this CV. Templates for different media types are supported using the template extension to select the appropriate one",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/$defs/Uri"
+          }
+        },
+        "Variables" : {
+          "title" : "Configuration added to the context when the CV is rendered",
+          "description" : "Configuration added to the context when the CV is rendered. Map keys must be in camel case",
+          "type" : "object"
+        },
+        "Personal" : {
+          "title" : "Personal information",
+          "$ref" : "#/$defs/Personal"
+        },
+        "Residence" : {
+          "title" : "Current residence information",
+          "$ref" : "#/$defs/Location"
+        },
+        "Contact" : {
+          "title" : "Contact data",
+          "$ref" : "#/$defs/Contact"
+        },
+        "Target Job" : {
+          "title" : "Searched job desired characteristics",
+          "$ref" : "#/$defs/TargetJob"
+        },
+        "Bio" : {
+          "title" : "Bio, if set, cannot be blank",
+          "$ref" : "#/$defs/NullableString"
+        },
+        "Goals" : {
+          "title" : "Professional goals",
+          "description" : "Professional goals. It cannot contain any blank item",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Top Skills" : {
+          "title" : "Group of general skills to highlight",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Social Profiles" : {
+          "title" : "Set of URLs pointing to social profiles",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/$defs/Uri"
+          }
+        },
+        "Languages" : {
+          "title" : "List of languages aside of the birth language",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/LanguageSkill"
+          }
+        },
+        "Personal Projects" : {
+          "title" : "Personal projects developed outside a company",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Project"
+          }
+        },
+        "Volunteering" : {
+          "title" : "Experience on non govern organizations related with social or technical interests",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Experience"
+          }
+        },
+        "Experience" : {
+          "title" : "Professional projects developed for a company",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Experience"
+          }
+        },
+        "Education" : {
+          "title" : "Formal education",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Education"
+          }
+        },
+        "Courses" : {
+          "title" : "Specific courses on a given subject",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Course"
+          }
+        },
+        "Achievements" : {
+          "title" : "Professional achievements awarded by third parties",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Achievement"
+          }
+        },
+        "References" : {
+          "title" : "Personal references from previous experiences",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Reference"
+          }
+        },
+        "Technical Skills" : {
+          "title" : "Set of technical skills",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/SkillSet"
+          }
+        },
+        "Common Skills" : {
+          "title" : "Common (or soft) skills",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/SkillSet"
+          }
+        },
+        "Other Facts" : {
+          "title" : "Fun facts and/or interests",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "NullableYearMonth" : {
+      "type" : [
+        "null",
+        "string"
+      ],
+      "pattern" : "\\d{4}-\\d{2}"
+    },
+    "YearMonth" : {
+      "type" : "string",
+      "pattern" : "\\d{4}-\\d{2}"
+    },
+    "Period" : {
+      "type" : "string",
+      "pattern" : "[pP]?\\s*(\\d+[yY])?\\s*(\\d+[wW])?\\s*(\\d+[dD])?"
+    },
+    "Locale" : {
+      "type" : "string",
+      "pattern" : "[a-z]{2}(_[A-Z]{2})?"
+    },
+    "NullableDate" : {
+      "type" : [
+        "null",
+        "string"
+      ],
+      "format" : "DATE"
+    },
+    "Date" : {
+      "type" : "string",
+      "format" : "DATE"
+    },
+    "NullableUri" : {
+      "type" : [
+        "null",
+        "string"
+      ],
+      "format" : "URI"
+    },
+    "Uri" : {
+      "type" : "string",
+      "format" : "URI"
+    },
+    "NullableString" : {
+      "type" : [
+        "null",
+        "string"
+      ]
+    },
+    "NullableNumber" : {
+      "type" : [
+        "null",
+        "number"
+      ]
+    }
+  }
+}

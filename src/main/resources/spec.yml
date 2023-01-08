@@ -1,0 +1,844 @@
+openapi: 3.1.0
+
+info:
+  title: codecv
+  version: 1.0.0
+  description: >
+    CVs for programmers.
+
+
+    This is a reference tool for processing 'codecv' documents. You can check this tool endpoints
+    on the left menu.
+
+
+    These are some useful shortcuts:
+
+
+    * View the **[Served CV rendered](/cv)**
+
+    * Get the served CV document **[YAML](/cv.yml)**, **[JSON](/cv.json)**
+
+    * Read the **[CodeCV schemas documentation](/#cmp--schemas-cv)**
+
+    * Check the JSON Schema spec **[YAML](/schema.yml)**, **[JSON](/schema.json)**
+
+produces: [ application/json, application/yaml ]
+
+paths:
+  /cv:
+    get:
+      description: View the CV rendered
+      responses:
+        "200":
+          content:
+            text/html: { schema: { type: string } }
+
+  /cv.{format}:
+    parameters:
+      - name: format
+        in: path
+        schema: { type: string }
+        description: Extension to format the source (media type)
+        required: true
+    get:
+      description: View the served CV document
+      responses:
+        "200":
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Cv" } }
+            application/yaml: { schema: { $ref: "#/components/schemas/Cv" } }
+
+  /schema.{format}:
+    parameters:
+      - name: format
+        in: path
+        schema: { type: string }
+        description: Extension to format the source (media type)
+        required: true
+    get:
+      description: View the CodeCV JSON Schema
+      responses:
+        "200":
+          content:
+            application/json: { schema: { type: object } }
+            application/yaml: { schema: { type: object } }
+
+components:
+  schemas:
+    Language:
+      type: string
+      pattern: "[a-z]{2}"
+    Country:
+      type: string
+      pattern: "[A-Z]{2}"
+    NullableCountry:
+      type:
+        - string
+        - "null"
+      pattern: "[A-Z]{2}"
+    Disability:
+      type: object
+      required:
+        - Type
+      additionalProperties: false
+      properties:
+        Type:
+          type: string
+          enum:
+            - visual
+            - auditory
+            - movement
+            - mental
+        Level:
+          $ref: '#/components/schemas/NullableNumber'
+        Summary:
+          $ref: '#/components/schemas/NullableString'
+    DrivingLicense:
+      type: object
+      required:
+        - Country
+        - License
+      additionalProperties: false
+      properties:
+        Country:
+          $ref: '#/components/schemas/Country'
+        License:
+          type: string
+    IdDocument:
+      type: object
+      required:
+        - Country
+        - Document
+        - Id
+      additionalProperties: false
+      properties:
+        Country:
+          $ref: '#/components/schemas/Country'
+        Document:
+          type: string
+        Id:
+          type: string
+    Personal:
+      type: object
+      required:
+        - Given Name
+        - Family Name
+        - Native Language
+      additionalProperties: false
+      properties:
+        Given Name:
+          type: string
+        Family Name:
+          type: string
+        Native Language:
+          $ref: '#/components/schemas/Language'
+        Pronoun:
+          type:
+            - "null"
+            - string
+          enum:
+            - feminine
+            - masculine
+            - neutral
+        Gender:
+          type:
+            - "null"
+            - string
+          enum:
+            - woman
+            - man
+            - lesbian
+            - gay
+            - transgender woman
+            - transgender man
+            - bisexual
+            - intersexual
+            - queer
+            - agender
+            - other
+        Birth:
+          $ref: '#/components/schemas/NullableDate'
+        Birth Country:
+          $ref: '#/components/schemas/NullableCountry'
+        Alias:
+          $ref: '#/components/schemas/NullableString'
+        Website:
+          $ref: '#/components/schemas/NullableUri'
+        Photo:
+          $ref: '#/components/schemas/NullableUri'
+        Avatar:
+          $ref: '#/components/schemas/NullableUri'
+        Nationalities:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Country'
+        Disabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Disability'
+        Driving Licenses:
+          title: Country code to list of driving permissions
+          type: array
+          items:
+            $ref: '#/components/schemas/DrivingLicense'
+        Ids:
+          title: Map that reflects different nationalities (passports)
+          type: array
+          items:
+            $ref: '#/components/schemas/IdDocument'
+    Location:
+      type: object
+      required:
+        - Country
+      additionalProperties: false
+      properties:
+        Country:
+          $ref: '#/components/schemas/Country'
+        Region:
+          $ref: '#/components/schemas/NullableString'
+        City:
+          $ref: '#/components/schemas/NullableString'
+        Postcode:
+          $ref: '#/components/schemas/NullableString'
+        Address:
+          $ref: '#/components/schemas/NullableString'
+    NullableLocation:
+      type:
+        - object
+        - "null"
+      required:
+        - Country
+      additionalProperties: false
+      properties:
+        Country:
+          $ref: '#/components/schemas/Country'
+        Region:
+          $ref: '#/components/schemas/NullableString'
+        City:
+          $ref: '#/components/schemas/NullableString'
+        Postcode:
+          $ref: '#/components/schemas/NullableString'
+        Address:
+          $ref: '#/components/schemas/NullableString'
+    NullableEmail:
+      type:
+        - string
+        - "null"
+      format: EMAIL
+    Contact:
+      title: Contact information for a person
+      type: object
+      additionalProperties: false
+      properties:
+        Mobile:
+          title: Mobile phone number
+          $ref: '#/components/schemas/NullableString'
+        Landline:
+          title: Number of the landline phone
+          $ref: '#/components/schemas/NullableString'
+        Email:
+          title: Email address
+          $ref: '#/components/schemas/NullableEmail'
+    NullableContact:
+      title: Contact information for a person
+      type:
+        - object
+        - "null"
+      additionalProperties: false
+      properties:
+        Mobile:
+          title: Mobile phone number
+          $ref: '#/components/schemas/NullableString'
+        Landline:
+          title: Number of the landline phone
+          $ref: '#/components/schemas/NullableString'
+        Email:
+          title: Email address
+          $ref: '#/components/schemas/NullableEmail'
+    Money:
+      type: object
+      required:
+        - Amount
+        - Currency
+      additionalProperties: false
+      properties:
+        Amount:
+          type: number
+        Currency:
+          type: string
+    NullableSalary:
+      type:
+        - object
+        - "null"
+      required:
+        - Money
+      additionalProperties: false
+      properties:
+        Money:
+          $ref: '#/components/schemas/Money'
+        Period:
+          $ref: '#/components/schemas/Period'
+        Gross:
+          type: boolean
+    NullableRemote:
+      type:
+        - object
+        - "null"
+      required:
+        - Days
+        - Period
+      additionalProperties: false
+      properties:
+        Days:
+          $ref: '#/components/schemas/Period'
+        Period:
+          $ref: '#/components/schemas/Period'
+    TargetJob:
+      type: object
+      additionalProperties: false
+      properties:
+        Salary:
+          $ref: '#/components/schemas/NullableSalary'
+        Remote:
+          $ref: '#/components/schemas/NullableRemote'
+        Roles:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Operating Systems:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - linux
+              - macos
+              - windows
+        Features:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Desired Skills:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Excluded Skills:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    LanguageSkill:
+      type: object
+      required:
+        - Language
+        - Listening
+        - Reading
+        - Spoken
+        - Written
+      additionalProperties: false
+      properties:
+        Language:
+          $ref: '#/components/schemas/Language'
+        Listening:
+          type: string
+          enum:
+            - a1
+            - a2
+            - b1
+            - b2
+            - c1
+            - c2
+        Reading:
+          type: string
+          enum:
+            - a1
+            - a2
+            - b1
+            - b2
+            - c1
+            - c2
+        Spoken:
+          type: string
+          enum:
+            - a1
+            - a2
+            - b1
+            - b2
+            - c1
+            - c2
+        Written:
+          type: string
+          enum:
+            - a1
+            - a2
+            - b1
+            - b2
+            - c1
+            - c2
+    Organization:
+      type: object
+      required:
+        - Name
+      additionalProperties: false
+      properties:
+        Name:
+          type: string
+        Website:
+          $ref: '#/components/schemas/NullableUri'
+        Type:
+          $ref: '#/components/schemas/NullableString'
+        Industry:
+          $ref: '#/components/schemas/NullableString'
+    NullableOrganization:
+      type:
+        - object
+        - "null"
+      required:
+        - Name
+      additionalProperties: false
+      properties:
+        Name:
+          type: string
+        Website:
+          $ref: '#/components/schemas/NullableUri'
+        Type:
+          $ref: '#/components/schemas/NullableString'
+        Industry:
+          $ref: '#/components/schemas/NullableString'
+    Project:
+      type: object
+      required:
+        - Title
+      additionalProperties: false
+      properties:
+        Title:
+          type: string
+        Website:
+          $ref: '#/components/schemas/NullableUri'
+        From:
+          $ref: '#/components/schemas/NullableYearMonth'
+        Persons:
+          type: number
+        Type:
+          $ref: '#/components/schemas/NullableString'
+        To:
+          $ref: '#/components/schemas/NullableYearMonth'
+        Summary:
+          $ref: '#/components/schemas/NullableString'
+        Client:
+          $ref: '#/components/schemas/NullableOrganization'
+        Production:
+          type:
+            - "null"
+            - boolean
+        Highlights:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Roles:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Skills:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    Experience:
+      type: object
+      required:
+        - Position
+      additionalProperties: false
+      properties:
+        Position:
+          type: string
+        Company:
+          $ref: '#/components/schemas/NullableOrganization'
+        From:
+          $ref: '#/components/schemas/NullableYearMonth'
+        To:
+          $ref: '#/components/schemas/NullableYearMonth'
+        Location:
+          $ref: '#/components/schemas/NullableLocation'
+        Summary:
+          $ref: '#/components/schemas/NullableString'
+        Quit Reason:
+          $ref: '#/components/schemas/NullableString'
+        Projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Education:
+      type: object
+      required:
+        - Title
+        - Type
+        - Institution
+        - From
+      additionalProperties: false
+      properties:
+        Title:
+          type: string
+        Type:
+          type: string
+        Institution:
+          $ref: '#/components/schemas/Organization'
+        From:
+          $ref: '#/components/schemas/YearMonth'
+        Website:
+          $ref: '#/components/schemas/NullableUri'
+        To:
+          $ref: '#/components/schemas/NullableYearMonth'
+        Area:
+          $ref: '#/components/schemas/NullableString'
+        Location:
+          $ref: '#/components/schemas/NullableLocation'
+        Summary:
+          $ref: '#/components/schemas/NullableString'
+        Score:
+          $ref: '#/components/schemas/NullableString'
+        Subjects:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    Course:
+      title: "Training course, as opposed to formal education"
+      type: object
+      required:
+        - Title
+        - Institution
+        - From
+        - To
+      additionalProperties: false
+      properties:
+        Title:
+          title: Course title
+          description: Course title. Can not be blank
+          type: string
+        Institution:
+          title: Organization which run the course and/or award its certificate
+          $ref: '#/components/schemas/Organization'
+        From:
+          title: Start date of the course
+          description: Start date of the course. It must be a date before the end
+            date
+          $ref: '#/components/schemas/Date'
+        To:
+          title: End date of the course
+          description: End date of the course. Should be set to a date before today
+          $ref: '#/components/schemas/Date'
+        Website:
+          title: URL with more information about the course
+          description: URL with more information about the course. The URL must return
+            a success code
+          $ref: '#/components/schemas/NullableUri'
+        Area:
+          title: Course subject
+          description: "Course subject. If set, it cannot be blank"
+          $ref: '#/components/schemas/NullableString'
+        Location:
+          title: Location where the training took place
+          $ref: '#/components/schemas/NullableLocation'
+        Summary:
+          title: Brief description of the course
+          description: Brief description of the course. Blank values other than 'null'
+            aren't allowed
+          $ref: '#/components/schemas/NullableString'
+        Company:
+          title: Name of the company paying for the course
+          $ref: '#/components/schemas/NullableString'
+        Hours:
+          title: Number of effective hours of this course
+          description: "Number of effective hours of this course. If set, should be\
+            \ greater than zero"
+          $ref: '#/components/schemas/NullableNumber'
+        Score:
+          title: Score of the course (if any)
+          $ref: '#/components/schemas/NullableString'
+        Subjects:
+          title: Set of topics covered in the course
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    Achievement:
+      title: Professional achievement
+      description: "Professional achievement. Achievement accomplished at a given\
+        \ date. Publications must be owned by external parties in order to be an achievement,\
+        \ posts on social networks or personal blogs are listed in other CV sections"
+      type: object
+      required:
+        - Type
+        - Title
+        - Date
+      additionalProperties: false
+      properties:
+        Type:
+          title: Type of achievement
+          type: string
+          enum:
+            - certification
+            - award
+            - publication
+            - presentation
+            - conference
+            - workshop
+            - other
+        Title:
+          title: Descriptive title of the achievement
+          description: Descriptive title of the achievement. Cannot be blank
+          type: string
+        Date:
+          title: Data in which the achievement was accomplished
+          description: Data in which the achievement was accomplished. Cannot be after
+            today
+          $ref: '#/components/schemas/Date'
+        Website:
+          title: "Link with further information of the achievement, I"
+          description: "Link with further information of the achievement, I.e.: the\
+            \ URL of a publication. The URL must exist and be readable"
+          $ref: '#/components/schemas/NullableUri'
+        Summary:
+          title: Detailed description of the achievement
+          description: Detailed description of the achievement. It cannot be blank
+          $ref: '#/components/schemas/NullableString'
+        Issuer:
+          title: Organization that awarded this achievement
+          $ref: '#/components/schemas/NullableOrganization'
+    Reference:
+      type: object
+      required:
+        - Full Name
+        - Summary
+      additionalProperties: false
+      properties:
+        Full Name:
+          type: string
+        Summary:
+          type: string
+        Type:
+          type:
+            - "null"
+            - string
+          enum:
+            - colleague
+            - manager
+            - subordinate
+            - client
+            - provider
+        Contact:
+          $ref: '#/components/schemas/NullableContact'
+        Social Profiles:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Uri'
+        Projects:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    SkillSet:
+      type: object
+      required:
+        - Title
+      additionalProperties: false
+      properties:
+        Title:
+          type: string
+        Skills:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    Cv:
+      title: CV data grouped by topics
+      description: "CV data grouped by topics. Most of the fields are optional. When\
+        \ the model is rendered, the fields are passed to the template context with\
+        \ the names in camel case. Read only properties are meant only for use in\
+        \ templates, and cannot be defined in the document"
+      type: object
+      additionalProperties: false
+      properties:
+        $schema:
+          title: Schema used for the CV
+          description: Used to deal with different versions. It also eases the use
+            on some editors
+          type: string
+          format: URI
+        Job Status:
+          title: Job search status
+          type:
+            - "null"
+            - string
+          enum:
+            - active search
+            - open to challenges
+            - not moving
+        Locale:
+          title: Locale representing the CV's content
+          $ref: '#/components/schemas/Locale'
+        Last Update:
+          title: Date of the CV's latest modification
+          $ref: '#/components/schemas/NullableDate'
+        Resources:
+          title: List of resources to be included in this CV
+          description: List of resources to be included in this CV. Allows CV modularization
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Uri'
+        Templates:
+          title: Templates used to render this CV
+          description: Templates used to render this CV. Templates for different media
+            types are supported using the template extension to select the appropriate
+            one
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Uri'
+        Variables:
+          title: Configuration added to the context when the CV is rendered
+          description: Configuration added to the context when the CV is rendered.
+            Map keys must be in camel case
+          type: object
+        Personal:
+          title: Personal information
+          $ref: '#/components/schemas/Personal'
+        Residence:
+          title: Current residence information
+          $ref: '#/components/schemas/Location'
+        Contact:
+          title: Contact data
+          $ref: '#/components/schemas/Contact'
+        Target Job:
+          title: Searched job desired characteristics
+          $ref: '#/components/schemas/TargetJob'
+        Bio:
+          title: "Bio, if set, cannot be blank"
+          $ref: '#/components/schemas/NullableString'
+        Goals:
+          title: Professional goals
+          description: Professional goals. It cannot contain any blank item
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Top Skills:
+          title: Group of general skills to highlight
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Social Profiles:
+          title: Set of URLs pointing to social profiles
+          description: Set of URLs pointing to social profiles. All of them must be
+            reachable
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Uri'
+        Languages:
+          title: List of languages aside of the birth language
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageSkill'
+        Personal Projects:
+          title: Personal projects developed outside a company
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+        Volunteering:
+          title: Experience on non govern organizations related with social or technical
+            interests
+          type: array
+          items:
+            $ref: '#/components/schemas/Experience'
+        Experience:
+          title: Professional projects developed for a company
+          type: array
+          items:
+            $ref: '#/components/schemas/Experience'
+        Education:
+          title: Formal education
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+        Courses:
+          title: Specific courses on a given subject
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        Achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Achievement'
+        References:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+        Technical Skills:
+          title: Set of technical skills
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillSet'
+        Common Skills:
+          title: Common (or soft) skills
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillSet'
+        Other Facts:
+          title: Fun facts and/or interests
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+    NullableYearMonth:
+      type:
+        - "null"
+        - string
+      pattern: "\\d{4}-\\d{2}"
+    YearMonth:
+      type: string
+      pattern: "\\d{4}-\\d{2}"
+    Period:
+      type: string
+      pattern: "[pP]?\\s*(\\d+[yY])?\\s*(\\d+[wW])?\\s*(\\d+[dD])?"
+    Locale:
+      type: string
+      pattern: "[a-z]{2}(_[A-Z]{2})?"
+    NullableDate:
+      type:
+        - "null"
+        - string
+      format: DATE
+    Date:
+      type: string
+      format: DATE
+    NullableUri:
+      type:
+        - "null"
+        - string
+      format: URI
+    Uri:
+      type: string
+      format: URI
+    NullableString:
+      type:
+        - "null"
+        - string
+    NullableNumber:
+      type:
+        - "null"
+        - number

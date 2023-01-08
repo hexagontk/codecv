@@ -1,0 +1,36 @@
+<!doctype html>
+
+<meta charset="utf-8">
+<script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+
+<rapi-doc
+  id="rapidoc"
+  spec-url="/openapi.json"
+
+  use-path-in-nav-bar="true"
+
+  render-style="focused"
+
+  show-info="true"
+  show-header="false"
+  show-components="true"
+  allow-search="false"
+  allow-advanced-search="false"
+  allow-spec-url-load="false"
+  allow-spec-file-load="false"
+  allow-try="true"
+  allow-authentication="false"
+  allow-server-selection="false"
+
+  schema-style="table"
+  schema-expand-level="1"
+  schema-description-expanded="true"
+  default-schema-tab="schema">
+
+  <script>
+  if (window.matchMedia && window.matchMedia('screen and (prefers-color-scheme: dark)').matches) {
+    let rapidoc = document.getElementById("rapidoc");
+    rapidoc.setAttribute('theme', 'dark');
+  }
+  </script>
+</rapi-doc>

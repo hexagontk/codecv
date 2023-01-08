@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+{% set font = gaFont == null ? 'family=Roboto+Slab:wght@400;500;700' : gaFont %}
+{% set primary = colorPrimary == null ? '\'#087cfa\'' : colorPrimary %}
+{% set maxWidth = gridMaxWidth == null ? '100rem' : gridMaxWidth %}
+{% set gutter = gridGutter == null ? '1.5rem' : gridGutter %}
+{% set size = fontSize == null ? '1.4rem' : fontSize %}
+{% set sansFont = fontFamilySans == null ? 'Roboto Slab' : fontFamilySans %}
+<html lang="en" class="container">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="{{ primary }}"/>
+
+{# Page Information #}
+{% set fullName = "#{cv.personal.givenName} #{cv.personal.familyName}" %}
+{% set pageTitle = "CV #{fullName} (#{cv.locale})" %}
+<meta name="description" content="{{ pageTitle }}"/>
+<meta name="keywords" content="{{ keywords == null ? 'cv resume' : keywords }}"/>
+<meta name="author" content="{{ cv.personal.alias }}"/>
+
+<title>{{ pageTitle }}</title>
+
+<base href="/">
+<link rel="canonical" href="{{ base }}{{ _path_ }}"/>
+<link rel="icon" href="{{ cv.personal.photo }}"/>
+<link rel="mask-icon" href="{{ cv.personal.photo }}" color="#000"/>
+<link rel="apple-touch-icon" href="{{ cv.personal.photo }}"/>
+
+<link href="https://cdnjs.cloudflare.com" rel="preconnect">
+<link
+  href="https://unpkg.com/chota@0.8.0/dist/chota.min.css"
+  rel="stylesheet"
+  media="screen, print">
+
+<style>
+  :root {
+    --color-primary: {{ primary }};
+    --grid-maxWidth: {{ maxWidth }};
+    --grid-gutter: {{ gutter }};
+    --font-size: {{ size }};
+    --font-family-sans: {{ sansFont }};
+  }
+
+  body.dark {
+    --bg-color: #0d1117;
+    --bg-secondary-color: #131316;
+    --font-color: #c9d1d9;
+    --color-grey: #ccc;
+    --color-darkGrey: #777;
+  }
+
+  header h3 { margin-bottom: 0.35rem; }
+  header dl { margin: 0; }
+  header img { height: 23rem; }
+  header .fab { font-size: 3rem; }
+
+  header ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  header ul li {
+    padding: calc(var(--grid-gutter) / 2);
+    float: left;
+  }
+
+  img { border-radius: 1rem; }
+
+  #contactInformation { margin-right: calc(var(--grid-gutter) * 2); }
+
+  section ul.customBullet { list-style: square; }
+
+  h3 { font-size: 1.25em; }
+
+  dd {
+    display: inline;
+    margin: 0;
+  }
+
+  dd:after {
+    display: block;
+    content: '';
+  }
+
+  dt { display: inline-block; }
+
+  i.fas { min-width: 3rem; }
+
+  h3 span, h4 span { float: right; }
+
+  h4 { font-size: 1em; }
+
+  p { margin-bottom: 0.5rem; }
+
+  ul li dl {
+    padding-left: 30px;
+    margin-top: 0;
+  }
+
+  ul li dl dt:before { content: "- "; }
+
+  .noBottomMargin { margin-bottom: 0; }
+  .noTopMargin { margin-top: 0; }
+
+  #contactInformation h2, #personalInformation h2 { font-size: 1.5em; }
+</style>
+
+<style media="print">
+  body.dark {
+    --bg-color: #fff;
+    --bg-secondary-color: #f3f3f6;
+    --font-color: #333;
+    --color-grey: #747681;
+    --color-darkGrey: #3f4144;
+  }
+
+  img {
+    max-width: 180px;
+    height: auto;
+  }
+</style>
+
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css"
+  rel="stylesheet"
+  media="screen, print">
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css"
+  rel="stylesheet"
+  media="screen, print">
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css"
+  rel="stylesheet"
+  media="screen, print">
+<link
+  href="https://fonts.googleapis.com/css2?{{ font }}&display=swap"
+  rel="stylesheet"
+  media="screen, print">
+
+<header class="row">
+  <div class="col-auto is-center">
+    <img id="photo" src="{{ cv.personal.photo }}" alt="Photo">
+  </div>
+
+  <div class="col">
+    <h1>{{ fullName }}</h1>
+    <div class="row">
+      <div class="col-auto" id="contactInformation">
+        <h2>Contact Information</h2>
+        <dl>
+          <dt>Location</dt>
+          <dd>{{ cv.residence.postcode }} - {{ cv.residence.city }}</dd>
+          <dt>Mobile Number</dt>
+          <dd>{{ cv.contact.mobile }}</dd>
+          <dt>Email</dt>
+          <dd>{{ cv.contact.email }}</dd>
+        </dl>
+      </div>
+      <div class="col-auto" id="personalInformation">
+        <h2>Personal Information</h2>
+        <dl>
+          <dt>Nationality</dt>
+          <dd>{{ cv.personal.birthCountry }}</dd>
+          <dt>Date of Birth</dt>
+          <dd>{{ cv.personal.birth | date("dd MMMM yyyy", existingFormat="yyyy-MM-dd") }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="row">
+      <ul>
+{% for socialProfile in cv.socialProfiles %}
+        <li>
+{% if socialProfile contains "twitter" %}
+{% set socialNetworkTitle = "Twitter" %}
+{% elseif socialProfile contains "github" %}
+{% set socialNetworkTitle = "GitHub" %}
+{% elseif socialProfile contains "linkedin" %}
+{% set socialNetworkTitle = "LinkedIn" %}
+{% elseif socialProfile contains "stackoverflow" %}
+{% set socialNetworkTitle = "Stack Overflow" %}
+{% elseif socialProfile contains "dev" %}
+{% set socialNetworkTitle = "Dev" %}
+{% else %}
+{% set socialNetworkTitle = "Not Found" %}
+{% endif %}
+{% set socialNetworkIcon = socialNetworkTitle | lower | replace({' ': '-'}) %}
+          <a href="{{ socialProfile }}" title="{{ socialNetworkTitle }}">
+            <i class="fab fa-{{ socialNetworkIcon }}"></i>
+          </a>
+        </li>
+{% endfor %}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<hr>
+{# PARAGRAPHS #}
+{% macro paragraphs(text) %}
+{% set lines = text | split('\n') %}
+{% for line in lines %}
+<p>{{ line }}</p>
+{% endfor %}
+{% endmacro %}
+
+<main>
+  <section>
+    <h2><i class="fas fa-highlighter"></i> Summary</h2>
+
+    <div class="row">
+      <div class="col">
+        <h3>Bio</h3>
+{{ paragraphs(cv.bio) }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h3>Goals</h3>
+        <ul>
+{% for goal in cv.goals %}
+          <li>{{ goal }}</li>
+{% endfor %}
+        </ul>
+      </div>
+
+      <div class="col">
+        <h3>Top Skills</h3>
+        <ul>
+{% for topSkill in cv.topSkills %}
+          <li>{{ topSkill }}</li>
+{% endfor %}
+        </ul>
+      </div>
+    </div>
+    <hr>
+  </section>
+{# DATE_RANGE #}
+{% macro dateRange(start, end) %}
+{% set formattedStart = start | date("MMM yyyy", existingFormat="yyyy-MM") %}
+{% set formattedEnd = end == null ? 'Present' : end | date("MMM yyyy", existingFormat="yyyy-MM") %}
+{{ formattedStart }} / {{ formattedEnd }}
+{% endmacro %}
+{# HEADER #}
+{% macro header(title, link, tags, start, end, secondary = null, nested = false) %}
+<header>
+{% if nested %}
+  <h4 class="noBottomMargin">
+{% if link == null %}
+    {{ title }}
+{% else %}
+    <a href="{{ link }}">{{ title }} <i class="fas fa-link"></i></a>
+{% endif %}
+    ({{ tags | join(', ') }})
+{% if start != null %}
+    <span>{{ dateRange(start, end) }}</span>
+{% endif %}
+  </h4>
+{% else %}
+  <h3 class="noBottomMargin">
+{% if link == null %}
+    {{ title }}
+{% else %}
+    <a href="{{ link }}">{{ title }} <i class="fas fa-link"></i></a>
+{% endif %}
+    ({{ tags | join(', ') }})
+    <span>{{ dateRange(start, end) }}</span>
+  </h3>
+{% endif %}
+{% if secondary != null %}
+  <h3 class="noTopMargin noBottomMargin">{{ secondary }}</h3>
+{% endif %}
+</header>
+{% endmacro %}
+{# PROJECTS #}
+{% macro projects(projects, nested = false, style = "") %}
+<ul class="{{ style }}">
+{% for project in projects %}
+  <li>
+{% set title = project.title %}
+{{ header(title, project.website, project.roles, project.from, project.to, null, nested) }}
+{{ paragraphs(project.summary) }}
+{% if project.skills != null %}
+    <p><b>Skills:</b> {{ project.skills | join(', ') }}</p>
+{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endmacro %}
+
+  <section>
+    <h2><i class="fas fa-code"></i> Personal Projects</h2>
+{{ projects(cv.personalProjects) }}
+    <hr>
+  </section>
+{# EXPERIENCES #}
+{% macro experiences(experiences) %}
+<ul>
+{% for experience in experiences %}
+  <li>
+{% set company = experience.company %}
+{% set from = experience.from == null ? experience.firstProjectStart : experience.from %}
+{% set to = experience.to == null ? experience.lastProjectEnd : experience.to %}
+{{ header(company.name, company.website, [ company.industry ], from, to, experience.position) }}
+{{ paragraphs(experience.summary) }}
+{{ projects(experience.projects, true, "customBullet") }}
+  </li>
+{% endfor %}
+</ul>
+{% endmacro %}
+
+  <section>
+    <h2><i class="fas fa-user-tie"></i> Professional Experience</h2>
+{{ experiences(cv.experience) }}
+    <hr>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+    <ul>
+{% for education in cv.education %}
+      <li>
+        <header>
+          <h3 class="noBottomMargin">
+{% if education.website is empty %}
+            {{ education.title }}
+{% else %}
+            <a href="{{ education.website }}">{{ education.title }} <i class="fas fa-link"></i></a>
+{% endif %}
+            ({{ education.institution.name }})
+            <span>{{ dateRange(education.from, education.to) }}</span>
+          </h3>
+          <h3 class="noTopMargin noBottomMargin">
+            {{ education.location.city }}, {{ education.location.country }}
+          </h3>
+        </header>
+        {{ paragraphs(education.summary) }}
+      </li>
+{% endfor %}
+{% for course in cv.courses %}
+      <li>
+        <header>
+          <h3 class="noBottomMargin">
+{% if course.website is empty %}
+            {{ course.title }}
+{% else %}
+            <a href="{{ course.website }}">{{ course.title }} <i class="fas fa-link"></i></a>
+{% endif %}
+            ({{ course.institution.name }})
+{% if course.hours == null %}
+            <span>{{ dateRange(course.from, course.to) }}</span>
+{% else %}
+{% set from = course.from | date("MMM yyyy", existingFormat="yyyy-MM-dd") %}
+            <span>{{ from }} ({{ course.hours }}h)</span>
+{% endif %}
+          </h3>
+          <h3 class="noTopMargin noBottomMargin">
+{% if course.company != null %}
+            For {{ course.company }} at
+{% endif %}
+            {{ course.location.city }}, {{ course.location.country }}
+          </h3>
+        </header>
+        {{ paragraphs(course.summary) }}
+      </li>
+{% endfor %}
+    </ul>
+    <hr>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-microchip"></i> Technical Skills</h2>
+    <ul>
+{% for technicalSkill in cv.technicalSkills %}
+      <li><strong>{{ technicalSkill.title }}:</strong> {{ technicalSkill.skills | join(', ') }}</li>
+{% endfor %}
+    </ul>
+    <hr>
+  </section>
+{# LANGUAGE LEVEL #}
+{% macro languageLevel(languageLevel) %}
+{% set level = languageLevel | upper %}
+{% if level == "A1" %} Beginner
+{% elseif level == "A2" %}{{- "Elementary" -}}
+{% elseif level == "B1" %}{{- "Intermediate" -}}
+{% elseif level == "B2" %}{{- "Upper-intermediate" -}}
+{% elseif level == "C1" %}{{- "Advanced" -}}
+{% elseif level == "C2" %}{{- "Proficient" -}}
+{% else %} Unknown
+{% endif %}
+{% endmacro %}
+
+  <section>
+    <h2><i class="fas fa-language"></i> Languages</h2>
+    <div class="row">
+{% for language in cv.languages %}
+      <div class="col">
+        <h3>{{ language.language }}</h3>
+        <ul>
+          <li><strong>Listening:</strong> {{ languageLevel(language.listening) }}</li>
+          <li><strong>Reading:</strong> {{ languageLevel(language.reading) }}</li>
+          <li><strong>Spoken:</strong> {{ languageLevel(language.spoken) }}</li>
+          <li><strong>Written:</strong> {{ languageLevel(language.written) }}</li>
+        </ul>
+      </div>
+{% endfor %}
+    </div>
+    <hr>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-paint-brush"></i> Common Skills</h2>
+    <ul>
+{% for commonSkill in cv.commonSkills %}
+      <li><strong>{{ commonSkill.title }}:</strong> {{ commonSkill.skills | join(', ') }}</li>
+{% endfor %}
+    </ul>
+    <hr>
+  </section>
+</main>
+
+<footer class="is-center">
+  <p>
+    Created by <a href="mailto:{{ cv.contact.email }}">{{ cv.personal.alias }}</a>
+    with <a href="https://hexagonkt.com/">Hexagon</a>
+    and <a href="https://jenil.github.io/chota">chota</a>
+    · © {{ _now_.year }}
+
+  </p>
+</footer>
+
+<script>
+  if (window.matchMedia && window.matchMedia('screen and (prefers-color-scheme: dark)').matches) {
+    document.body.classList.add('dark');
+  }
+</script>
+
+</html>

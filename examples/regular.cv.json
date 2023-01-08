@@ -1,0 +1,148 @@
+{
+  "$schema" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
+
+  "Locale" : "en_US",
+  "Templates" : [ "file:templates/cv.html" ],
+  "Variables" : {
+    "gaFont" : "family=Roboto+Slab:wght@400;500;700",
+    "colorPrimary" : "#087cfa",
+    "gridMaxWidth" : "100rem",
+    "gridGutter" : "1.5rem",
+    "fontSize" : "1.4rem",
+    "fontFamilySans" : "Roboto Slab"
+  },
+
+  "Personal" : {
+    "Given Name" : "Richard",
+    "Family Name" : "Hendricks",
+    "Native Language" : "en",
+    "Gender" : "man",
+    "Birth" : "1988-08-16",
+    "Birth Country" : "US",
+    "Alias" : "Bitchard",
+    "Photo" : "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
+  },
+
+  "Residence" : {
+    "Country" : "US",
+    "Region" : "California",
+    "City" : "San Francisco"
+  },
+
+  "Contact" : {
+    "Mobile" : "+1 654 12 34 56",
+    "Email" : "richard@piedpiper.com"
+  },
+
+  "Target Job" : {
+    "Salary" : {
+      "Money" : {
+        "Amount" : 120000.0,
+        "Currency" : "USD"
+      }
+    },
+    "Roles" : [ "Developer", "CEO" ],
+    "Operating Systems" : [ "linux", "macos" ],
+    "Locations" : [
+      {
+        "Country" : "US",
+        "City" : "San Francisco"
+      }
+    ]
+  },
+
+  "Bio" : "Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and\nStanford. (Go Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as\na part-time software developer. His work focuses on applied information theory, mostly\noptimizing lossless compression schema of both the length-limited and adaptive variants.",
+
+  "Goals" : [
+    "Change the Internet",
+    "Make the world a better place"
+  ],
+
+  "Top Skills" : [
+    "Systems Design",
+    "Data structures and Algorithms",
+    "Low level Programming"
+  ],
+
+  "Social Profiles" : [
+    "https://github.com/hexagonkt/hexagon",
+    "https://twitter.com/hexagon_kt",
+    "https://dev.to/hexagonkt"
+  ],
+
+  "Languages" : [
+    {
+      "Language" : "fr",
+      "Listening" : "a1",
+      "Reading" : "a2",
+      "Spoken" : "b1",
+      "Written" : "b2"
+    }
+  ],
+
+  "Experience" : [
+    {
+      "Position" : "Founder",
+      "Company" : {
+        "Name" : "Pied Piper"
+      },
+      "From" : "2013-12",
+      "To" : "2014-12",
+      "Location" : {
+        "Country" : "US",
+        "City" : "San Francisco"
+      },
+      "Summary" : "Evolving Internet... And making the world a better place.",
+      "Projects" : [
+        {
+          "Title" : "Middle-out",
+          "From" : "2010-01",
+          "To" : "2011-05",
+          "Summary" : "Groundbreaking compression algorithm.",
+          "Roles" : [ "Developer", "CEO" ],
+          "Skills" : [ "C" ]
+        }
+      ]
+    }
+  ],
+
+  "Education" : [
+    {
+      "Title" : "Bachelor's Degree in Computer Science",
+      "Type" : "Bachelor",
+      "Institution" : {
+        "Name" : "University of Oklahoma"
+      },
+      "From" : "1996-09",
+      "To" : "2000-06"
+    }
+  ],
+
+  "References" : [
+    {
+      "Full Name" : "Erlich Bachman",
+      "Summary" : "It is my pleasure to recommend Richard, his performance working as a consultant\nfor Bachman Consulting proved that he will be a valuable addition to any\ncompany.",
+      "Contact" : {
+        "Mobile" : "+1 678 20 41 05",
+        "Email" : "erlich@aviato.com"
+      }
+    }
+  ],
+
+  "Technical Skills" : [
+    {
+      "Title" : "Compression",
+      "Skills" : [ "Mpeg", "MP4", "GIF" ]
+    },
+    {
+      "Title" : "Systems Programming"
+    }
+  ],
+
+  "Common Skills" : [
+    {
+      "Title" : "Productivity",
+      "Skills" : [ "Vim", "Typewriting" ]
+    }
+  ]
+}

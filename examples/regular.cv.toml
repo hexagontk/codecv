@@ -1,0 +1,117 @@
+#!/usr/bin/env cv
+
+"$schema" = "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json"
+
+Locale = "en_US"
+Templates = [ "file:templates/cv.html" ]
+
+Bio = """\
+  Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. \
+  (Go Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as a part-time \
+  software developer. \
+  \
+  His work focuses on applied information theory, mostly optimizing lossless compression schema of \
+  both the length-limited and adaptive variants."""
+
+Goals = [
+  "Change the Internet",
+  "Make the world a better place",
+]
+
+"Top Skills" = [
+  "Systems Design",
+  "Data structures and Algorithms",
+  "Low level Programming",
+]
+
+"Social Profiles" = [
+  "https://github.com/hexagonkt/hexagon",
+  "https://twitter.com/hexagon_kt",
+  "https://dev.to/hexagonkt",
+]
+
+[Variables]
+gaFont = "family=Roboto+Slab:wght@400;500;700"
+colorPrimary = "#087cfa"
+gridMaxWidth = "100rem"
+gridGutter = "1.5rem"
+fontSize = "1.4rem"
+fontFamilySans = "Roboto Slab"
+
+[Personal]
+"Given Name" = "Richard"
+"Family Name" = "Hendricks"
+"Native Language" = "en"
+"Birth Country" = "US"
+Gender = "man"
+Birth = "1988-08-16"
+Alias = "Bitchard"
+Photo = "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
+
+[Residence]
+Country = "US"
+Region = "California"
+City = "San Francisco"
+
+[Contact]
+Mobile = "+1 654 12 34 56"
+Email = "richard@piedpiper.com"
+
+["Target Job"]
+"Operating Systems" = [ "linux", "macos" ]
+Roles = [ "Developer", "CEO" ]
+Locations = [ { Country = "US", City = "San Francisco" } ]
+
+["Target Job".Salary.Money]
+Amount = 120000.0
+Currency = "USD"
+
+[[Languages]]
+Language = "fr"
+Listening = "a1"
+Reading = "a2"
+Spoken = "b1"
+Written = "b2"
+
+[[Experience]]
+Company.Name = "Pied Piper"
+Location.Country = "US"
+Location.City = "San Francisco"
+Position = "Founder"
+From = "2013-12"
+To = "2014-12"
+Summary = "Evolving Internet... And making the world a better place."
+
+[[Experience.Projects]]
+Title = "Middle-out"
+From = "2010-01"
+To = "2011-05"
+Summary = "Groundbreaking compression algorithm."
+Roles = [ "Developer", "CEO" ]
+Skills = [ "C" ]
+
+[[Education]]
+Title = "Bachelor's Degree in Computer Science"
+Type = "Bachelor"
+Institution.Name = "University of Oklahoma"
+From = "1996-09"
+To = "2000-06"
+
+[[References]]
+"Full Name" = "Erlich Bachman"
+Contact.Mobile = "+1 678 20 41 05"
+Contact.Email = "erlich@aviato.com"
+Summary = """\
+  It is my pleasure to recommend Richard, his performance working as a consultant for Bachman \
+  Consulting proved that he will be a valuable addition to any company."""
+
+[["Technical Skills"]]
+Title = "Compression"
+Skills = [ "Mpeg", "MP4", "GIF" ]
+
+[["Technical Skills"]]
+Title = "Systems Programming"
+
+[["Common Skills"]]
+Title = "Productivity"
+Skills = [ "Vim", "Typewriting" ]

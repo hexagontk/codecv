@@ -1,0 +1,13 @@
+#!/usr/bin/env cv
+
+$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+Locale: en
+
+Personal:
+  Given Name: Richard
+  Family Name: Hendricks
+  Native Language: en
+
+Residence:
+  Country: US
