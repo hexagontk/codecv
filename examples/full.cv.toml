@@ -58,7 +58,6 @@ Alias = "Bitchard"
 Website = "https://example.net"
 Photo = "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
 Avatar = "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
-
 Nationalities = [ "US" ]
 Disabilities = [ { Type = "visual", Level = 0.1, Summary = "Can't set font size less than 16." } ]
 Ids = [ { Country = "US", Document = "Passport", Id = "A012BC34" } ]
@@ -84,18 +83,18 @@ Roles = [ "Developer", "CEO" ]
 Features = [ "Courses platform" ]
 Remote = { Days = "4d", Period = "7d" }
 
-[["Target Job".Locations]]
-Country = "US"
-Region = "California"
-City = "San Francisco"
-Postcode = "CA 94115"
-Address = "2712 Broadway St"
+  [["Target Job".Locations]]
+  Country = "US"
+  Region = "California"
+  City = "San Francisco"
+  Postcode = "CA 94115"
+  Address = "2712 Broadway St"
 
-["Target Job".Salary]
-Money.Amount = 120000.0
-Money.Currency = "USD"
-Period = "1y"
-Gross = true
+  ["Target Job".Salary]
+  Money.Amount = 120000.0
+  Money.Currency = "USD"
+  Period = "1y"
+  Gross = true
 
 [[Languages]]
 Language = "fr"
@@ -118,11 +117,11 @@ Position = "Teacher"
 Company.Name = "CoderDojo"
 Company.Website = "https://coderdojo.com"
 
-[[Volunteering.Projects]]
-Title = "Kids Coding Teaching"
-From = "2012-01"
-To = "2013-01"
-Highlights = [ "Awarded 'Teacher of the Month'" ]
+  [[Volunteering.Projects]]
+  Title = "Kids Coding Teaching"
+  From = "2012-01"
+  To = "2013-01"
+  Highlights = [ "Awarded 'Teacher of the Month'" ]
 
 [[Experience]]
 Company.Name = "Pied Piper"
@@ -137,22 +136,22 @@ To = "2014-12"
 Summary = "Evolving Internet... And making the world a better place."
 "Quit Reason" = "Rats"
 
-[[Experience.Projects]]
-Title = "Middle-out"
-Website = "https://example.com"
-From = "2010-01"
-To = "2011-05"
-Persons = 6
-Type = "Library"
-Summary = "Groundbreaking compression algorithm."
-Client.Name = "Pied Piper"
-Client.Website = "https://example.net"
-Client.Type = "Startup"
-Client.Industry = "Software"
-Production = true
-Highlights = [ "Techcrunch Disrupt Winner" ]
-Roles = [ "Developer", "CEO" ]
-Skills = [ "C" ]
+  [[Experience.Projects]]
+  Title = "Middle-out"
+  Website = "https://example.com"
+  From = "2010-01"
+  To = "2011-05"
+  Persons = 6
+  Type = "Library"
+  Summary = "Groundbreaking compression algorithm."
+  Client.Name = "Pied Piper"
+  Client.Website = "https://example.net"
+  Client.Type = "Startup"
+  Client.Industry = "Software"
+  Production = true
+  Highlights = [ "Techcrunch Disrupt Winner" ]
+  Roles = [ "Developer", "CEO" ]
+  Skills = [ "C" ]
 
 [[Education]]
 Title = "Bachelor's Degree in Computer Science"
