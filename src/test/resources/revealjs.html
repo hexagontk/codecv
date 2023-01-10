@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+
+<meta charset="utf-8">
+
+<title>reveal.js - Markdown Example</title>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css"/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/plugin/highlight/monokai.min.css"/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/black.min.css"/>
+
+<style>
+  :root {
+    --r-background-color: #2E303E;
+    --r-heading-text-transform: none;
+    --r-heading-color: #279FE7;
+  }
+</style>
+
+<div class="reveal">
+  <div class="slides">
+    <section
+      data-markdown="slides.md"
+      data-separator="^\n---\n$"
+      data-separator-vertical="^\n--\n$">
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/plugin/markdown/markdown.min.js">
+</script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/plugin/highlight/highlight.min.js">
+</script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/plugin/math/math.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/plugin/notes/notes.min.js"></script>
+
+<script>
+  Reveal.initialize({
+    controls: false,
+    progress: false,
+    history: false,
+    center: true,
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+  });
+</script>
+
+</html>
