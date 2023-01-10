@@ -119,6 +119,7 @@ components:
         Id:
           type: string
     Personal:
+      title: Personal information, not related with professional skills or qualifications
       type: object
       required:
         - Given Name
@@ -127,12 +128,19 @@ components:
       additionalProperties: false
       properties:
         Given Name:
+          title: Given name
+          description: Given name. It can be multiple words for compound names
           type: string
         Family Name:
+          title: Family name
+          description: Family name. Depending on cultures, this field can be very different
           type: string
         Native Language:
+          title: First learned language
+          description: First learned language. Or preferred language if you had many
           $ref: '#/components/schemas/Language'
         Pronoun:
+          title: Pronoun to state how do you like to be addressed
           type:
             - "null"
             - string
@@ -141,6 +149,7 @@ components:
             - masculine
             - neutral
         Gender:
+          title: Gender role
           type:
             - "null"
             - string
@@ -157,33 +166,43 @@ components:
             - agender
             - other
         Birth:
+          title: Date of birth
           $ref: '#/components/schemas/NullableDate'
         Birth Country:
+          title: Country of birth
           $ref: '#/components/schemas/NullableCountry'
         Alias:
+          title: Short name you commonly use or nickname
           $ref: '#/components/schemas/NullableString'
         Website:
+          title: Personal website
           $ref: '#/components/schemas/NullableUri'
         Photo:
+          title: Photo address
           $ref: '#/components/schemas/NullableUri'
         Avatar:
+          title: Avatar
+          description: Avatar. Image used to represent you without being an actual photo
           $ref: '#/components/schemas/NullableUri'
         Nationalities:
+          title: Set of nationalities
+          description: Set of nationalities. If none is supplied, the birth of country is used
           type: array
           uniqueItems: true
           items:
             $ref: '#/components/schemas/Country'
         Disabilities:
+          title: List of disabilities of a person
           type: array
           items:
             $ref: '#/components/schemas/Disability'
         Driving Licenses:
-          title: Country code to list of driving permissions
+          title: List of driving permissions
           type: array
           items:
             $ref: '#/components/schemas/DrivingLicense'
         Ids:
-          title: Map that reflects different nationalities (passports)
+          title: Id documents owned by country
           type: array
           items:
             $ref: '#/components/schemas/IdDocument'
@@ -513,7 +532,7 @@ components:
           items:
             type: string
     Course:
-      title: "Training course, as opposed to formal education"
+      title: Training course, as opposed to formal education
       type: object
       required:
         - Title
@@ -545,7 +564,7 @@ components:
           $ref: '#/components/schemas/NullableUri'
         Area:
           title: Course subject
-          description: "Course subject. If set, it cannot be blank"
+          description: Course subject. If set, it cannot be blank
           $ref: '#/components/schemas/NullableString'
         Location:
           title: Location where the training took place
@@ -560,8 +579,8 @@ components:
           $ref: '#/components/schemas/NullableString'
         Hours:
           title: Number of effective hours of this course
-          description: "Number of effective hours of this course. If set, should be\
-            \ greater than zero"
+          description:
+            "Number of effective hours of this course. If set, should be greater than zero"
           $ref: '#/components/schemas/NullableNumber'
         Score:
           title: Score of the course (if any)
@@ -574,9 +593,9 @@ components:
             type: string
     Achievement:
       title: Professional achievement
-      description: "Professional achievement. Achievement accomplished at a given\
-        \ date. Publications must be owned by external parties in order to be an achievement,\
-        \ posts on social networks or personal blogs are listed in other CV sections"
+      description: "Professional achievement. Achievement accomplished at a given \
+        date. Publications must be owned by external parties in order to be an achievement, \
+        posts on social networks or personal blogs are listed in other CV sections"
       type: object
       required:
         - Type
@@ -664,10 +683,10 @@ components:
             type: string
     Cv:
       title: CV data grouped by topics
-      description: "CV data grouped by topics. Most of the fields are optional. When\
-        \ the model is rendered, the fields are passed to the template context with\
-        \ the names in camel case. Read only properties are meant only for use in\
-        \ templates, and cannot be defined in the document"
+      description: "CV data grouped by topics. Most of the fields are optional. When \
+        the model is rendered, the fields are passed to the template context with \
+        the names in camel case. Read only properties are meant only for use in \
+        templates, and cannot be defined in the document"
       type: object
       additionalProperties: false
       properties:
@@ -726,7 +745,7 @@ components:
           title: Searched job desired characteristics
           $ref: '#/components/schemas/TargetJob'
         Bio:
-          title: "Bio, if set, cannot be blank"
+          title: Bio, if set, cannot be blank
           $ref: '#/components/schemas/NullableString'
         Goals:
           title: Professional goals
@@ -743,8 +762,6 @@ components:
             type: string
         Social Profiles:
           title: Set of URLs pointing to social profiles
-          description: Set of URLs pointing to social profiles. All of them must be
-            reachable
           type: array
           uniqueItems: true
           items:
@@ -781,10 +798,12 @@ components:
           items:
             $ref: '#/components/schemas/Course'
         Achievements:
+          title: Professional achievements awarded by third parties
           type: array
           items:
             $ref: '#/components/schemas/Achievement'
         References:
+          title: Personal references from previous experiences
           type: array
           items:
             $ref: '#/components/schemas/Reference'
