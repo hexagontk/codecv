@@ -98,7 +98,7 @@ improvement, file a bug or resolve a usage doubt, you are absolutely encouraged 
 Also, if you want to contribute a new feature on the tool or a change on the schema. You can also
 do so by creating an issue and filing a PR. Please read the [contributing guide] before doing so.
 
-[contributing guide]: /contribute
+[contributing guide]: https://github.com/hexagonkt/codecv/contribute
 
 ## ❤️ Support the Project
 If you want to see more progress on this project, and see more developer targeted tools,
