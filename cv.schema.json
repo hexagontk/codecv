@@ -79,6 +79,7 @@
       }
     },
     "Personal" : {
+      "title" : "Personal information, not related with professional skills or qualifications",
       "type" : "object",
       "required" : [
         "Given Name",
@@ -88,15 +89,22 @@
       "additionalProperties" : false,
       "properties" : {
         "Given Name" : {
+          "title" : "Given name",
+          "description" : "Given name. It can be multiple words for compound names",
           "type" : "string"
         },
         "Family Name" : {
+          "title" : "Family name",
+          "description" : "Family name. Depending on cultures, this field can be very different",
           "type" : "string"
         },
         "Native Language" : {
+          "title" : "First learned language",
+          "description" : "First learned language. Or preferred language if you had many",
           "$ref" : "#/$defs/Language"
         },
         "Pronoun" : {
+          "title" : "Pronoun to state how do you like to be addressed",
           "type" : [
             "null",
             "string"
@@ -108,6 +116,7 @@
           ]
         },
         "Gender" : {
+          "title" : "Gender role",
           "type" : [
             "null",
             "string"
@@ -127,24 +136,33 @@
           ]
         },
         "Birth" : {
+          "title" : "Date of birth",
           "$ref" : "#/$defs/NullableDate"
         },
         "Birth Country" : {
+          "title" : "Country of birth",
           "$ref" : "#/$defs/NullableCountry"
         },
         "Alias" : {
+          "title" : "Short name you commonly use or nickname",
           "$ref" : "#/$defs/NullableString"
         },
         "Website" : {
+          "title" : "Personal website",
           "$ref" : "#/$defs/NullableUri"
         },
         "Photo" : {
+          "title" : "Photo address",
           "$ref" : "#/$defs/NullableUri"
         },
         "Avatar" : {
+          "title" : "Avatar",
+          "description" : "Avatar. Image used to represent you without being an actual photo",
           "$ref" : "#/$defs/NullableUri"
         },
         "Nationalities" : {
+          "title" : "Set of nationalities",
+          "description" : "Set of nationalities. If none is supplied, the birth of country is used",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -152,20 +170,21 @@
           }
         },
         "Disabilities" : {
+          "title" : "List of disabilities of a person",
           "type" : "array",
           "items" : {
             "$ref" : "#/$defs/Disability"
           }
         },
         "Driving Licenses" : {
-          "title" : "Country code to list of driving permissions",
+          "title" : "List of driving permissions",
           "type" : "array",
           "items" : {
             "$ref" : "#/$defs/DrivingLicense"
           }
         },
         "Ids" : {
-          "title" : "Map that reflects different nationalities (passports)",
+          "title" : "Id documents owned by country",
           "type" : "array",
           "items" : {
             "$ref" : "#/$defs/IdDocument"

@@ -19,11 +19,12 @@ requirement.
 
 ## 🎯 Goals
 1. Readable CVs in code form
-2. Documents imported and exported from/to other sites easily
-3. Create documents in a flexible way. Composing files to make your CV modular.
-4. Not only state your career's details, but also record details of what happened (i.e.: why you
+2. Leverage existing editors features (use a JSON schema version widely supported)
+3. Allow documents to be imported and exported easily from/to other sites
+4. Create documents in a flexible way. Composing files to make your CV modular.
+5. Not only state your career's details, but also record details of what happened (i.e.: why you
    quit a job, etc.). You can think of it as a professional diary
-5. Batteries included: provide a reference tool to manage and maintain CV documents
+6. Batteries included: provide a reference tool to manage and maintain CV documents
 
 ## ♻️ Differences with other CV formats
 * Allow to compose CVs in a modular way (including different files to create profiles) creating

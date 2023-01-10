@@ -6,6 +6,28 @@
 {% set gutter = gridGutter == null ? '1.5rem' : gridGutter %}
 {% set size = fontSize == null ? '1.4rem' : fontSize %}
 {% set sansFont = fontFamilySans == null ? 'Roboto Slab' : fontFamilySans %}
+
+{# COUNTRY #}
+{% macro countryName(code) %}
+{% if code == "US" %}{{- "USA" -}}
+{% elseif code == "ES" %}{{- "Spain" -}}
+{% elseif code == "FR" %}{{- "France" -}}
+{% elseif code == "DE" %}{{- "Germany" -}}
+{% elseif code == "IT" %}{{- "Italy" -}}
+{% else %} Unknown
+{% endif %}
+{% endmacro %}
+
+{# LANGUAGE #}
+{% macro languageName(code) %}
+{% if code == "en" %}{{- "English" -}}
+{% elseif code == "es" %}{{- "Spanish" -}}
+{% elseif code == "fr" %}{{- "French" -}}
+{% elseif code == "de" %}{{- "German" -}}
+{% elseif code == "it" %}{{- "Italian" -}}
+{% else %} Unknown
+{% endif %}
+{% endmacro %}
 <html lang="en" class="container">
 
 <meta charset="utf-8">
@@ -161,7 +183,7 @@
         <h2>Personal Information</h2>
         <dl>
           <dt>Nationality</dt>
-          <dd>{{ cv.personal.birthCountry }}</dd>
+          <dd>{{ countryName(cv.personal.birthCountry) }}</dd>
           <dt>Date of Birth</dt>
           <dd>{{ cv.personal.birth | date("dd MMMM yyyy", existingFormat="yyyy-MM-dd") }}</dd>
         </dl>
@@ -333,7 +355,7 @@
             <span>{{ dateRange(education.from, education.to) }}</span>
           </h3>
           <h3 class="noTopMargin noBottomMargin">
-            {{ education.location.city }}, {{ education.location.country }}
+            {{ education.location.city }}, {{ countryName(education.location.country) }}
           </h3>
         </header>
         {{ paragraphs(education.summary) }}
@@ -360,7 +382,7 @@
 {% if course.company != null %}
             For {{ course.company }} at
 {% endif %}
-            {{ course.location.city }}, {{ course.location.country }}
+            {{ course.location.city }}, {{ countryName(course.location.country) }}
           </h3>
         </header>
         {{ paragraphs(course.summary) }}
@@ -397,7 +419,7 @@
     <div class="row">
 {% for language in cv.languages %}
       <div class="col">
-        <h3>{{ language.language }}</h3>
+        <h3>{{ languageName(language.language) }}</h3>
         <ul>
           <li><strong>Listening:</strong> {{ languageLevel(language.listening) }}</li>
           <li><strong>Reading:</strong> {{ languageLevel(language.reading) }}</li>

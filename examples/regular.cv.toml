@@ -62,9 +62,9 @@ Email = "richard@piedpiper.com"
 Roles = [ "Developer", "CEO" ]
 Locations = [ { Country = "US", City = "San Francisco" } ]
 
-["Target Job".Salary.Money]
-Amount = 120000.0
-Currency = "USD"
+  ["Target Job".Salary.Money]
+  Amount = 120000.0
+  Currency = "USD"
 
 [[Languages]]
 Language = "fr"
@@ -82,13 +82,13 @@ From = "2013-12"
 To = "2014-12"
 Summary = "Evolving Internet... And making the world a better place."
 
-[[Experience.Projects]]
-Title = "Middle-out"
-From = "2010-01"
-To = "2011-05"
-Summary = "Groundbreaking compression algorithm."
-Roles = [ "Developer", "CEO" ]
-Skills = [ "C" ]
+  [[Experience.Projects]]
+  Title = "Middle-out"
+  From = "2010-01"
+  To = "2011-05"
+  Summary = "Groundbreaking compression algorithm."
+  Roles = [ "Developer", "CEO" ]
+  Skills = [ "C" ]
 
 [[Education]]
 Title = "Bachelor's Degree in Computer Science"
