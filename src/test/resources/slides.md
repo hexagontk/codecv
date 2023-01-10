@@ -16,9 +16,9 @@ CVs for programmers
 ---
 
 # Reference Tool
-* Serve CV <!-- .element: class="fragment" data-fragment-index="1" -->
-* Schema documentation <!-- .element: class="fragment" data-fragment-index="2" -->
-* Rendered schema <!-- .element: class="fragment" data-fragment-index="3" -->
+* Serve CV file <!-- .element: class="fragment" data-fragment-index="1" -->
+* Check schema documentation <!-- .element: class="fragment" data-fragment-index="2" -->
+* Show rendered CV document <!-- .element: class="fragment" data-fragment-index="3" -->
 
 ---
 
