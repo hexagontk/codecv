@@ -6,6 +6,8 @@ This project has two sides:
 * CV format specification and documentation
 * Reference tool to cover the basis of CV maintenance
 
+Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
+
 ## 🤔 Motivation
 The format was developed and evolved with the simple requirement to store and maintain my own CV.
 
