@@ -18,3 +18,4 @@ jobs:
     uses: hexagonkt/.github/.github/workflows/gradle.yml@master
     with:
       os: ${{ matrix.os }}
+      tasks: build -x jpackage

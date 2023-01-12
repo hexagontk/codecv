@@ -21,6 +21,10 @@ inputs:
     required: true
     default: build
 
+  check_directory:
+    description: Directory to check for build execution.
+    default: build
+
 runs:
   using: composite
   steps:
@@ -34,3 +38,7 @@ runs:
     - if: failure()
       run: ./gradlew --info --stacktrace ${{ inputs.tasks }}
       shell: bash
+    - name: Check Build
+      shell: bash
+      if: ${{ inputs.check_directory != '' }}
+      run: ls -AlF "${{ inputs.check_directory }}"
