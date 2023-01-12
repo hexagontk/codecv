@@ -8,8 +8,6 @@ on:
 
 jobs:
   build:
-    defaults:
-      run: { shell: bash }
     strategy:
       fail-fast: false
       matrix:
@@ -17,5 +15,6 @@ jobs:
 
     name: Build (${{ matrix.os }})
     permissions: read-all
-    runs-on: ${{ matrix.os }}
     uses: hexagonkt/.github/.github/workflows/gradle.yml@master
+    with:
+      os: ${{ matrix.os }}
