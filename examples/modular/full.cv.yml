@@ -5,9 +5,9 @@ $schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.jso
 
 Locale: en_US
 Resources:
-  - file:examples/modular/common.cv.yml
-  - file:examples/modular/additional_experiences.cv.yml
-  - file:examples/modular/courses.cv.yml
+  - file:common.cv.yml
+  - file:additional_experiences.cv.yml
+  - file:courses.cv.yml
 
 Variables:
   gaFont: family=Roboto+Slab:wght@400;500;700

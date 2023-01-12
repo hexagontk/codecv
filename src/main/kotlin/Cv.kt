@@ -29,6 +29,8 @@ import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
 import java.net.URI
 import java.net.URL
+import java.nio.file.Path
+import kotlin.io.path.exists
 
 const val spec: String = "classpath:spec.yml"
 const val schema: String = "classpath:cv.schema.json"
@@ -81,8 +83,9 @@ private fun HttpServerContext.getReformattedData(url: String): HttpServerContext
     return ok(data.serialize(mediaType), contentType = ContentType(mediaType))
 }
 
-private fun HttpServerContext.renderCv(url: String, base: String): HttpServerContext {
-    val cvData = URL(url).parseMap()
+private fun HttpServerContext.renderCv(cvUrl: String, base: String): HttpServerContext {
+    val url = URL(cvUrl)
+    val cvData = url.parseMap()
     val errors = validate(cvData)
     if (errors.isNotEmpty()) {
         val errorSeparator = "\n - "
@@ -90,7 +93,7 @@ private fun HttpServerContext.renderCv(url: String, base: String): HttpServerCon
         return badRequest("CV does not complain with schema:$errorsText")
     }
 
-    val cv = decode(cvData)
+    val cv = decode(cvData, url)
     val template = cv.keys<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
     val variables = cv.keys<Map<String, Any>>("variables") ?: emptyMap()
     val templateContext = variables + mapOf("cv" to cv, "base" to base)
@@ -98,13 +101,26 @@ private fun HttpServerContext.renderCv(url: String, base: String): HttpServerCon
     return template(URL(template), templateContext + callContext())
 }
 
-private fun decode(data: Map<*, *>): Map<*, *> {
-    val fullMap = mergeIncludes(data)
+private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
+    val fullMap = mergeIncludes(data, url)
     return toCamelCase(fullMap) as Map<*, *>
 }
 
-private fun mergeIncludes(data: Map<*, *>): Map<*, *> {
-    val includes = data.keys<List<String>>("Resources")?.map(::URL) ?: emptyList()
+private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
+    val baseDir by lazy { Path.of(base.file).parent }
+    val includes = data.keys<List<String>>("Resources")
+        ?.map(::URL)
+        ?.map {
+            if (it.protocol == "file")
+                Path.of(it.file).let { p ->
+                    if (p.exists() || p.isAbsolute) it
+                    else baseDir.resolve(p).toUri().toURL()
+                }
+            else
+                it
+        }
+        ?: emptyList()
+
     val allMaps = listOf(data) + includes.map(URL::parseMap)
     return merge(allMaps)
 }
