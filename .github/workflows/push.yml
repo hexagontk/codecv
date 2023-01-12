@@ -10,4 +10,4 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     permissions: read-all
-    uses: hexagonkt/.github/.github/workflows/gradle.yml
+    uses: hexagonkt/.github/.github/workflows/gradle.yml@master
