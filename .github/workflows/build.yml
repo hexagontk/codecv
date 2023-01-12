@@ -1,9 +1,8 @@
 
-name: Push
+name: Build
 
 on:
   push:
-    branches-ignore: [ master ]
 
 jobs:
   build:
