@@ -16,7 +16,6 @@ jobs:
         run: |
           URL="https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git remote set-url origin "$URL"
-          #git config --global user.email "juanjoaguililla@gmail.com"
           git config --global user.name "$GITHUB_ACTOR"
       - name: Release Version
         uses: ./.github/actions/gradle
