@@ -16,9 +16,17 @@ jobs:
         run: |
           URL="https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
           git remote set-url origin "$URL"
-          #git config --global user.email "juanjoaguililla@gmail.com"
           git config --global user.name "$GITHUB_ACTOR"
-      - name: Release Version
-        uses: ./.github/actions/gradle
+      - name: Set Up Java
+        uses: actions/setup-java@v3
         with:
-          tasks: release
+          java-version: "17"
+          distribution: temurin
+          cache: gradle
+      - name: Release Version
+        run: ./gradlew release
+        shell: bash
+      - name: Release Version
+        if: failure()
+        run: ./gradlew --info --stacktrace release
+        shell: bash
