@@ -17,7 +17,7 @@ apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.9"
+version = "0.9.10"
 description = "CVs for programmers"
 
 ext {
