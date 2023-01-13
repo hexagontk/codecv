@@ -8,23 +8,6 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Out
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.sha }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set Up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: temurin
-          cache: gradle
-      - name: Release Version
-        run: ./gradlew release
-        shell: bash
-      - name: Release Version
-        if: failure()
-        run: ./gradlew --info --stacktrace release
-        shell: bash
+    uses: hexagonkt/.github/.github/workflows/gradle.yml@master
+    with:
+      tasks: release
