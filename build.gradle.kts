@@ -1,10 +1,13 @@
 import org.gradle.api.JavaVersion.*
+import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
+import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.8.0")
+    id("org.graalvm.buildtools.native") version("0.9.19")
 }
 
-val hexagonVersion = "2.4.1"
+val hexagonVersion = "2.4.3"
 val hexagonExtraVersion = "2.4.0"
 val vertxVersion = "4.3.7"
 
@@ -15,6 +18,7 @@ val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexago
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
+apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
 version = "0.9.10"
@@ -62,7 +66,7 @@ tasks.create<Exec>("install") {
         "ln",
         "-sf",
         "${project.buildDir.absolutePath}/codecv/bin/codecv",
-        "${System.getProperty("user.home")}/.local/bin/cv"
+        "${getProperty("user.home")}/.local/bin/cv"
     )
 }
 
@@ -76,5 +80,37 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "config", "user.name", actor) }
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
+    }
+}
+
+extensions.configure<GraalVMExtension> {
+    binaries {
+        named("main") {
+            val https =
+                if (getProperty("enableHttps") == "true") "--enable-https"
+                else null
+            val monitoring =
+                if (getProperty("enableMonitoring") == "true") "--enable-monitoring"
+                else null
+            val mostlyStatic =
+                if (getProperty("mostlyStatic") == "true") "-H:+StaticExecutableWithDynamicLibC"
+                else null
+            val heap =
+                if (getProperty("heap") != null) "-R:MaxHeapSize=${getProperty("heap")}"
+                else null
+
+            listOfNotNull(
+                "--enable-preview",
+                "--enable-http",
+                "--enable-url-protocols=classpath",
+                "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
+                "-R:MaxHeapSize=32m",
+                https,
+                monitoring,
+                mostlyStatic,
+                heap,
+            )
+            .forEach(buildArgs::add)
+        }
     }
 }
