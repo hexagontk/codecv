@@ -1,5 +1,6 @@
 import org.gradle.api.JavaVersion.*
 import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 import java.lang.System.getProperty
 
 plugins {
@@ -87,19 +88,23 @@ tasks.create("release") {
 extensions.configure<GraalVMExtension> {
     binaries {
         named("main") {
+            val os = getProperty("os.name").toLowerCaseAsciiOnly()
+            val static =
+                if (os.contains("mac")) "-H:+StaticExecutableWithDynamicLibC"
+                else "--static"
             val monitoring =
                 if (getProperty("enableMonitoring") == "true") "--enable-monitoring"
                 else null
 
             listOfNotNull(
-                "--static",
+                static,
+                monitoring,
                 "--enable-preview",
                 "--enable-http",
                 "--enable-https",
                 "--enable-url-protocols=classpath",
                 "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
                 "-R:MaxHeapSize=32m",
-                monitoring,
             )
             .forEach(buildArgs::add)
         }
