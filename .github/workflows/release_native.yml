@@ -12,7 +12,29 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     name: Release (${{ matrix.os }})
-    uses: hexagonkt/.github/.github/workflows/graalvm_gradle.yml@master
-    with:
-      os: ${{ matrix.os }}
-      tasks: -Pagent nativeCompile
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run: { shell: bash }
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Java
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: latest
+          java-version: 17
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          components: native-image,llvm
+          cache: gradle
+          native-image-musl: true
+      - name: Run Tests
+        run: ./gradlew -Pagent test
+      - name: Build Native
+        run: ./gradlew nativeCompile
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: codecv-${{ matrix.os }}
+          path: build/native/nativeCompile/codecv*
