@@ -7,7 +7,7 @@ plugins {
     id("org.graalvm.buildtools.native") version("0.9.19")
 }
 
-val hexagonVersion = "2.4.3"
+val hexagonVersion = "2.4.4"
 val hexagonExtraVersion = "2.4.0"
 val vertxVersion = "4.3.7"
 
@@ -52,6 +52,7 @@ dependencies {
 
 tasks.named("classes") { dependsOn("addResources") }
 tasks.named("build") { dependsOn("tarJpackage") }
+tasks.named("nativeCompile") { dependsOn("metadataCopy") }
 
 tasks.create<Copy>("addResources") {
     from(projectDir)
@@ -86,29 +87,19 @@ tasks.create("release") {
 extensions.configure<GraalVMExtension> {
     binaries {
         named("main") {
-            val https =
-                if (getProperty("enableHttps") == "true") "--enable-https"
-                else null
             val monitoring =
                 if (getProperty("enableMonitoring") == "true") "--enable-monitoring"
                 else null
-            val mostlyStatic =
-                if (getProperty("mostlyStatic") == "true") "-H:+StaticExecutableWithDynamicLibC"
-                else null
-            val heap =
-                if (getProperty("heap") != null) "-R:MaxHeapSize=${getProperty("heap")}"
-                else null
 
             listOfNotNull(
+                "--static",
                 "--enable-preview",
                 "--enable-http",
+                "--enable-https",
                 "--enable-url-protocols=classpath",
                 "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
                 "-R:MaxHeapSize=32m",
-                https,
                 monitoring,
-                mostlyStatic,
-                heap,
             )
             .forEach(buildArgs::add)
         }

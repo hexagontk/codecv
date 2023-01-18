@@ -1,0 +1,18 @@
+
+name: Release
+
+on:
+  push:
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    name: Release (${{ matrix.os }})
+    uses: hexagonkt/.github/.github/workflows/graalvm_gradle.yml@master
+    with:
+      os: ${{ matrix.os }}
+      tasks: nativeCompile
