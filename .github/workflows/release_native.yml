@@ -10,12 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        arch: [ x64, ARM64 ]
 
-    name: Release (${{ matrix.os }} ${{ matrix.arch }})
-#    name: Release (${{ matrix.os }})
-    runs-on: [ '${{ matrix.os }}', '${{ matrix.arch }}' ]
-#    runs-on: [self-hosted, ${{ matrix.os }} ]
+    name: Release (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
     steps:
