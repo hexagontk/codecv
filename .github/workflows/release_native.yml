@@ -1,5 +1,5 @@
 
-name: Release
+name: Release Native
 
 on:
   push:
@@ -15,4 +15,4 @@ jobs:
     uses: hexagonkt/.github/.github/workflows/graalvm_gradle.yml@master
     with:
       os: ${{ matrix.os }}
-      tasks: nativeCompile
+      tasks: -Pagent nativeCompile
