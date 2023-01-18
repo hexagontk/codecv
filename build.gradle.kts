@@ -51,7 +51,7 @@ dependencies {
 }
 
 tasks.named("classes") { dependsOn("addResources") }
-tasks.named("build") { dependsOn("tarJpackage") }
+tasks.named("build") { dependsOn("tarJpackage", "metadataCopy") }
 tasks.named("nativeCompile") { dependsOn("metadataCopy") }
 
 tasks.create<Copy>("addResources") {

@@ -29,9 +29,9 @@ jobs:
           components: native-image,llvm
           cache: gradle
       - name: Run Tests
-        run: ./gradlew -Pagent test
+        run: ./gradlew -Pagent build
       - name: Build Native
-        run: ./gradlew nativeCompile
+        run: ./gradlew upx
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
