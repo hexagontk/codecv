@@ -36,10 +36,7 @@ jobs:
       - name: Run Tests
         run: ./gradlew metadataCopy
       - name: Build Native
-        run: ./gradlew nativeCompile
-      - name: Install UPX
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: ls -AlF build/native/nativeCompile
+        run: ./gradlew zipNative
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:

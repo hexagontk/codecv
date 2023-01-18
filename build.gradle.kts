@@ -1,12 +1,13 @@
 import org.gradle.api.JavaVersion.*
 import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.8.0")
     id("org.graalvm.buildtools.native") version("0.9.19")
 }
+
+val os = getProperty("os.name").toLowerCase()
 
 val hexagonVersion = "2.4.4"
 val hexagonExtraVersion = "2.4.0"
@@ -88,7 +89,6 @@ tasks.create("release") {
 extensions.configure<GraalVMExtension> {
     binaries {
         named("main") {
-            val os = getProperty("os.name").toLowerCaseAsciiOnly()
             val static =
                 if (os.contains("mac")) null else "--static"
             val monitoring =
@@ -107,4 +107,21 @@ extensions.configure<GraalVMExtension> {
             .forEach(buildArgs::add)
         }
     }
+}
+
+tasks.named<Exec>("upx") {
+    val source = "$buildDir/native/nativeCompile/${project.name}"
+    val target = "$buildDir/native/${project.name}"
+    val command =
+        if (os.contains("windows")) "upx ${source}.exe -o ${target}.exe"
+        else "upx $source -o $target"
+    commandLine(command.split(" "))
+}
+
+tasks.named<Zip>("zipNative") {
+    val arch = getProperty("os.arch").toLowerCase()
+    val source = if (os.contains("windows")) "${project.name}.exe" else project.name
+    include(source)
+    archiveFileName.set("${project.name}-${project.version}-${os}-${arch}.zip")
+    destinationDirectory.set(buildDir.toPath().resolve("distributions").toFile())
 }
