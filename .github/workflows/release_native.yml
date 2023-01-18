@@ -15,7 +15,7 @@ jobs:
 #    name: Release (${{ matrix.os }} ${{ matrix.arch }})
     name: Release (${{ matrix.os }})
 #    runs-on: [ ${{ matrix.os }}, ${{ matrix.arch }} ]
-    runs-on: [ ${{ matrix.os }} ]
+    runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
     steps:
