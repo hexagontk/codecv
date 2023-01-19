@@ -23,7 +23,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.10"
+version = "0.9.11"
 description = "CVs for programmers"
 
 ext {
