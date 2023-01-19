@@ -1,12 +1,11 @@
 
 name: Upload Native
 
-on:
-  label:
-    types: [ created ]
+on: create
 
 jobs:
   release:
+    if: ${{ github.ref_type == 'tag' }}
     strategy:
       fail-fast: false
       matrix:
