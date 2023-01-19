@@ -1,7 +1,7 @@
 
 name: Upload Native
 
-on: create
+on: push
 
 jobs:
   release:
