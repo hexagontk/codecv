@@ -2,12 +2,11 @@
 name: Upload Native
 
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [ published ]
 
 jobs:
   uploadNative:
-    if: ${{ github.ref_type == 'tag' }}
     strategy:
       fail-fast: false
       matrix:
