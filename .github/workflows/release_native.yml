@@ -3,7 +3,8 @@ name: Release Native
 
 on:
   push:
-#    branches: [ master ]
+#  release:
+#    types: [ published ]
 
 jobs:
   release:
@@ -44,5 +45,6 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: codecv-${{ matrix.os }}
-          path: build/distributions/codecv*.zip
+          name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}.zip
+          path: build/native/codecv*
+          retention-days: 1
