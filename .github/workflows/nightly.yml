@@ -18,4 +18,3 @@ jobs:
     with:
       os: ${{ matrix.os }}
       ref: develop
-      tasks: build -x jpackage

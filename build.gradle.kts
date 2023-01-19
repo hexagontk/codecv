@@ -1,10 +1,15 @@
 import org.gradle.api.JavaVersion.*
+import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
+import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.8.0")
+    id("org.graalvm.buildtools.native") version("0.9.19")
 }
 
-val hexagonVersion = "2.4.1"
+val os = getProperty("os.name").toLowerCase()
+
+val hexagonVersion = "2.4.4"
 val hexagonExtraVersion = "2.4.0"
 val vertxVersion = "4.3.7"
 
@@ -15,9 +20,10 @@ val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexago
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
+apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.10"
+version = "0.9.11"
 description = "CVs for programmers"
 
 ext {
@@ -62,7 +68,7 @@ tasks.create<Exec>("install") {
         "ln",
         "-sf",
         "${project.buildDir.absolutePath}/codecv/bin/codecv",
-        "${System.getProperty("user.home")}/.local/bin/cv"
+        "${getProperty("user.home")}/.local/bin/cv"
     )
 }
 
@@ -77,4 +83,44 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
     }
+}
+
+extensions.configure<GraalVMExtension> {
+    binaries {
+        named("main") {
+            val static =
+                if (os.contains("mac")) null else "-H:+StaticExecutableWithDynamicLibC"
+            val monitoring =
+                if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
+
+            listOfNotNull(
+                static,
+                monitoring,
+                "--enable-preview",
+                "--enable-http",
+                "--enable-https",
+                "--enable-url-protocols=classpath",
+                "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
+                "-R:MaxHeapSize=32m",
+            )
+            .forEach(buildArgs::add)
+        }
+    }
+}
+
+tasks.named<Exec>("upx") {
+    val source = "$buildDir/native/nativeCompile/${project.name}"
+    val target = "$buildDir/native/${project.name}"
+    val command =
+        if (os.contains("windows")) "upx ${source}.exe -o ${target}.exe"
+        else "upx $source -o $target"
+    commandLine(command.split(" "))
+}
+
+tasks.named<Zip>("zipNative") {
+    val arch = getProperty("os.arch").toLowerCase()
+    val source = if (os.contains("windows")) "${project.name}.exe" else project.name
+    include(source)
+    archiveFileName.set("${project.name}-${project.version}-${os}-${arch}.zip")
+    destinationDirectory.set(buildDir.toPath().resolve("distributions").toFile())
 }

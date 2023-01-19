@@ -1,0 +1,49 @@
+
+name: Upload Native
+
+on:
+  label:
+    types: [ created ]
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    name: Release (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run: { shell: bash }
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install UPX (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: choco install upx
+      - name: Install UPX (macOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: brew install upx
+      - name: Install Java
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: latest
+          java-version: 17
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          components: native-image,llvm
+          cache: gradle
+      - name: Run Tests
+        run: ./gradlew -Pagent test
+      - name: Run Tests
+        run: ./gradlew metadataCopy
+      - name: Build Native
+        run: ./gradlew zipNative
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
+          path: build/native/codecv*
+          retention-days: 1
