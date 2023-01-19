@@ -1,17 +1,19 @@
 
 name: Upload Native
 
-on: push
+on:
+  push:
+    branches: [ master ]
 
 jobs:
-  release:
+  uploadNative:
     if: ${{ github.ref_type == 'tag' }}
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
-    name: Release (${{ matrix.os }})
+    name: Upload Native (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
