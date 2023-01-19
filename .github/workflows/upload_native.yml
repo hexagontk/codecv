@@ -1,5 +1,5 @@
 
-name: Release Native
+name: Upload Native
 
 on:
   label:
