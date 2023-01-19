@@ -3,6 +3,7 @@ name: Release Native
 
 on:
   push:
+    branches: [ master ]
 
 jobs:
   release:
