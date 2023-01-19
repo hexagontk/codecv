@@ -1,7 +1,9 @@
 
 name: Build
 
-on: push
+on:
+  push:
+    branches-ignore: [ master ]
 
 jobs:
   build:
