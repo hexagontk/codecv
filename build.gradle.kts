@@ -89,7 +89,8 @@ extensions.configure<GraalVMExtension> {
     binaries {
         named("main") {
             val static =
-                if (os.contains("mac")) null else "--static"
+                if (os.contains("mac")) null else "-H:+StaticExecutableWithDynamicLibC"
+//                if (os.contains("mac")) null else "--static"
             val monitoring =
                 if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
 
