@@ -9,7 +9,7 @@ plugins {
 
 val os = getProperty("os.name").toLowerCase()
 
-val hexagonVersion = "2.4.4"
+val hexagonVersion = "2.4.5"
 val hexagonExtraVersion = "2.4.0"
 val vertxVersion = "4.3.7"
 
@@ -23,7 +23,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.14"
+version = "0.9.15"
 description = "CVs for programmers"
 
 ext {
@@ -53,7 +53,7 @@ dependencies {
 }
 
 tasks.named("classes") { dependsOn("addResources") }
-tasks.named("build") { dependsOn("tarJpackage") }
+tasks.named("build") { dependsOn("installDist") }
 
 tasks.create<Copy>("addResources") {
     from(projectDir)
@@ -106,21 +106,4 @@ extensions.configure<GraalVMExtension> {
             .forEach(buildArgs::add)
         }
     }
-}
-
-tasks.named<Exec>("upx") {
-    val source = "$buildDir/native/nativeCompile/${project.name}"
-    val target = "$buildDir/native/${project.name}"
-    val command =
-        if (os.contains("windows")) "upx ${source}.exe -o ${target}.exe"
-        else "upx $source -o $target"
-    commandLine(command.split(" "))
-}
-
-tasks.named<Zip>("zipNative") {
-    val arch = getProperty("os.arch").toLowerCase()
-    val source = if (os.contains("windows")) "${project.name}.exe" else project.name
-    include(source)
-    archiveFileName.set("${project.name}-${project.version}-${os}-${arch}.zip")
-    destinationDirectory.set(buildDir.toPath().resolve("distributions").toFile())
 }
