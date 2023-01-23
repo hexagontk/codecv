@@ -50,9 +50,3 @@ jobs:
       - name: Start Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
-          path: build/native/codecv*
-          retention-days: 1
