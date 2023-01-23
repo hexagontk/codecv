@@ -1,9 +1,7 @@
 
 name: Upload Binaries
 
-on:
-  release:
-    types: [ published ]
+on: pull_request
 
 jobs:
   uploadDistribution:
