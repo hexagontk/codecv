@@ -1,43 +1,16 @@
 
-name: Upload Binaries
+name: Test Binaries
 
-on:
-  release:
-    types: [ published ]
+on: pull_request
 
 jobs:
-  uploadDistribution:
-    name: Upload Distribution
-    runs-on: ubuntu-latest
-    defaults:
-      run: { shell: bash }
-    steps:
-      - name: Check Out
-        uses: actions/checkout@v3
-      - name: Set Up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: temurin
-          cache: gradle
-      - name: Build Distribution
-        run: ./gradlew installDist
-      - name: Rename Distribution
-        run: mv build/install/codecv build/install/codecv-${{ github.ref_name }}
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: CodeCV-${{ github.ref_name }}
-          path: build/install/codecv-${{ github.ref_name }}
-          retention-days: 1
-
-  uploadNative:
+  testBinaries:
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
-    name: Upload Native (${{ matrix.os }})
+    name: Test Binary (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
@@ -77,9 +50,3 @@ jobs:
       - name: Start Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
-          path: build/native/codecv*
-          retention-days: 1
