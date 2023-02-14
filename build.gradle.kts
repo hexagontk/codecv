@@ -3,15 +3,15 @@ import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.0")
+    kotlin("jvm") version("1.8.10")
     id("org.graalvm.buildtools.native") version("0.9.19")
 }
 
 val os = getProperty("os.name").toLowerCase()
 
-val hexagonVersion = "2.4.5"
+val hexagonVersion = "2.5.1"
 val hexagonExtraVersion = "2.4.0"
-val vertxVersion = "4.3.7"
+val vertxVersion = "4.3.8"
 
 val modules = "java.logging"
 val options = "-Xmx32m"
@@ -40,7 +40,7 @@ extensions.configure<JavaApplication> {
 }
 
 dependencies {
-    "implementation"("com.hexagonkt:http_server_jetty:$hexagonVersion")
+    "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
     "implementation"("com.hexagonkt:logging_slf4j_jul:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
@@ -101,6 +101,7 @@ extensions.configure<GraalVMExtension> {
                 "--enable-https",
                 "--enable-url-protocols=classpath",
                 "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
+                "-H:IncludeResources=.*\\.(html|json|yml)",
                 "-R:MaxHeapSize=32m",
             )
             .forEach(buildArgs::add)

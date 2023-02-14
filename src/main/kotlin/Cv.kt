@@ -13,7 +13,7 @@ import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
 import com.hexagonkt.http.server.handlers.HttpServerContext
-import com.hexagonkt.http.server.jetty.JettyServletAdapter
+import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
 import com.hexagonkt.serialization.*
 import com.hexagonkt.serialization.jackson.json.Json
@@ -49,7 +49,7 @@ fun main(vararg args: String) {
     val bindPort = serverSettings.bindPort
     val base = "$protocol://$hostName:$bindPort"
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
-    val adapter = JettyServletAdapter(maxThreads = 8)
+    val adapter = NettyServerAdapter(executorThreads = 4, soBacklog = 1024)
 
     LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
     SerializationManager.formats = linkedSetOf(Yaml, Json, Toml)

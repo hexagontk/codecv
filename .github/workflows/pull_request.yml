@@ -40,13 +40,13 @@ jobs:
       - name: Start Native (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          chmod +x build/native/codecv.exe
-          ./build/native/codecv.exe &
+          chmod +x build/native/nativeCompile/codecv.exe
+          ./build/native/nativeCompile/codecv.exe &
       - name: Start Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
-          chmod +x build/native/codecv
-          ./build/native/codecv &
+          chmod +x build/native/nativeCompile/codecv
+          ./build/native/nativeCompile/codecv &
       - name: Start Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
