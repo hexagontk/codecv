@@ -3,9 +3,10 @@ package co.codecv
 import com.hexagonkt.core.keys
 import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.media.mediaTypeOfOrNull
-import com.hexagonkt.core.merge
 import com.hexagonkt.core.require
-import com.hexagonkt.core.wordsToCamel
+import com.hexagonkt.helpers.merge
+import com.hexagonkt.helpers.properties
+import com.hexagonkt.helpers.wordsToCamel
 import com.hexagonkt.logging.jul.JulLoggingAdapter
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.Header
@@ -27,6 +28,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.json.schema.Draft.DRAFT7
 import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
+import io.vertx.json.schema.Validator
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
@@ -143,7 +145,7 @@ private fun validate(data: Map<*, *>): List<String> {
     val schemaMap = URL(schema).parseMap()
     val jsonSchema = JsonSchema.of(JsonObject.mapFrom(schemaMap))
     val options = JsonSchemaOptions().setDraft(DRAFT7).apply { baseUri = "file:./" }
-    val validator = io.vertx.json.schema.Validator.create(jsonSchema, options)
+    val validator = Validator.create(jsonSchema, options)
 
     return validator.validate(JsonObject.mapFrom(data))
         .errors

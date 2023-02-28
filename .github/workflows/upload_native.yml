@@ -63,7 +63,7 @@ jobs:
       - name: Run Tests
         run: ./gradlew metadataCopy
       - name: Build Native
-        run: ./gradlew zipNative
+        run: ./gradlew tarNative
       - name: Start Native (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |

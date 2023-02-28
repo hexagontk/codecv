@@ -4,13 +4,13 @@ import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.8.10")
-    id("org.graalvm.buildtools.native") version("0.9.19")
+    id("org.graalvm.buildtools.native") version("0.9.20")
 }
 
-val os = getProperty("os.name").toLowerCase()
+val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.5.1"
-val hexagonExtraVersion = "2.4.0"
+val hexagonVersion = "2.6.1"
+val hexagonExtraVersion = "2.6.1"
 val vertxVersion = "4.3.8"
 
 val modules = "java.logging"
@@ -23,7 +23,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.17"
+version = "0.9.18"
 description = "CVs for programmers"
 
 ext {
@@ -46,7 +46,9 @@ dependencies {
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
+    "implementation"("com.hexagonkt.extra:args:$hexagonVersion")
     "implementation"("com.hexagonkt.extra:web:$hexagonExtraVersion")
+
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
 
     "testImplementation"("com.hexagonkt:http_client_jetty:$hexagonVersion")
