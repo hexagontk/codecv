@@ -152,9 +152,8 @@ private fun validate(data: Map<*, *>): List<String> {
         ?.map {
             val error = it.error
             val location = it.instanceLocation
-            val keyword = it.keyword
             val keywordLocation = it.keywordLocation
-            "$error at $location. Cause: $keyword at $keywordLocation"
+            "$error at $location. Cause at: $keywordLocation"
         }
         ?: emptyList()
 }
