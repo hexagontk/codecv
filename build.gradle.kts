@@ -9,14 +9,16 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.6.6"
-val hexagonExtraVersion = "2.6.1"
+val hexagonVersion = "2.8.0"
+val hexagonExtraVersion = "2.8.0"
 val vertxVersion = "4.4.1"
 
-val modules = "java.logging"
-val options = "-Xmx32m"
-val icon = "$projectDir/logo.png"
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
+
+ext.set("modules", "java.logging")
+ext.set("options", "-Xmx32m")
+ext.set("icon", "$projectDir/logo.png")
+ext.set("applicationClass", "co.codecv.CvKt")
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
@@ -26,18 +28,8 @@ group = "com.hexagonkt.tools"
 version = "0.9.18"
 description = "CVs for programmers"
 
-ext {
-    set("modules", modules)
-    set("options", options)
-    set("icon", icon)
-}
-
 if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19))
     error("This build must be run with JDK 16+. Current: ${current()}")
-
-extensions.configure<JavaApplication> {
-    mainClass.set("co.codecv.CvKt")
-}
 
 dependencies {
     "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
@@ -46,6 +38,7 @@ dependencies {
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
+    "implementation"("com.hexagonkt.extra:helpers:$hexagonExtraVersion")
     "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
     "implementation"("com.hexagonkt.extra:web:$hexagonExtraVersion")
 

@@ -1,10 +1,14 @@
 package co.codecv
 
-import com.hexagonkt.core.keys
+import com.hexagonkt.args.Parameter
+import com.hexagonkt.args.Program
+import com.hexagonkt.args.Property.Companion.HELP
+import com.hexagonkt.args.Property.Companion.VERSION
+import com.hexagonkt.core.getPath
 import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.core.require
-import com.hexagonkt.helpers.merge
+import com.hexagonkt.core.merge
 import com.hexagonkt.helpers.properties
 import com.hexagonkt.helpers.wordsToCamel
 import com.hexagonkt.logging.jul.JulLoggingAdapter
@@ -13,7 +17,7 @@ import com.hexagonkt.http.model.Header
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
-import com.hexagonkt.http.server.handlers.HttpServerContext
+import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
 import com.hexagonkt.serialization.*
@@ -68,7 +72,7 @@ fun main(vararg args: String) {
     }
 }
 
-private fun HttpServerContext.addHeaders(scriptSources: String): HttpServerContext {
+private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
     val contentSecurityValues = listOf("script-src $scriptSources", "object-src none")
     val contentSecurityPolicy = Header("content-security-policy", contentSecurityValues)
     val xUaCompatible = Header("x-ua-compatible", "IE=edge")
@@ -76,7 +80,7 @@ private fun HttpServerContext.addHeaders(scriptSources: String): HttpServerConte
     return send(headers = response.headers + contentSecurityPolicy + xUaCompatible)
 }
 
-private fun HttpServerContext.getReformattedData(url: String): HttpServerContext {
+private fun HttpContext.getReformattedData(url: String): HttpContext {
     val data = URL(url).parseMap()
     val format = pathParameters.require("format")
     val mediaType = mediaTypeOfOrNull(format)
@@ -85,7 +89,7 @@ private fun HttpServerContext.getReformattedData(url: String): HttpServerContext
     return ok(data.serialize(mediaType), contentType = ContentType(mediaType))
 }
 
-private fun HttpServerContext.renderCv(cvUrl: String, base: String): HttpServerContext {
+private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
     val url = URL(cvUrl)
     val cvData = url.parseMap()
     val errors = validate(cvData)
@@ -96,8 +100,8 @@ private fun HttpServerContext.renderCv(cvUrl: String, base: String): HttpServerC
     }
 
     val cv = decode(cvData, url)
-    val template = cv.keys<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
-    val variables = cv.keys<Map<String, Any>>("variables") ?: emptyMap()
+    val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
+    val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
     val templateContext = variables + mapOf("cv" to cv, "base" to base)
 
     return template(URL(template), templateContext + callContext())
@@ -110,7 +114,7 @@ private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
 
 private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
     val baseDir by lazy { Path.of(base.file).parent }
-    val includes = data.keys<List<String>>("Resources")
+    val includes = data.getPath<List<String>>("Resources")
         ?.map(::URL)
         ?.map {
             if (it.protocol == "file")
