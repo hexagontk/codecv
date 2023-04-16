@@ -59,7 +59,7 @@ jobs:
           components: native-image,llvm
           cache: gradle
       - name: Run Tests
-        run: ./gradlew -Pagent test
+        run: ./gradlew -P agent test
       - name: Run Tests
         run: ./gradlew metadataCopy
       - name: Build Native
