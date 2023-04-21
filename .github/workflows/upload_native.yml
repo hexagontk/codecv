@@ -44,26 +44,17 @@ jobs:
     steps:
       - name: Check Out
         uses: actions/checkout@v3
-      - name: Install UPX (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: choco install upx
-      - name: Install UPX (macOS)
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: brew install upx
       - name: Install Java
         uses: graalvm/setup-graalvm@v1
         with:
           version: latest
           java-version: 17
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          components: native-image,llvm
           cache: gradle
       - name: Run Tests
-        run: ./gradlew -P agent test
-      - name: Run Tests
-        run: ./gradlew metadataCopy
+        run: ./gradlew test
       - name: Build Native
-        run: ./gradlew tarNative
+        run: ./gradlew zipNative
       - name: Start Native (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
@@ -74,7 +65,7 @@ jobs:
         run: |
           chmod +x build/native/nativeCompile/codecv
           ./build/native/nativeCompile/codecv &
-      - name: Start Native (Unix)
+      - name: Test Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
       - name: Archive production artifacts
