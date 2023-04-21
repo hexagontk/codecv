@@ -1,5 +1,6 @@
 import org.gradle.api.JavaVersion.*
 import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
+import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
@@ -50,6 +51,24 @@ dependencies {
 tasks.named("classes") { dependsOn("addResources") }
 tasks.named("build") { dependsOn("installDist") }
 
+tasks.named<CreateStartScripts>("startScripts") {
+    dependsOn("jacocoTestReport")
+
+    listOf(unixStartScriptGenerator, windowsStartScriptGenerator).forEach {
+        val generator = it as DefaultTemplateBasedStartScriptGenerator
+        val currentTemplate = generator.template.asString()
+        val newTemplate = when (it) {
+            windowsStartScriptGenerator ->
+                currentTemplate.replace("set CLASSPATH=\$classpath", "set CLASSPATH=\$classpath;.")
+            unixStartScriptGenerator ->
+                currentTemplate.replace("CLASSPATH=\$classpath", "CLASSPATH=\$classpath:.")
+            else ->
+                error("Unexpected script")
+        }
+        generator.template = resources.text.fromString(newTemplate)
+    }
+}
+
 tasks.create<Copy>("addResources") {
     from(projectDir)
     include("templates/cv.html")
@@ -88,13 +107,7 @@ extensions.configure<GraalVMExtension> {
             val monitoring =
                 if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
 
-            listOfNotNull(
-                static,
-                monitoring,
-                "-H:IncludeResources=.*\\.(html|json|yml)",
-                "-R:MaxHeapSize=32m",
-            )
-            .forEach(buildArgs::add)
+            listOfNotNull(static, monitoring).forEach(buildArgs::add)
         }
     }
 }
