@@ -2,7 +2,7 @@ package co.codecv
 
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.FileCallback
-import com.hexagonkt.http.server.jetty.serve
+import com.hexagonkt.http.server.netty.serve
 import java.awt.Desktop
 import java.io.File
 import java.net.URI

@@ -3,8 +3,8 @@ package co.codecv
 import com.hexagonkt.http.client.HttpClient
 import com.hexagonkt.http.client.HttpClientSettings
 import com.hexagonkt.http.client.jetty.JettyClientAdapter
-import com.hexagonkt.http.client.model.HttpClientResponse
-import com.hexagonkt.http.model.SuccessStatus.OK
+import com.hexagonkt.http.model.HttpResponsePort
+import com.hexagonkt.http.model.OK_200
 import org.junit.jupiter.api.Test
 import java.net.URL
 import kotlin.test.assertEquals
@@ -45,7 +45,7 @@ internal class CvTest {
         }
     }
 
-    private fun HttpClientResponse.checkResponse() {
-        assertEquals(OK, status)
+    private fun HttpResponsePort.checkResponse() {
+        assertEquals(OK_200, status)
     }
 }

@@ -1,52 +1,48 @@
 import org.gradle.api.JavaVersion.*
 import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
+import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.0")
-    id("org.graalvm.buildtools.native") version("0.9.19")
+    kotlin("jvm") version("1.8.20")
+    id("org.graalvm.buildtools.native") version("0.9.21")
 }
 
-val os = getProperty("os.name").toLowerCase()
+val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.4.5"
-val hexagonExtraVersion = "2.4.0"
-val vertxVersion = "4.3.7"
+val hexagonVersion = "2.8.0"
+val hexagonExtraVersion = "2.8.0"
+val vertxVersion = "4.4.1"
 
-val modules = "java.logging"
-val options = "-Xmx32m"
-val icon = "$projectDir/logo.png"
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
+
+ext.set("modules", "java.logging")
+ext.set("options", "-Xmx32m")
+ext.set("icon", "$projectDir/logo.png")
+ext.set("applicationClass", "co.codecv.CvKt")
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.17"
+version = "0.9.18"
 description = "CVs for programmers"
-
-ext {
-    set("modules", modules)
-    set("options", options)
-    set("icon", icon)
-}
 
 if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19))
     error("This build must be run with JDK 16+. Current: ${current()}")
 
-extensions.configure<JavaApplication> {
-    mainClass.set("co.codecv.CvKt")
-}
-
 dependencies {
-    "implementation"("com.hexagonkt:http_server_jetty:$hexagonVersion")
+    "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
     "implementation"("com.hexagonkt:logging_slf4j_jul:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
+    "implementation"("com.hexagonkt.extra:helpers:$hexagonExtraVersion")
+    "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
     "implementation"("com.hexagonkt.extra:web:$hexagonExtraVersion")
+
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
 
     "testImplementation"("com.hexagonkt:http_client_jetty:$hexagonVersion")
@@ -54,6 +50,24 @@ dependencies {
 
 tasks.named("classes") { dependsOn("addResources") }
 tasks.named("build") { dependsOn("installDist") }
+
+tasks.named<CreateStartScripts>("startScripts") {
+    dependsOn("jacocoTestReport")
+
+    listOf(unixStartScriptGenerator, windowsStartScriptGenerator).forEach {
+        val generator = it as DefaultTemplateBasedStartScriptGenerator
+        val currentTemplate = generator.template.asString()
+        val newTemplate = when (it) {
+            windowsStartScriptGenerator ->
+                currentTemplate.replace("set CLASSPATH=\$classpath", "set CLASSPATH=\$classpath;.")
+            unixStartScriptGenerator ->
+                currentTemplate.replace("CLASSPATH=\$classpath", "CLASSPATH=\$classpath:.")
+            else ->
+                error("Unexpected script")
+        }
+        generator.template = resources.text.fromString(newTemplate)
+    }
+}
 
 tasks.create<Copy>("addResources") {
     from(projectDir)
@@ -93,17 +107,7 @@ extensions.configure<GraalVMExtension> {
             val monitoring =
                 if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
 
-            listOfNotNull(
-                static,
-                monitoring,
-                "--enable-preview",
-                "--enable-http",
-                "--enable-https",
-                "--enable-url-protocols=classpath",
-                "--initialize-at-build-time=com.hexagonkt.core.ClasspathHandler",
-                "-R:MaxHeapSize=32m",
-            )
-            .forEach(buildArgs::add)
+            listOfNotNull(static, monitoring).forEach(buildArgs::add)
         }
     }
 }
