@@ -72,5 +72,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
-          path: build/native/nativeCompile/codecv*
           retention-days: 1
+          path: |
+            build/native/nativeCompile/codecv
+            build/native/nativeCompile/codecv.exe

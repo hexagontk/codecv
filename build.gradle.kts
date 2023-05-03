@@ -4,14 +4,14 @@ import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.20")
+    kotlin("jvm") version("1.8.21")
     id("org.graalvm.buildtools.native") version("0.9.21")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.8.0"
-val hexagonExtraVersion = "2.8.0"
+val hexagonVersion = "2.8.3"
+val hexagonExtraVersion = "2.8.3"
 val vertxVersion = "4.4.1"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
@@ -26,10 +26,10 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.18"
+version = "0.9.19"
 description = "CVs for programmers"
 
-if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19))
+if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20))
     error("This build must be run with JDK 16+. Current: ${current()}")
 
 dependencies {
@@ -72,6 +72,7 @@ tasks.named<CreateStartScripts>("startScripts") {
 tasks.create<Copy>("addResources") {
     from(projectDir)
     include("templates/cv.html")
+    include("examples/**")
     include("cv.schema.json")
     into(buildDir.resolve("resources/main"))
 }

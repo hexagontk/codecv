@@ -1,11 +1,15 @@
 package co.codecv
 
+import com.hexagonkt.args.Command
+import com.hexagonkt.args.Option
 import com.hexagonkt.args.Parameter
 import com.hexagonkt.args.Program
 import com.hexagonkt.args.Property.Companion.HELP
 import com.hexagonkt.args.Property.Companion.VERSION
+import com.hexagonkt.core.exists
 import com.hexagonkt.core.getPath
 import com.hexagonkt.core.logging.LoggingManager
+import com.hexagonkt.core.logging.logger
 import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.core.require
 import com.hexagonkt.core.merge
@@ -37,18 +41,45 @@ import java.net.URI
 import java.net.URL
 import java.nio.file.Path
 import kotlin.io.path.exists
+import kotlin.system.exitProcess
 
 const val spec: String = "classpath:spec.yml"
 const val schema: String = "classpath:cv.schema.json"
 const val defaultTemplate: String = "classpath:templates/cv.html"
+const val buildProperties: String = "classpath:META-INF/build.properties"
 
 lateinit var server: HttpServer
 
 fun main(vararg args: String) {
-    val url = args.firstOrNull()
-        ?.let { if (URI(it).scheme != null) it else "file:$it" }
-        ?: "file:examples/full.cv.yml"
+    val buildProperties = properties(URL(buildProperties))
+    val project = buildProperties.require("project")
 
+    LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
+    LoggingManager.defaultLoggerName = project
+    SerializationManager.formats = linkedSetOf(Yaml, Json, Toml)
+
+    val program = createProgram(buildProperties)
+    val command = program.parse(args)
+
+    when (command.name) {
+        project -> serve(command)
+
+        else -> error("")
+    }
+}
+
+private fun serve(command: Command) {
+    val url = command.parametersMap.require("url").values.first().let {
+        val urlValue = it as String
+        if (URI(urlValue).scheme != null) urlValue else "file:$urlValue"
+    }
+
+    if(!URL(url).exists()) {
+        logger.error { "CV url not found: $url" }
+        exitProcess(1)
+    }
+
+    TemplateManager.defaultAdapter = PebbleAdapter(false, 1 * 1024 * 1024)
     val serverSettings = HttpServerSettings(zip = true)
     val protocol = serverSettings.protocol.toString().lowercase()
     val hostName = serverSettings.bindAddress.hostName
@@ -56,10 +87,6 @@ fun main(vararg args: String) {
     val base = "$protocol://$hostName:$bindPort"
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
     val adapter = NettyServerAdapter(executorThreads = 4, soBacklog = 1024)
-
-    LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
-    SerializationManager.formats = linkedSetOf(Yaml, Json, Toml)
-    TemplateManager.defaultAdapter = PebbleAdapter(false, 1 * 1024 * 1024)
 
     server = serve(adapter, serverSettings) {
         after("*") { addHeaders(scriptSources) }
@@ -70,6 +97,37 @@ fun main(vararg args: String) {
         get("/cv") { renderCv(url, base) }
         get(callback = UrlCallback(URL("classpath:ui.html")))
     }
+}
+
+private fun createProgram(buildProperties: Map<String, String>): Program {
+    val urlParameterDescription = "URL to the CV file to use. If no schema, 'file' is assumed"
+    val urlParameter = Parameter(String::class, "url", urlParameterDescription, optional = false)
+    val kindOption = Option(String::class, 'k', "kind", "desc", Regex("(regular|full|minimum)"), value = "regular")
+    val formatOption = Option(String::class, 'f', "format", "desc", Regex("(yaml|json|toml)"), value = "yaml")
+    return  Program(
+        name = buildProperties.require("project"),
+        version = buildProperties.require("version"),
+        description = buildProperties.require("description"),
+        properties = setOf(
+            VERSION,
+            HELP,
+            urlParameter
+        ),
+        commands = setOf(
+            Command(
+                name = "create",
+                title = "title",
+                description = "description",
+                properties = setOf(HELP, kindOption, formatOption, urlParameter),
+            ),
+            Command(
+                name = "validate",
+                title = "title",
+                description = "description",
+                properties = setOf(HELP, urlParameter),
+            ),
+        ),
+    )
 }
 
 private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
