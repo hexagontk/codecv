@@ -59,12 +59,12 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv.exe
-          ./build/native/nativeCompile/codecv.exe &
+          ./build/native/nativeCompile/codecv.exe examples/full.cv.json &
       - name: Start Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv
-          ./build/native/nativeCompile/codecv &
+          ./build/native/nativeCompile/codecv examples/full.cv.json &
       - name: Test Native (Unix)
         if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
