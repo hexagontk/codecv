@@ -1,0 +1,26 @@
+#!/usr/bin/env codecv
+# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+
+Locale: en_US
+Templates: [ file:templates/cv.html ]
+
+Personal:
+  GivenName: Richard
+  Family Name: Hendricks
+  Native Language: en
+  Gender: man
+  Birth: 1988-08-16
+  Birth Country: US
+  Alias: Bitchard
+  Photo: https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg
+
+Residence:
+  Country: false
+  Region: California
+  City: San Francisco
+
+Contact:
+  Mobile: +1 654 12 34 56
+  Email: richard@piedpiper.com
