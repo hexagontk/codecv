@@ -1,4 +1,4 @@
-#!/usr/bin/env cv
+#!/usr/bin/env codecv
 
 "$schema" = "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json"
 
