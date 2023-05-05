@@ -8,6 +8,11 @@ This project has two sides:
 
 Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
 
+## 💻 Install
+1. Download the latest binary from the [releases page](https://github.com/hexagonkt/codecv/releases)
+2. Copy or link the binary to a directory in the PATH
+3. Type `codecv --help` to check how to use the reference tool
+
 ## 🤔 Motivation
 The format was developed and evolved with the simple requirement to store and maintain my own CV.
 
@@ -52,7 +57,18 @@ editors to attach a schema to a file).
 Some formats (YAML and TOML) allow the use of a ['shebang'][shebang] to make them "executable" and
 launch the CV server automatically upon execution. Check the examples for more information.
 
+The schema is also published in the [JSON Schema Repository](https://www.schemastore.org/json). This
+means that CV documents will be supported out of the box at some code editors (most notably
+[VS Code] and [JetBrains IDEs]).
+
+It implies that you will get autocomplete, documentation and validation for the following file
+patterns:
+- `cv.{json,yaml,yml,toml}`,
+- `*.cv.{json,yaml,yml,toml}`,
+
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[VS Code]: https://code.visualstudio.com
+[JetBrains IDEs]: https://www.jetbrains.com
 
 ## 🧰 Examples
 You can check some CV examples (in different formats) on the [/examples](/examples) directory.
