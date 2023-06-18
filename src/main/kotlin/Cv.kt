@@ -32,6 +32,7 @@ import io.vertx.json.schema.Draft.DRAFT7
 import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
 import io.vertx.json.schema.Validator
+import java.awt.Desktop
 import java.io.File
 import java.net.URI
 import java.net.URL
@@ -94,13 +95,14 @@ private fun exit(exception: Exception) {
 
 private fun createProgram(buildProperties: Map<String, String>): Program {
     val urlParamDescription = "URL for the CV file to use. If no schema, 'file' is assumed"
+    val browseFlag = Flag('b', "browse", "Open browser with served CV")
     val urlParam = Parameter<String>(urlParamName, urlParamDescription, optional = false)
 
     val serveCommand = Command(
         name = serveCommandName,
         title = "Serve a CV document",
         description = "Serve the CV document supplied, allowing it to be rendered on a browser",
-        properties = setOf(HELP, urlParam),
+        properties = setOf(HELP, browseFlag, urlParam),
     )
 
     val createCommand = Command(
@@ -203,6 +205,9 @@ private fun serve(command: Command) {
         get("/cv") { renderCv(urlString, base) }
         get(callback = UrlCallback(URL(mainPage)))
     }
+
+    if (command.propertyValueOrNull<Boolean>("b") == true)
+        Desktop.getDesktop().browse(URI("http://localhost:${server.runtimePort}/cv"))
 }
 
 private fun HttpContext.addHeaders(scriptSources: String): HttpContext {

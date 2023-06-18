@@ -16,7 +16,7 @@ val vertxVersion = "4.4.1"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
-ext.set("modules", "java.logging")
+ext.set("modules", "java.logging,java.desktop")
 ext.set("options", "-Xmx32m")
 ext.set("icon", "$projectDir/logo.png")
 ext.set("applicationClass", "co.codecv.CvKt")
@@ -77,16 +77,6 @@ tasks.create<Copy>("addResources") {
     into(buildDir.resolve("resources/main"))
 }
 
-tasks.create<Exec>("install") {
-    dependsOn("jpackage")
-    commandLine(
-        "ln",
-        "-sf",
-        "${project.buildDir.absolutePath}/codecv/bin/codecv",
-        "${getProperty("user.home")}/.local/bin/cv"
-    )
-}
-
 tasks.create("release") {
     dependsOn("build")
 
@@ -97,18 +87,5 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "config", "user.name", actor) }
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
-    }
-}
-
-extensions.configure<GraalVMExtension> {
-    binaries {
-        named("main") {
-            val static =
-                if (os.contains("mac")) null else "-H:+StaticExecutableWithDynamicLibC"
-            val monitoring =
-                if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
-
-            listOfNotNull(static, monitoring).forEach(buildArgs::add)
-        }
     }
 }
