@@ -10,6 +10,7 @@ Resources:
   - file:courses.cv.yml
 
 Variables:
+  faVersion: 5.15.4
   gaFont: family=Roboto+Slab:wght@400;500;700
   colorPrimary: '#087cfa'
   gridMaxWidth: 100rem

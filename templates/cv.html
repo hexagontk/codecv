@@ -64,12 +64,18 @@
     --font-family-sans: {{ sansFont }};
   }
 
-  body.dark {
-    --bg-color: #0d1117;
-    --bg-secondary-color: #131316;
-    --font-color: #c9d1d9;
-    --color-grey: #ccc;
-    --color-darkGrey: #777;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #0d1117;
+      --bg-secondary-color: #131316;
+      --font-color: #c9d1d9;
+      --color-grey: #ccc;
+      --color-darkGrey: #777;
+    }
+  }
+
+  body {
+    color-scheme: light dark;
   }
 
   header h3 { margin-bottom: 0.35rem; }
@@ -129,14 +135,6 @@
 </style>
 
 <style media="print">
-  body.dark {
-    --bg-color: #fff;
-    --bg-secondary-color: #f3f3f6;
-    --font-color: #333;
-    --color-grey: #747681;
-    --color-darkGrey: #3f4144;
-  }
-
   img {
     max-width: 180px;
     height: auto;
@@ -452,11 +450,5 @@
 
   </p>
 </footer>
-
-<script>
-  if (window.matchMedia && window.matchMedia('screen and (prefers-color-scheme: dark)').matches) {
-    document.body.classList.add('dark');
-  }
-</script>
 
 </html>

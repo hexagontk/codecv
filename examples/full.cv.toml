@@ -70,10 +70,17 @@ City = "San Francisco"
 Postcode = "CA 94115"
 Address = "2712 Broadway St"
 
-[Contact]
-Mobile = "+1 654 12 34 56"
-Landline = "91 259 11 29"
-Email = "richard@piedpiper.com"
+[[Contact]]
+Title = "Mobile"
+Address = "tel:+1-654-12-34-56"
+
+[[Contact]]
+Title = "Landline"
+Address = "tel:91-259-11-29"
+
+[[Contact]]
+Title = "Email"
+Address = "richard@piedpiper.com"
 
 ["Target Job"]
 "Operating Systems" = [ "linux", "macos" ]
@@ -212,14 +219,23 @@ Issuer.Name = "Hooli"
 [[References]]
 "Full Name" = "Erlich Bachman"
 "Social Profiles" = [ "https://github.com/hexagonkt/hexagon" ]
-Contact.Mobile = "+1 678 20 41 05"
-Contact.Landline = "91 106 28 01"
-Contact.Email = "erlich@aviato.com"
 Type = "manager"
 Projects = [ "middle-out" ]
 Summary = """\
   It is my pleasure to recommend Richard, his performance working as a consultant for Bachman \
   Consulting proved that he will be a valuable addition to any company."""
+
+  [[References.Contact]]
+  Title = "Mobile"
+  Address = "tel:+1-678-20-41-05"
+
+  [[References.Contact]]
+  Title = "Landline"
+  Address = "tel:91-106-28-01"
+
+  [[References.Contact]]
+  Title = "Email"
+  Address = "erlich@aviato.com"
 
 [["Technical Skills"]]
 Title = "Compression"

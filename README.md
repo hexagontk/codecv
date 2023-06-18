@@ -63,8 +63,8 @@ means that CV documents will be supported out of the box at some code editors (m
 
 It implies that you will get autocomplete, documentation and validation for the following file
 patterns:
-- `cv.{json,yaml,yml,toml}`,
-- `*.cv.{json,yaml,yml,toml}`,
+- `cv.{json,yaml,yml,toml}`
+- `*.cv.{json,yaml,yml,toml}`
 
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [VS Code]: https://code.visualstudio.com

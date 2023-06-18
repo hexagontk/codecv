@@ -1,22 +1,21 @@
 import org.gradle.api.JavaVersion.*
-import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.21")
-    id("org.graalvm.buildtools.native") version("0.9.21")
+    kotlin("jvm") version("1.8.22")
+    id("org.graalvm.buildtools.native") version("0.9.23")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.8.4"
+val hexagonVersion = "2.8.6"
 val hexagonExtraVersion = "2.8.4"
-val vertxVersion = "4.4.1"
+val vertxVersion = "4.4.3"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
-ext.set("modules", "java.logging")
+ext.set("modules", "java.logging,java.desktop")
 ext.set("options", "-Xmx32m")
 ext.set("icon", "$projectDir/logo.png")
 ext.set("applicationClass", "co.codecv.CvKt")
@@ -26,7 +25,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.19"
+version = "0.9.20"
 description = "CVs for programmers"
 
 if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20))
@@ -77,16 +76,6 @@ tasks.create<Copy>("addResources") {
     into(buildDir.resolve("resources/main"))
 }
 
-tasks.create<Exec>("install") {
-    dependsOn("jpackage")
-    commandLine(
-        "ln",
-        "-sf",
-        "${project.buildDir.absolutePath}/codecv/bin/codecv",
-        "${getProperty("user.home")}/.local/bin/cv"
-    )
-}
-
 tasks.create("release") {
     dependsOn("build")
 
@@ -97,18 +86,5 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "config", "user.name", actor) }
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
-    }
-}
-
-extensions.configure<GraalVMExtension> {
-    binaries {
-        named("main") {
-            val static =
-                if (os.contains("mac")) null else "-H:+StaticExecutableWithDynamicLibC"
-            val monitoring =
-                if (getProperty("enableMonitoring") == "true") "--enable-monitoring" else null
-
-            listOfNotNull(static, monitoring).forEach(buildArgs::add)
-        }
     }
 }

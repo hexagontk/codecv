@@ -19,6 +19,7 @@
       "pattern" : "[A-Z]{2}"
     },
     "Disability" : {
+      "title" : "Disability information",
       "type" : "object",
       "required" : [
         "Type"
@@ -26,6 +27,7 @@
       "additionalProperties" : false,
       "properties" : {
         "Type" : {
+          "title" : "Kind of disability",
           "type" : "string",
           "enum" : [
             "visual",
@@ -35,14 +37,18 @@
           ]
         },
         "Level" : {
+          "title" : "Disability degree",
+          "description" : "Disability degree. Value must be between 1.0 (fully disabled) and 0",
           "$ref" : "#/$defs/NullableNumber"
         },
         "Summary" : {
+          "title" : "Text describing the disability",
           "$ref" : "#/$defs/NullableString"
         }
       }
     },
     "DrivingLicense" : {
+      "title" : "Driving license details",
       "type" : "object",
       "required" : [
         "Country",
@@ -51,14 +57,19 @@
       "additionalProperties" : false,
       "properties" : {
         "Country" : {
+          "title" : "Country issuing the driver license",
           "$ref" : "#/$defs/Country"
         },
         "License" : {
+          "title" : "Kind of driver licence, i",
+          "description" : "Kind of driver licence, i.e.: A, B1, etc",
           "type" : "string"
         }
       }
     },
     "IdDocument" : {
+      "title" : "Identification document",
+      "description" : "Identification document, I.e.: passport",
       "type" : "object",
       "required" : [
         "Country",
@@ -68,12 +79,16 @@
       "additionalProperties" : false,
       "properties" : {
         "Country" : {
+          "title" : "Issuer of the document",
           "$ref" : "#/$defs/Country"
         },
         "Document" : {
+          "title" : "Document name",
+          "description" : "Document name. It could be a national document name, or passport",
           "type" : "string"
         },
         "Id" : {
+          "title" : "Code with the serial number of the document for the CV principal",
           "type" : "string"
         }
       }
@@ -193,6 +208,7 @@
       }
     },
     "Location" : {
+      "title" : "Area that may have different degrees of precision, from a whole country, to a street address",
       "type" : "object",
       "required" : [
         "Country"
@@ -200,23 +216,33 @@
       "additionalProperties" : false,
       "properties" : {
         "Country" : {
+          "title" : "Location country",
           "$ref" : "#/$defs/Country"
         },
         "Region" : {
+          "title" : "Country region",
+          "description" : "Country region. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "City" : {
+          "title" : "City",
+          "description" : "City. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Postcode" : {
+          "title" : "Postcode",
+          "description" : "Postcode. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Address" : {
+          "title" : "Street address",
+          "description" : "Street address. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         }
       }
     },
     "NullableLocation" : {
+      "title" : "Area that may have different degrees of precision, from a whole country, to a street address",
       "type" : [
         "object",
         "null"
@@ -227,67 +253,46 @@
       "additionalProperties" : false,
       "properties" : {
         "Country" : {
+          "title" : "Location country",
           "$ref" : "#/$defs/Country"
         },
         "Region" : {
+          "title" : "Country region",
+          "description" : "Country region. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "City" : {
+          "title" : "City",
+          "description" : "City. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Postcode" : {
+          "title" : "Postcode",
+          "description" : "Postcode. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Address" : {
+          "title" : "Street address",
+          "description" : "Street address. If set, can not be blank",
           "$ref" : "#/$defs/NullableString"
         }
       }
     },
-    "NullableEmail" : {
-      "type" : [
-        "string",
-        "null"
-      ],
-      "format" : "EMAIL"
-    },
-    "Contact" : {
-      "title" : "Contact information for a person",
+    "Link" : {
+      "title" : "Link to a resource identifier, it can be `tel:`, `mailto:`, or the usual WWW ones",
       "type" : "object",
-      "additionalProperties" : false,
-      "properties" : {
-        "Mobile" : {
-          "title" : "Mobile phone number",
-          "$ref" : "#/$defs/NullableString"
-        },
-        "Landline" : {
-          "title" : "Number of the landline phone",
-          "$ref" : "#/$defs/NullableString"
-        },
-        "Email" : {
-          "title" : "Email address",
-          "$ref" : "#/$defs/NullableEmail"
-        }
-      }
-    },
-    "NullableContact" : {
-      "title" : "Contact information for a person",
-      "type" : [
-        "object",
-        "null"
+      "required" : [
+        "Address"
       ],
       "additionalProperties" : false,
       "properties" : {
-        "Mobile" : {
-          "title" : "Mobile phone number",
-          "$ref" : "#/$defs/NullableString"
+        "Address" : {
+          "title" : "Link's URI",
+          "type" : "string"
         },
-        "Landline" : {
-          "title" : "Number of the landline phone",
+        "Title" : {
+          "title" : "Description of the link's purpose",
           "$ref" : "#/$defs/NullableString"
-        },
-        "Email" : {
-          "title" : "Email address",
-          "$ref" : "#/$defs/NullableEmail"
         }
       }
     },
@@ -406,6 +411,7 @@
       }
     },
     "LanguageSkill" : {
+      "title" : "Foreign language capabilities",
       "type" : "object",
       "required" : [
         "Language",
@@ -417,9 +423,11 @@
       "additionalProperties" : false,
       "properties" : {
         "Language" : {
+          "title" : "Foreign language",
           "$ref" : "#/$defs/Language"
         },
         "Listening" : {
+          "title" : "Listening level",
           "type" : "string",
           "enum" : [
             "a1",
@@ -431,6 +439,7 @@
           ]
         },
         "Reading" : {
+          "title" : "Reading level",
           "type" : "string",
           "enum" : [
             "a1",
@@ -442,6 +451,7 @@
           ]
         },
         "Spoken" : {
+          "title" : "Spoken level",
           "type" : "string",
           "enum" : [
             "a1",
@@ -453,6 +463,7 @@
           ]
         },
         "Written" : {
+          "title" : "Written level",
           "type" : "string",
           "enum" : [
             "a1",
@@ -466,6 +477,8 @@
       }
     },
     "Organization" : {
+      "title" : "Organization data (can be used for companies, educational institutions, etc",
+      "description" : "Organization data (can be used for companies, educational institutions, etc.)",
       "type" : "object",
       "required" : [
         "Name"
@@ -473,20 +486,29 @@
       "additionalProperties" : false,
       "properties" : {
         "Name" : {
+          "title" : "Name of the organization",
+          "description" : "Name of the organization. If set can not be blank",
           "type" : "string"
         },
         "Website" : {
+          "title" : "URL of the organization's website",
           "$ref" : "#/$defs/NullableUri"
         },
         "Type" : {
+          "title" : "Organization's type (NGO, educational, government, etc",
+          "description" : "Organization's type (NGO, educational, government, etc.). If set can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Industry" : {
+          "title" : "Industry (financial, industry, etc",
+          "description" : "Industry (financial, industry, etc.). If set can not be blank",
           "$ref" : "#/$defs/NullableString"
         }
       }
     },
     "NullableOrganization" : {
+      "title" : "Organization data (can be used for companies, educational institutions, etc",
+      "description" : "Organization data (can be used for companies, educational institutions, etc.)",
       "type" : [
         "object",
         "null"
@@ -497,15 +519,22 @@
       "additionalProperties" : false,
       "properties" : {
         "Name" : {
+          "title" : "Name of the organization",
+          "description" : "Name of the organization. If set can not be blank",
           "type" : "string"
         },
         "Website" : {
+          "title" : "URL of the organization's website",
           "$ref" : "#/$defs/NullableUri"
         },
         "Type" : {
+          "title" : "Organization's type (NGO, educational, government, etc",
+          "description" : "Organization's type (NGO, educational, government, etc.). If set can not be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Industry" : {
+          "title" : "Industry (financial, industry, etc",
+          "description" : "Industry (financial, industry, etc.). If set can not be blank",
           "$ref" : "#/$defs/NullableString"
         }
       }
@@ -530,6 +559,7 @@
           "type" : "number"
         },
         "Type" : {
+          "title" : "Web Application, Mobile Application, REST service, CLI, library, Desktop Application",
           "$ref" : "#/$defs/NullableString"
         },
         "To" : {
@@ -571,6 +601,7 @@
       }
     },
     "Experience" : {
+      "title" : "Professional experience executed for an employer or a client",
       "type" : "object",
       "required" : [
         "Position"
@@ -581,6 +612,8 @@
           "type" : "string"
         },
         "Company" : {
+          "title" : "Permanent role company",
+          "description" : "Permanent role company. If null, it means this is a contractor experience",
           "$ref" : "#/$defs/NullableOrganization"
         },
         "From" : {
@@ -778,6 +811,7 @@
       }
     },
     "Reference" : {
+      "title" : "Other person's reference",
       "type" : "object",
       "required" : [
         "Full Name",
@@ -786,12 +820,17 @@
       "additionalProperties" : false,
       "properties" : {
         "Full Name" : {
+          "title" : "Referrer's name",
+          "description" : "Referrer's name. Can not be blank",
           "type" : "string"
         },
         "Summary" : {
+          "title" : "Reference details in plain text",
+          "description" : "Reference details in plain text. Can not be blank",
           "type" : "string"
         },
         "Type" : {
+          "title" : "Relation among CV principal and referrer",
           "type" : [
             "null",
             "string"
@@ -805,9 +844,14 @@
           ]
         },
         "Contact" : {
-          "$ref" : "#/$defs/NullableContact"
+          "title" : "Contact data of the referrer person",
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Link"
+          }
         },
         "Social Profiles" : {
+          "title" : "Referrer's social networks",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -815,6 +859,7 @@
           }
         },
         "Projects" : {
+          "title" : "Projects in common with the referrer",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -868,6 +913,7 @@
         },
         "Locale" : {
           "title" : "Locale representing the CV's content",
+          "description" : "Locale representing the CV's content. If not set, it will be `en`",
           "$ref" : "#/$defs/Locale"
         },
         "Last Update" : {
@@ -876,7 +922,7 @@
         },
         "Resources" : {
           "title" : "List of resources to be included in this CV",
-          "description" : "List of resources to be included in this CV. Allows CV modularization",
+          "description" : "List of resources to be included in this CV. Allows CV modularization. Resources' content will be overwritten with the CV document content",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -907,7 +953,10 @@
         },
         "Contact" : {
           "title" : "Contact data",
-          "$ref" : "#/$defs/Contact"
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Link"
+          }
         },
         "Target Job" : {
           "title" : "Searched job desired characteristics",
@@ -916,6 +965,22 @@
         "Bio" : {
           "title" : "Bio, if set, cannot be blank",
           "$ref" : "#/$defs/NullableString"
+        },
+        "Titles" : {
+          "title" : "Titles",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Labels" : {
+          "title" : "Labels",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
         },
         "Goals" : {
           "title" : "Professional goals",
