@@ -31,6 +31,10 @@ Personal:
       Document: Passport
       Id: A012BC34
 
+Titles: [ Internet Visionary, Tabs Advocate ]
+
+Labels: [ DevOps, Back-end ]
+
 Residence:
   Country: US
   Region: California
@@ -39,9 +43,12 @@ Residence:
   Address: 2712 Broadway St
 
 Contact:
-  Mobile: +1 654 12 34 56
-  Landline: 91 259 11 29
-  Email: richard@piedpiper.com
+  - Title: Mobile
+    Address: tel:+1-654-12-34-56
+  - Title: Landline
+    Address: tel:+1-91-259-11-29
+  - Title: Email
+    Address: mailto:richard@piedpiper.com
 
 Target Job:
   Salary:
@@ -168,9 +175,12 @@ References:
       Consulting proved that he will be a valuable addition to any company."
     Type: manager
     Contact:
-      Mobile: +1 678 20 41 05
-      Landline: 91 106 28 01
-      Email: erlich@aviato.com
+      - Title: Mobile
+        Address: tel:+1-678-20-41-05
+      - Title: Landline
+        Address: tel:+1-91-106-28-01
+      - Title: Email
+        Address: mailto:erlich@aviato.com
     Social Profiles: [ https://github.com/hexagonkt/hexagon ]
     Projects: [ middle-out ]
 

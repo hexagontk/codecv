@@ -32,7 +32,7 @@
       {
         "Type" : "visual",
         "Level" : 0.1,
-        "Summary" : "Can't set font size less than 16."
+        "Summary" : "Can't set font size less than 16"
       }
     ],
     "Driving Licenses" : [
@@ -58,11 +58,11 @@
     "Address" : "2712 Broadway St"
   },
 
-  "Contact" : {
-    "Mobile" : "+1 654 12 34 56",
-    "Landline" : "91 259 11 29",
-    "Email" : "richard@piedpiper.com"
-  },
+  "Contact" : [
+    { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
+    { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
+    { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+  ],
 
   "Target Job" : {
     "Salary" : {
@@ -88,6 +88,10 @@
   },
 
   "Bio" : "Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and\nStanford. (Go Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as\na part-time software developer. His work focuses on applied information theory, mostly\noptimizing lossless compression schema of both the length-limited and adaptive variants.",
+
+  "Titles" : [ "Internet Visionary", "Tabs Advocate" ],
+
+  "Labels" : [ "DevOps", "Back-end" ],
 
   "Goals" : [
     "Change the Internet",
@@ -269,11 +273,11 @@
       "Full Name" : "Erlich Bachman",
       "Summary" : "It is my pleasure to recommend Richard, his performance working as a consultant for\nBachman Consulting proved that he will be a valuable addition to any company.",
       "Type" : "manager",
-      "Contact" : {
-        "Mobile" : "+1 678 20 41 05",
-        "Landline" : "91 106 28 01",
-        "Email" : "erlich@aviato.com"
-      },
+      "Contact" : [
+        { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
+        { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
+        { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+      ],
       "Social Profiles" : [ "https://github.com/hexagonkt/hexagon" ],
       "Projects" : [ "middle-out" ]
     }

@@ -53,9 +53,13 @@ Country = "US"
 Region = "California"
 City = "San Francisco"
 
-[Contact]
-Mobile = "+1 654 12 34 56"
-Email = "richard@piedpiper.com"
+[[Contact]]
+Title = "Mobile"
+Address = "tel:+1-654-12-34-56"
+
+[[Contact]]
+Title = "Email"
+Address = "richard@piedpiper.com"
 
 ["Target Job"]
 "Operating Systems" = [ "linux", "macos" ]
@@ -99,11 +103,17 @@ To = "2000-06"
 
 [[References]]
 "Full Name" = "Erlich Bachman"
-Contact.Mobile = "+1 678 20 41 05"
-Contact.Email = "erlich@aviato.com"
 Summary = """\
   It is my pleasure to recommend Richard, his performance working as a consultant for Bachman \
   Consulting proved that he will be a valuable addition to any company."""
+
+  [[References.Contact]]
+  Title = "Mobile"
+  Address = "tel:+1-678-20-41-05"
+
+  [[References.Contact]]
+  Title = "Email"
+  Address = "erlich@aviato.com"
 
 [["Technical Skills"]]
 Title = "Compression"

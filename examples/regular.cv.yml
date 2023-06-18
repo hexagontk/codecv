@@ -22,6 +22,7 @@ Personal:
   Birth Country: US
   Alias: Bitchard
   Photo: https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg
+  Nationalities: [ US ]
 
 Residence:
   Country: US
@@ -29,8 +30,10 @@ Residence:
   City: San Francisco
 
 Contact:
-  Mobile: +1 654 12 34 56
-  Email: richard@piedpiper.com
+  - Address: tel:+1-654-12-34-56
+    Title: Mobile
+  - Address: mailto:richard@piedpiper.com
+    Title: Email
 
 Target Job:
   Salary:
@@ -105,8 +108,10 @@ References:
       for Bachman Consulting proved that he will be a valuable addition to any
       company."
     Contact:
-      Mobile: +1 678 20 41 05
-      Email: erlich@aviato.com
+      - Address: tel:+1-678-20-41-05
+        Title: Mobile
+      - Address: mailto:erlich@aviato.com
+        Title: Email
 
 Technical Skills:
   - Title: Compression
