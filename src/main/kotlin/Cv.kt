@@ -262,7 +262,7 @@ private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
         }
         ?: emptyList()
 
-    val allMaps = listOf(data) + includes.map(URL::parseMap)
+    val allMaps = includes.map(URL::parseMap) + listOf(data)
     return merge(allMaps)
 }
 

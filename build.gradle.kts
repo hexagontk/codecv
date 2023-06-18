@@ -1,18 +1,17 @@
 import org.gradle.api.JavaVersion.*
-import org.graalvm.buildtools.gradle.dsl.GraalVMExtension
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.21")
-    id("org.graalvm.buildtools.native") version("0.9.21")
+    kotlin("jvm") version("1.8.22")
+    id("org.graalvm.buildtools.native") version("0.9.23")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.8.4"
+val hexagonVersion = "2.8.6"
 val hexagonExtraVersion = "2.8.4"
-val vertxVersion = "4.4.1"
+val vertxVersion = "4.4.3"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 

@@ -19,6 +19,7 @@
       "pattern" : "[A-Z]{2}"
     },
     "Disability" : {
+      "title" : "Disability information",
       "type" : "object",
       "required" : [
         "Type"
@@ -26,6 +27,7 @@
       "additionalProperties" : false,
       "properties" : {
         "Type" : {
+          "title" : "Kind of disability",
           "type" : "string",
           "enum" : [
             "visual",
@@ -35,14 +37,18 @@
           ]
         },
         "Level" : {
+          "title" : "Disability degree",
+          "description" : "Disability degree. Value must be between 1.0 (fully disabled) and 0",
           "$ref" : "#/$defs/NullableNumber"
         },
         "Summary" : {
+          "title" : "Text describing the disability",
           "$ref" : "#/$defs/NullableString"
         }
       }
     },
     "DrivingLicense" : {
+      "title" : "Driving license details",
       "type" : "object",
       "required" : [
         "Country",
@@ -51,9 +57,12 @@
       "additionalProperties" : false,
       "properties" : {
         "Country" : {
+          "title" : "Country issuing the driver license",
           "$ref" : "#/$defs/Country"
         },
         "License" : {
+          "title" : "Kind of driver licence, i",
+          "description" : "Kind of driver licence, i.e.: A, B1, etc",
           "type" : "string"
         }
       }
@@ -406,6 +415,7 @@
       }
     },
     "LanguageSkill" : {
+      "title" : "Foreign language capabilities",
       "type" : "object",
       "required" : [
         "Language",
@@ -417,9 +427,11 @@
       "additionalProperties" : false,
       "properties" : {
         "Language" : {
+          "title" : "Foreign language",
           "$ref" : "#/$defs/Language"
         },
         "Listening" : {
+          "title" : "Listening level, as defined by the CEFR",
           "type" : "string",
           "enum" : [
             "a1",
@@ -431,6 +443,7 @@
           ]
         },
         "Reading" : {
+          "title" : "Reading level, as defined by the CEFR",
           "type" : "string",
           "enum" : [
             "a1",
@@ -442,6 +455,7 @@
           ]
         },
         "Spoken" : {
+          "title" : "Spoken level, as defined by the CEFR",
           "type" : "string",
           "enum" : [
             "a1",
@@ -453,6 +467,7 @@
           ]
         },
         "Written" : {
+          "title" : "Written level, as defined by the CEFR",
           "type" : "string",
           "enum" : [
             "a1",
@@ -530,6 +545,7 @@
           "type" : "number"
         },
         "Type" : {
+          "title" : "Web Application, Mobile Application, REST service, CLI, library, Desktop Application",
           "$ref" : "#/$defs/NullableString"
         },
         "To" : {
@@ -571,6 +587,7 @@
       }
     },
     "Experience" : {
+      "title" : "Professional experience executed for an employer or a client",
       "type" : "object",
       "required" : [
         "Position"
@@ -916,6 +933,22 @@
         "Bio" : {
           "title" : "Bio, if set, cannot be blank",
           "$ref" : "#/$defs/NullableString"
+        },
+        "Titles" : {
+          "title" : "Titles",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "Labels" : {
+          "title" : "Labels",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
         },
         "Goals" : {
           "title" : "Professional goals",
