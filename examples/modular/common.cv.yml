@@ -4,7 +4,7 @@ $schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.jso
 
 Job Status: not moving
 Last Update: 2022-12-27
-Templates: [ file:templates/cv.html ]
+Templates: [ file:../cv.html ]
 
 Personal:
   Given Name: Richard

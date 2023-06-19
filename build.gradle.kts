@@ -70,7 +70,6 @@ tasks.named<CreateStartScripts>("startScripts") {
 
 tasks.create<Copy>("addResources") {
     from(projectDir)
-    include("templates/cv.html")
     include("examples/**")
     include("cv.schema.json")
     into(buildDir.resolve("resources/main"))

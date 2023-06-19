@@ -45,7 +45,7 @@ const val exitCodeProperty: String = "EXIT_CODE"
 
 const val spec: String = "classpath:spec.yml"
 const val schema: String = "classpath:cv.schema.json"
-const val defaultTemplate: String = "classpath:templates/cv.html"
+const val defaultTemplate: String = "classpath:examples/cv.html"
 const val buildProperties: String = "classpath:META-INF/build.properties"
 const val mainPage: String = "classpath:ui.html"
 
@@ -236,10 +236,17 @@ private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
 
     val cv = decode(cvData, url)
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
+    val templateUrl = URL(template).let {
+        if (it.protocol == "file") {
+            val cvBase = Path.of(url.path).parent
+            cvBase.resolve(Path.of(it.path)).toUri().toURL()
+        }
+        else it
+    }
     val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
     val templateContext = variables + mapOf("cv" to cv, "base" to base)
 
-    return template(URL(template), templateContext + callContext())
+    return template(templateUrl, templateContext + callContext())
 }
 
 private fun decode(data: Map<*, *>, url: URL): Map<*, *> {

@@ -6,7 +6,7 @@
 "Last Update" = 2022-12-27
 
 Locale = "en_US"
-Templates = [ "file:templates/cv.html" ]
+Templates = [ "file:cv.html" ]
 
 Bio = """\
   Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. \

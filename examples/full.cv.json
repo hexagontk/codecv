@@ -5,7 +5,7 @@
 
   "Locale" : "en_US",
   "Last Update" : "2022-12-27",
-  "Templates" : [ "file:templates/cv.html" ],
+  "Templates" : [ "file:cv.html" ],
   "Variables" : {
     "gaFont" : "family=Roboto+Slab:wght@400;500;700",
     "colorPrimary" : "#087cfa",
