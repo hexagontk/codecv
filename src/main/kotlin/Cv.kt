@@ -37,7 +37,6 @@ import java.io.File
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
-import kotlin.io.path.exists
 import kotlin.system.exitProcess
 
 const val preventExitFlag: String = "PREVENT_EXIT"
@@ -236,17 +235,21 @@ private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
 
     val cv = decode(cvData, url)
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
-    val templateUrl = URL(template).let {
-        if (it.protocol == "file") {
-            val cvBase = Path.of(url.path).parent
-            cvBase.resolve(Path.of(it.path)).toUri().toURL()
-        }
-        else it
-    }
+    val templateUrl = resolve(URL(template), url)
     val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
     val templateContext = variables + mapOf("cv" to cv, "base" to base)
 
     return template(templateUrl, templateContext + callContext())
+}
+
+private fun resolve(url: URL, base: URL): URL {
+    return if (url.protocol == "file") {
+        val cvBase = Path.of(base.path).parent
+        cvBase.resolve(Path.of(url.path)).toUri().toURL()
+    }
+    else {
+        url
+    }
 }
 
 private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
@@ -255,18 +258,9 @@ private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
 }
 
 private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
-    val baseDir by lazy { Path.of(base.file).parent }
     val includes = data.getPath<List<String>>("Resources")
         ?.map(::URL)
-        ?.map {
-            if (it.protocol == "file")
-                Path.of(it.file).let { p ->
-                    if (p.exists() || p.isAbsolute) it
-                    else baseDir.resolve(p).toUri().toURL()
-                }
-            else
-                it
-        }
+        ?.map { resolve(it, base) }
         ?: emptyList()
 
     val allMaps = includes.map(URL::parseMap) + listOf(data)
