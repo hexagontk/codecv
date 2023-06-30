@@ -894,7 +894,7 @@
       "additionalProperties" : false,
       "properties" : {
         "$schema" : {
-          "title" : "Schema used for the CV",
+          "title" : "Schema used for the document",
           "description" : "Used to deal with different versions. It also eases the use on some editors",
           "type" : "string",
           "format" : "URI"
