@@ -562,8 +562,6 @@ components:
         Title:
           type: string
         Type:
-          title: "TODO transform to enum: basic school, high school, professional education, college"
-          description: "TODO transform to enum: basic school, high school, professional education, college.."
           type: string
         Institution:
           $ref: '#/components/schemas/Organization'
