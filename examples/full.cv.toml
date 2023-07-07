@@ -82,6 +82,13 @@ Address = "tel:91-259-11-29"
 Title = "Email"
 Address = "richard@piedpiper.com"
 
+[[Links]]
+Address = 'https://github.com/hexagonkt/hexagon'
+[[Links]]
+Address = 'https://twitter.com/hexagon_kt'
+[[Links]]
+Address = 'https://dev.to/hexagonkt'
+
 ["Target Job"]
 "Operating Systems" = [ "linux", "macos" ]
 "Desired Skills" = [ "C", "Java" ]

@@ -201,9 +201,6 @@ components:
         Alias:
           title: Short name you commonly use or nickname
           $ref: '#/components/schemas/NullableString'
-        Website:
-          title: Personal website
-          $ref: '#/components/schemas/NullableUri'
         Photo:
           title: Photo address
           $ref: '#/components/schemas/NullableUri'
@@ -718,6 +715,7 @@ components:
         Contact:
           title: Contact data of the referrer person
           type: array
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/Link'
         Social Profiles:
@@ -806,6 +804,7 @@ components:
         Contact:
           title: Contact data
           type: array
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/Link'
         Target Job:
@@ -839,15 +838,16 @@ components:
           uniqueItems: true
           items:
             type: string
-        Social Profiles:
-          title: Set of URLs pointing to social profiles
+        Links:
+          title: List of links pointing to another resources (like social networks profiles)
           type: array
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/Uri'
+            $ref: '#/components/schemas/Link'
         Languages:
           title: List of languages aside of the birth language
           type: array
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/LanguageSkill'
         Personal Projects:

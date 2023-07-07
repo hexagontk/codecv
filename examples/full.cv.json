@@ -24,7 +24,6 @@
     "Birth" : "1988-08-16",
     "Birth Country" : "US",
     "Alias" : "Bitchard",
-    "Website" : "https://example.net",
     "Photo" : "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg",
     "Avatar" : "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg",
     "Nationalities" : [ "US" ],
@@ -104,10 +103,10 @@
     "Low level Programming"
   ],
 
-  "Social Profiles" : [
-    "https://github.com/hexagonkt/hexagon",
-    "https://twitter.com/hexagon_kt",
-    "https://dev.to/hexagonkt"
+  "Links" : [
+    { "Address" : "https://github.com/hexagonkt/hexagon" },
+    { "Address" : "https://twitter.com/hexagon_kt" },
+    { "Address" : "https://dev.to/hexagonkt" }
   ],
 
   "Languages" : [
