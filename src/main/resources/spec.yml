@@ -31,13 +31,16 @@ paths:
       responses:
         "200":
           content:
-            text/html: { schema: { type: string } }
+            text/html:
+              schema:
+                type: string
 
   /cv.{format}:
     parameters:
       - name: format
         in: path
-        schema: { type: string }
+        schema:
+          type: string
         description: Extension to format the source (media type)
         required: true
     get:
@@ -45,14 +48,19 @@ paths:
       responses:
         "200":
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Cv" } }
-            application/yaml: { schema: { $ref: "#/components/schemas/Cv" } }
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cv'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/Cv'
 
   /schema.{format}:
     parameters:
       - name: format
         in: path
-        schema: { type: string }
+        schema:
+          type: string
         description: Extension to format the source (media type)
         required: true
     get:
@@ -60,8 +68,12 @@ paths:
       responses:
         "200":
           content:
-            application/json: { schema: { type: object } }
-            application/yaml: { schema: { type: object } }
+            application/json:
+              schema:
+                type: object
+            application/yaml:
+              schema:
+                type: object
 
 components:
   schemas:
@@ -77,12 +89,14 @@ components:
         - "null"
       pattern: "[A-Z]{2}"
     Disability:
+      title: Disability information
       type: object
       required:
         - Type
       additionalProperties: false
       properties:
         Type:
+          title: Kind of disability
           type: string
           enum:
             - visual
@@ -90,10 +104,14 @@ components:
             - movement
             - mental
         Level:
+          title: Disability degree
+          description: Disability degree. Value must be between 1.0 (fully disabled) and 0
           $ref: '#/components/schemas/NullableNumber'
         Summary:
+          title: Text describing the disability
           $ref: '#/components/schemas/NullableString'
     DrivingLicense:
+      title: Driving license details
       type: object
       required:
         - Country
@@ -101,10 +119,15 @@ components:
       additionalProperties: false
       properties:
         Country:
+          title: Country issuing the driver license
           $ref: '#/components/schemas/Country'
         License:
+          title: "Kind of driver licence, i"
+          description: "Kind of driver licence, i.e.: A, B1, etc"
           type: string
     IdDocument:
+      title: "Identification document"
+      description: "Identification document, I.e.: passport"
       type: object
       required:
         - Country
@@ -113,10 +136,14 @@ components:
       additionalProperties: false
       properties:
         Country:
+          title: Issuer of the document
           $ref: '#/components/schemas/Country'
         Document:
+          title: Document name
+          description: "Document name. It could be a national document name, or passport"
           type: string
         Id:
+          title: Code with the serial number of the document for the CV principal
           type: string
     Personal:
       title: Personal information, not related with professional skills or qualifications
@@ -174,9 +201,6 @@ components:
         Alias:
           title: Short name you commonly use or nickname
           $ref: '#/components/schemas/NullableString'
-        Website:
-          title: Personal website
-          $ref: '#/components/schemas/NullableUri'
         Photo:
           title: Photo address
           $ref: '#/components/schemas/NullableUri'
@@ -207,22 +231,33 @@ components:
           items:
             $ref: '#/components/schemas/IdDocument'
     Location:
+      title: "Area that may have different degrees of precision, from a whole country, to a street address"
       type: object
       required:
         - Country
       additionalProperties: false
       properties:
         Country:
+          title: Location country
           $ref: '#/components/schemas/Country'
         Region:
+          title: Country region
+          description: "Country region. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         City:
+          title: City
+          description: "City. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         Postcode:
+          title: Postcode
+          description: "Postcode. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         Address:
+          title: Street address
+          description: "Street address. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
     NullableLocation:
+      title: "Area that may have different degrees of precision, from a whole country, to a street address"
       type:
         - object
         - "null"
@@ -231,50 +266,37 @@ components:
       additionalProperties: false
       properties:
         Country:
+          title: Location country
           $ref: '#/components/schemas/Country'
         Region:
+          title: Country region
+          description: "Country region. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         City:
+          title: City
+          description: "City. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         Postcode:
+          title: Postcode
+          description: "Postcode. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
         Address:
+          title: Street address
+          description: "Street address. If set, can not be blank"
           $ref: '#/components/schemas/NullableString'
-    NullableEmail:
-      type:
-        - string
-        - "null"
-      format: EMAIL
-    Contact:
-      title: Contact information for a person
+    Link:
+      title: "Link to a resource identifier, it can be `tel:`, `mailto:`, or the usual WWW ones"
       type: object
+      required:
+        - Address
       additionalProperties: false
       properties:
-        Mobile:
-          title: Mobile phone number
+        Address:
+          title: Link's URI
+          type: string
+        Title:
+          title: Description of the link's purpose
           $ref: '#/components/schemas/NullableString'
-        Landline:
-          title: Number of the landline phone
-          $ref: '#/components/schemas/NullableString'
-        Email:
-          title: Email address
-          $ref: '#/components/schemas/NullableEmail'
-    NullableContact:
-      title: Contact information for a person
-      type:
-        - object
-        - "null"
-      additionalProperties: false
-      properties:
-        Mobile:
-          title: Mobile phone number
-          $ref: '#/components/schemas/NullableString'
-        Landline:
-          title: Number of the landline phone
-          $ref: '#/components/schemas/NullableString'
-        Email:
-          title: Email address
-          $ref: '#/components/schemas/NullableEmail'
     Money:
       type: object
       required:
@@ -355,6 +377,7 @@ components:
           items:
             $ref: '#/components/schemas/Location'
     LanguageSkill:
+      title: Foreign language capabilities
       type: object
       required:
         - Language
@@ -365,8 +388,10 @@ components:
       additionalProperties: false
       properties:
         Language:
+          title: Foreign language
           $ref: '#/components/schemas/Language'
         Listening:
+          title: Listening level
           type: string
           enum:
             - a1
@@ -376,6 +401,7 @@ components:
             - c1
             - c2
         Reading:
+          title: Reading level
           type: string
           enum:
             - a1
@@ -385,6 +411,7 @@ components:
             - c1
             - c2
         Spoken:
+          title: Spoken level
           type: string
           enum:
             - a1
@@ -394,6 +421,7 @@ components:
             - c1
             - c2
         Written:
+          title: Written level
           type: string
           enum:
             - a1
@@ -403,20 +431,31 @@ components:
             - c1
             - c2
     Organization:
+      title: "Organization data (can be used for companies, educational institutions, etc"
+      description: "Organization data (can be used for companies, educational institutions, etc.)"
       type: object
       required:
         - Name
       additionalProperties: false
       properties:
         Name:
+          title: Name of the organization
+          description: Name of the organization. If set can not be blank
           type: string
         Website:
+          title: URL of the organization's website
           $ref: '#/components/schemas/NullableUri'
         Type:
+          title: "Organization's type (NGO, educational, government, etc"
+          description: "Organization's type (NGO, educational, government, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
         Industry:
+          title: "Industry (financial, industry, etc"
+          description: "Industry (financial, industry, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
     NullableOrganization:
+      title: "Organization data (can be used for companies, educational institutions, etc"
+      description: "Organization data (can be used for companies, educational institutions, etc.)"
       type:
         - object
         - "null"
@@ -425,12 +464,19 @@ components:
       additionalProperties: false
       properties:
         Name:
+          title: Name of the organization
+          description: Name of the organization. If set can not be blank
           type: string
         Website:
+          title: URL of the organization's website
           $ref: '#/components/schemas/NullableUri'
         Type:
+          title: "Organization's type (NGO, educational, government, etc"
+          description: "Organization's type (NGO, educational, government, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
         Industry:
+          title: "Industry (financial, industry, etc"
+          description: "Industry (financial, industry, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
     Project:
       type: object
@@ -447,6 +493,7 @@ components:
         Persons:
           type: number
         Type:
+          title: "Web Application, Mobile Application, REST service, CLI, library, Desktop Application"
           $ref: '#/components/schemas/NullableString'
         To:
           $ref: '#/components/schemas/NullableYearMonth'
@@ -474,6 +521,7 @@ components:
           items:
             type: string
     Experience:
+      title: Professional experience executed for an employer or a client
       type: object
       required:
         - Position
@@ -482,6 +530,8 @@ components:
         Position:
           type: string
         Company:
+          title: Permanent role company
+          description: "Permanent role company. If null, it means this is a contractor experience"
           $ref: '#/components/schemas/NullableOrganization'
         From:
           $ref: '#/components/schemas/NullableYearMonth'
@@ -636,6 +686,7 @@ components:
           title: Organization that awarded this achievement
           $ref: '#/components/schemas/NullableOrganization'
     Reference:
+      title: Other person's reference
       type: object
       required:
         - Full Name
@@ -643,10 +694,15 @@ components:
       additionalProperties: false
       properties:
         Full Name:
+          title: Referrer's name
+          description: Referrer's name. Can not be blank
           type: string
         Summary:
+          title: Reference details in plain text
+          description: Reference details in plain text. Can not be blank
           type: string
         Type:
+          title: Relation among CV principal and referrer
           type:
             - "null"
             - string
@@ -657,13 +713,19 @@ components:
             - client
             - provider
         Contact:
-          $ref: '#/components/schemas/NullableContact'
+          title: Contact data of the referrer person
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Link'
         Social Profiles:
+          title: Referrer's social networks
           type: array
           uniqueItems: true
           items:
             $ref: '#/components/schemas/Uri'
         Projects:
+          title: Projects in common with the referrer
           type: array
           uniqueItems: true
           items:
@@ -691,7 +753,7 @@ components:
       additionalProperties: false
       properties:
         $schema:
-          title: Schema used for the CV
+          title: Schema used for the document
           description: Used to deal with different versions. It also eases the use
             on some editors
           type: string
@@ -707,13 +769,14 @@ components:
             - not moving
         Locale:
           title: Locale representing the CV's content
+          description: "Locale representing the CV's content. If not set, it will be `en`"
           $ref: '#/components/schemas/Locale'
         Last Update:
           title: Date of the CV's latest modification
           $ref: '#/components/schemas/NullableDate'
         Resources:
           title: List of resources to be included in this CV
-          description: List of resources to be included in this CV. Allows CV modularization
+          description: List of resources to be included in this CV. Allows CV modularization. Resources' content will be overwritten with the CV document content
           type: array
           uniqueItems: true
           items:
@@ -740,13 +803,28 @@ components:
           $ref: '#/components/schemas/Location'
         Contact:
           title: Contact data
-          $ref: '#/components/schemas/Contact'
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Link'
         Target Job:
           title: Searched job desired characteristics
           $ref: '#/components/schemas/TargetJob'
         Bio:
-          title: Bio, if set, cannot be blank
+          title: "Bio, if set, cannot be blank"
           $ref: '#/components/schemas/NullableString'
+        Titles:
+          title: Titles
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        Labels:
+          title: Labels
+          type: array
+          uniqueItems: true
+          items:
+            type: string
         Goals:
           title: Professional goals
           description: Professional goals. It cannot contain any blank item
@@ -760,15 +838,16 @@ components:
           uniqueItems: true
           items:
             type: string
-        Social Profiles:
-          title: Set of URLs pointing to social profiles
+        Links:
+          title: List of links pointing to another resources (like social networks profiles)
           type: array
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/Uri'
+            $ref: '#/components/schemas/Link'
         Languages:
           title: List of languages aside of the birth language
           type: array
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/LanguageSkill'
         Personal Projects:

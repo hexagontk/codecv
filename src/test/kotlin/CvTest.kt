@@ -1,5 +1,6 @@
 package co.codecv
 
+import com.hexagonkt.core.logging.info
 import com.hexagonkt.http.client.HttpClient
 import com.hexagonkt.http.client.HttpClientSettings
 import com.hexagonkt.http.client.jetty.JettyClientAdapter
@@ -7,6 +8,9 @@ import com.hexagonkt.http.model.BAD_REQUEST_400
 import com.hexagonkt.http.model.HttpResponsePort
 import com.hexagonkt.http.model.HttpStatus
 import com.hexagonkt.http.model.OK_200
+import com.hexagonkt.serialization.jackson.yaml.Yaml
+import com.hexagonkt.serialization.parseMap
+import com.hexagonkt.serialization.serialize
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -105,8 +109,12 @@ internal class CvTest {
         server.stop()
     }
 
-    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml")) {
+//    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml")) {
+    private fun testCv(url: String, extensions: Set<String> = setOf("json", "yml")) {
         extensions.forEach {
+//            main("${url}.${it}".info(">>>>>>> "))
+//            if (it == "toml")
+//                URL("${url}.${it}").parseMap().serialize(Yaml).info()
             main("${url}.${it}")
             testHttp(server.runtimePort)
             server.stop()

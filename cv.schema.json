@@ -162,10 +162,6 @@
           "title" : "Short name you commonly use or nickname",
           "$ref" : "#/$defs/NullableString"
         },
-        "Website" : {
-          "title" : "Personal website",
-          "$ref" : "#/$defs/NullableUri"
-        },
         "Photo" : {
           "title" : "Photo address",
           "$ref" : "#/$defs/NullableUri"
@@ -846,6 +842,7 @@
         "Contact" : {
           "title" : "Contact data of the referrer person",
           "type" : "array",
+          "uniqueItems" : true,
           "items" : {
             "$ref" : "#/$defs/Link"
           }
@@ -894,7 +891,7 @@
       "additionalProperties" : false,
       "properties" : {
         "$schema" : {
-          "title" : "Schema used for the CV",
+          "title" : "Schema used for the document",
           "description" : "Used to deal with different versions. It also eases the use on some editors",
           "type" : "string",
           "format" : "URI"
@@ -954,6 +951,7 @@
         "Contact" : {
           "title" : "Contact data",
           "type" : "array",
+          "uniqueItems" : true,
           "items" : {
             "$ref" : "#/$defs/Link"
           }
@@ -999,17 +997,18 @@
             "type" : "string"
           }
         },
-        "Social Profiles" : {
-          "title" : "Set of URLs pointing to social profiles",
+        "Links" : {
+          "title" : "List of links pointing to another resources (like social networks profiles)",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
-            "$ref" : "#/$defs/Uri"
+            "$ref" : "#/$defs/Link"
           }
         },
         "Languages" : {
           "title" : "List of languages aside of the birth language",
           "type" : "array",
+          "uniqueItems" : true,
           "items" : {
             "$ref" : "#/$defs/LanguageSkill"
           }

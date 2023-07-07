@@ -11,7 +11,7 @@ val os = getProperty("os.name").lowercase()
 
 val hexagonVersion = "2.8.6"
 val hexagonExtraVersion = "2.8.4"
-val vertxVersion = "4.4.3"
+val vertxVersion = "4.4.4"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
@@ -70,7 +70,6 @@ tasks.named<CreateStartScripts>("startScripts") {
 
 tasks.create<Copy>("addResources") {
     from(projectDir)
-    include("templates/cv.html")
     include("examples/**")
     include("cv.schema.json")
     into(buildDir.resolve("resources/main"))

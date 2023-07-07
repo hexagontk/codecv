@@ -190,23 +190,23 @@
 
     <div class="row">
       <ul>
-{% for socialProfile in cv.socialProfiles %}
+{% for link in cv.links %}
         <li>
-{% if socialProfile contains "twitter" %}
+{% if link.address contains "twitter" %}
 {% set socialNetworkTitle = "Twitter" %}
-{% elseif socialProfile contains "github" %}
+{% elseif link.address contains "github" %}
 {% set socialNetworkTitle = "GitHub" %}
-{% elseif socialProfile contains "linkedin" %}
+{% elseif link.address contains "linkedin" %}
 {% set socialNetworkTitle = "LinkedIn" %}
-{% elseif socialProfile contains "stackoverflow" %}
+{% elseif link.address contains "stackoverflow" %}
 {% set socialNetworkTitle = "Stack Overflow" %}
-{% elseif socialProfile contains "dev" %}
+{% elseif link.address contains "dev" %}
 {% set socialNetworkTitle = "Dev" %}
 {% else %}
 {% set socialNetworkTitle = "Not Found" %}
 {% endif %}
 {% set socialNetworkIcon = socialNetworkTitle | lower | replace({' ': '-'}) %}
-          <a href="{{ socialProfile }}" title="{{ socialNetworkTitle }}">
+          <a href="{{ link.address }}" title="{{ socialNetworkTitle }}">
             <i class="fab fa-{{ socialNetworkIcon }}"></i>
           </a>
         </li>
