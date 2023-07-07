@@ -38,6 +38,12 @@ Goals = [
   "Wildlife, specially ferrets and unicorns"
 ]
 
+Links = [
+  { Address = "https://github.com/hexagonkt/hexagon" },
+  { Address = "https://twitter.com/hexagon_kt" },
+  { Address = "https://dev.to/hexagonkt" },
+]
+
 [Variables]
 gaFont = "family=Roboto+Slab:wght@400;500;700"
 colorPrimary = "#087cfa"
@@ -55,7 +61,6 @@ Pronoun = "masculine"
 Gender = "man"
 Birth = "1988-08-16"
 Alias = "Bitchard"
-Website = "https://example.net"
 Photo = "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
 Avatar = "https://static.wikia.nocookie.net/silicon-valley/images/3/33/Richard_Hendricks.jpg"
 Nationalities = [ "US" ]
@@ -81,13 +86,6 @@ Address = "tel:91-259-11-29"
 [[Contact]]
 Title = "Email"
 Address = "richard@piedpiper.com"
-
-[[Links]]
-Address = 'https://github.com/hexagonkt/hexagon'
-[[Links]]
-Address = 'https://twitter.com/hexagon_kt'
-[[Links]]
-Address = 'https://dev.to/hexagonkt'
 
 ["Target Job"]
 "Operating Systems" = [ "linux", "macos" ]

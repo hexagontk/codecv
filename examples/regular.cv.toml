@@ -30,6 +30,12 @@ Goals = [
   "https://dev.to/hexagonkt",
 ]
 
+Links = [
+  { Address = "https://github.com/hexagonkt/hexagon" },
+  { Address = "https://twitter.com/hexagon_kt" },
+  { Address = "https://dev.to/hexagonkt" },
+]
+
 [Variables]
 gaFont = "family=Roboto+Slab:wght@400;500;700"
 colorPrimary = "#087cfa"
@@ -60,13 +66,6 @@ Address = "tel:+1-654-12-34-56"
 [[Contact]]
 Title = "Email"
 Address = "richard@piedpiper.com"
-
-[[Links]]
-Address = 'https://github.com/hexagonkt/hexagon'
-[[Links]]
-Address = 'https://twitter.com/hexagon_kt'
-[[Links]]
-Address = 'https://dev.to/hexagonkt'
 
 ["Target Job"]
 "Operating Systems" = [ "linux", "macos" ]
