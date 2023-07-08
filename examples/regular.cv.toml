@@ -24,12 +24,6 @@ Goals = [
   "Low level Programming",
 ]
 
-"Social Profiles" = [
-  "https://github.com/hexagonkt/hexagon",
-  "https://twitter.com/hexagon_kt",
-  "https://dev.to/hexagonkt",
-]
-
 Links = [
   { Address = "https://github.com/hexagonkt/hexagon" },
   { Address = "https://twitter.com/hexagon_kt" },
