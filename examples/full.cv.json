@@ -60,7 +60,11 @@
   "Contact" : [
     { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
     { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
-    { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+    {
+      "Address" : "mailto:erlich@aviato.com",
+      "Title" : "Email",
+      "Tags" : [ "Work" ]
+    }
   ],
 
   "Target Job" : {
@@ -275,7 +279,11 @@
       "Contact" : [
         { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
         { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
-        { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+        {
+          "Address" : "mailto:erlich@aviato.com",
+          "Title" : "Email",
+          "Tags" : [ "Work" ]
+        }
       ],
       "Social Profiles" : [ "https://github.com/hexagonkt/hexagon" ],
       "Projects" : [ "middle-out" ]

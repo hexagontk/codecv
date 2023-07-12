@@ -54,6 +54,7 @@ Contact:
     Title: Landline
   - Address: mailto:erlich@aviato.com
     Title: Email
+    Tags: [ Work ]
 
 Target Job:
   Salary:
@@ -230,6 +231,7 @@ References:
         Title: Landline
       - Address: mailto:erlich@aviato.com
         Title: Email
+        Tags: [ Work ]
     Social Profiles: [ https://github.com/hexagonkt/hexagon ]
     Projects: [ middle-out ]
 
