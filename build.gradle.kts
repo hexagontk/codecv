@@ -3,14 +3,14 @@ import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.22")
+    kotlin("jvm") version("1.9.0")
     id("org.graalvm.buildtools.native") version("0.9.23")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.8.6"
-val hexagonExtraVersion = "2.8.4"
+val hexagonVersion = "3.0.0-B8"
+val hexagonExtraVersion = "3.0.0-B8"
 val vertxVersion = "4.4.4"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
@@ -38,9 +38,9 @@ dependencies {
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
+    "implementation"("com.hexagonkt:web:$hexagonVersion")
     "implementation"("com.hexagonkt.extra:helpers:$hexagonExtraVersion")
     "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
-    "implementation"("com.hexagonkt.extra:web:$hexagonExtraVersion")
 
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
 

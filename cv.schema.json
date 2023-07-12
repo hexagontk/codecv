@@ -289,6 +289,14 @@
         "Title" : {
           "title" : "Description of the link's purpose",
           "$ref" : "#/$defs/NullableString"
+        },
+        "Tags" : {
+          "title" : "Set of tags that can be used to group a collection of links",
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
         }
       }
     },

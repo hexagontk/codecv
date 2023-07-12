@@ -297,6 +297,12 @@ components:
         Title:
           title: Description of the link's purpose
           $ref: '#/components/schemas/NullableString'
+        Tags:
+          title: Set of tags that can be used to group a collection of links
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     Money:
       type: object
       required:

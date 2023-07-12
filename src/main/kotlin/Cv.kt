@@ -188,10 +188,6 @@ private fun serve(command: Command) {
     val url = urlParameter(command)
     val urlString = url.toString()
     val serverSettings = HttpServerSettings(zip = true)
-    val protocol = serverSettings.protocol.toString().lowercase()
-    val hostName = serverSettings.bindAddress.hostName
-    val bindPort = serverSettings.bindPort
-    val base = "$protocol://$hostName:$bindPort"
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
     val adapter = NettyServerAdapter(executorThreads = 4, soBacklog = 1024)
 
@@ -201,7 +197,7 @@ private fun serve(command: Command) {
         get("/openapi.{format}") { getReformattedData(spec) }
         get("/schema.{format}") { getReformattedData(schema) }
         get("/cv.{format}") { getReformattedData(urlString) }
-        get("/cv") { renderCv(urlString, base) }
+        get("/cv") { renderCv(urlString, serverSettings.base) }
         get(callback = UrlCallback(URL(mainPage)))
     }
 
@@ -226,7 +222,7 @@ private fun HttpContext.getReformattedData(url: String): HttpContext {
     return ok(data.serialize(mediaType), contentType = ContentType(mediaType))
 }
 
-private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
+private fun HttpContext.renderCv(cvUrl: String, bindUrl: String): HttpContext {
     val url = URL(cvUrl)
     val cvData = url.parseMap()
     val valid = validate(cvData)
@@ -237,7 +233,7 @@ private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
     val templateUrl = resolve(URL(template), url)
     val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
-    val templateContext = variables + mapOf("cv" to cv, "base" to base)
+    val templateContext = variables + mapOf("cv" to cv, "bindUrl" to bindUrl)
 
     return template(templateUrl, templateContext + callContext())
 }
