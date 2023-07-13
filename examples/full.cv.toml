@@ -235,6 +235,7 @@ Summary = """\
   [[References.Contact]]
   Title = "Email"
   Address = "erlich@aviato.com"
+  Tags = [ "Work" ]
 
 [["Technical Skills"]]
 Title = "Compression"
