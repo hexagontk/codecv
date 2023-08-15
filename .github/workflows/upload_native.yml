@@ -14,11 +14,12 @@ jobs:
     steps:
       - name: Check Out
         uses: actions/checkout@v3
-      - name: Set Up Java
-        uses: actions/setup-java@v3
+      - name: Install Java
+        uses: graalvm/setup-graalvm@v1
         with:
+          version: latest
+          distribution: graalvm-community
           java-version: 17
-          distribution: temurin
           cache: gradle
       - name: Build Distribution
         run: ./gradlew installDist
@@ -48,11 +49,11 @@ jobs:
         uses: graalvm/setup-graalvm@v1
         with:
           version: latest
+          distribution: graalvm-community
           java-version: 17
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: gradle
       - name: Run Tests
-        run: ./gradlew test
+        run: ./gradlew nativeTest
       - name: Build Native
         run: ./gradlew zipNative
       - name: Start Native (Windows)

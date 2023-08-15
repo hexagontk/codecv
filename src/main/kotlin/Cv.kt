@@ -197,7 +197,7 @@ private fun serve(command: Command) {
         get("/openapi.{format}") { getReformattedData(spec) }
         get("/schema.{format}") { getReformattedData(schema) }
         get("/cv.{format}") { getReformattedData(urlString) }
-        get("/cv") { renderCv(urlString, serverSettings.base) }
+        get("/cv") { renderCv(urlString, serverSettings.bindUrl.toString()) }
         get(callback = UrlCallback(URL(mainPage)))
     }
 
