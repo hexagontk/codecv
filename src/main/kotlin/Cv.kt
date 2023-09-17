@@ -10,19 +10,21 @@ import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.helpers.CodedException
 import com.hexagonkt.helpers.properties
 import com.hexagonkt.helpers.wordsToCamel
-import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.Header
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
-import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
-import com.hexagonkt.serialization.*
+import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.serialization.SerializationManager
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.jackson.toml.Toml
 import com.hexagonkt.serialization.jackson.yaml.Yaml
+import com.hexagonkt.serialization.parseMap
+import com.hexagonkt.serialization.serialize
 import com.hexagonkt.templates.TemplateManager
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.web.callContext
@@ -34,10 +36,12 @@ import io.vertx.json.schema.JsonSchemaOptions
 import io.vertx.json.schema.Validator
 import java.awt.Desktop
 import java.io.File
+import java.net.InetAddress
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
 import kotlin.system.exitProcess
+
 
 const val preventExitFlag: String = "PREVENT_EXIT"
 const val exitCodeProperty: String = "EXIT_CODE"
@@ -76,8 +80,7 @@ fun main(vararg args: String) {
             createCommandName -> create(command)
             validateCommandName -> validate(command)
         }
-    }
-    catch (e: Exception) {
+    } catch (e: Exception) {
         exit(e)
     }
 }
@@ -173,7 +176,7 @@ private fun urlParameter(command: Command): URL {
 private fun validate(command: Command) {
     val url = urlParameter(command)
 
-    if(!url.exists())
+    if (!url.exists())
         throw CodedException(404, "CV url not found: $url")
 
     val valid = validate(url.parseMap())
@@ -187,7 +190,7 @@ private fun serve(command: Command) {
 
     val url = urlParameter(command)
     val urlString = url.toString()
-    val serverSettings = HttpServerSettings(zip = true)
+    val serverSettings = HttpServerSettings(InetAddress.getByAddress(byteArrayOf(0, 0, 0, 0)), zip = true)
     val protocol = serverSettings.protocol.toString().lowercase()
     val hostName = serverSettings.bindAddress.hostName
     val bindPort = serverSettings.bindPort
@@ -246,8 +249,7 @@ private fun resolve(url: URL, base: URL): URL {
     return if (url.protocol == "file") {
         val cvBase = Path.of(base.path).parent
         cvBase.resolve(Path.of(url.path)).toUri().toURL()
-    }
-    else {
+    } else {
         url
     }
 }
@@ -275,8 +277,10 @@ private fun toCamelCase(data: Any?): Any? =
                     if (k.lowercase() == "variables") v
                     else toCamelCase(v)
                 }
+
         is List<*> ->
             data.map { toCamelCase(it) }
+
         else ->
             data
     }
