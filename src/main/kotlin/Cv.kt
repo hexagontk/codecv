@@ -10,19 +10,21 @@ import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.helpers.CodedException
 import com.hexagonkt.helpers.properties
 import com.hexagonkt.helpers.wordsToCamel
-import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.Header
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
-import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
-import com.hexagonkt.serialization.*
+import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.serialization.SerializationManager
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.jackson.toml.Toml
 import com.hexagonkt.serialization.jackson.yaml.Yaml
+import com.hexagonkt.serialization.parseMap
+import com.hexagonkt.serialization.serialize
 import com.hexagonkt.templates.TemplateManager
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.web.callContext
@@ -34,6 +36,7 @@ import io.vertx.json.schema.JsonSchemaOptions
 import io.vertx.json.schema.Validator
 import java.awt.Desktop
 import java.io.File
+import java.net.InetAddress
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
@@ -53,6 +56,7 @@ const val createCommandName: String = "create"
 const val validateCommandName: String = "validate"
 
 const val urlParamName: String = "url"
+const val addressParamName: String = "address"
 const val fileParamName: String = "file"
 const val templateOptShortName: Char = 't'
 const val formatOptShortName: Char = 'f'
@@ -76,8 +80,7 @@ fun main(vararg args: String) {
             createCommandName -> create(command)
             validateCommandName -> validate(command)
         }
-    }
-    catch (e: Exception) {
+    } catch (e: Exception) {
         exit(e)
     }
 }
@@ -95,13 +98,20 @@ private fun exit(exception: Exception) {
 private fun createProgram(buildProperties: Map<String, String>): Program {
     val urlParamDescription = "URL for the CV file to use. If no schema, 'file' is assumed"
     val browseFlag = Flag('b', "browse", "Open browser with served CV")
+    val addressParam = Option<String>(
+        shortName = 'a',
+        name = "address",
+        description ="Address to bind the server to",
+        Regex("^(?:(?:25[0-5]|2[0-4]\\d|1?\\d{1,2})(?:\\.(?!\$)|\$)){4}\$"),
+        value = "127.0.0.1"
+    )
     val urlParam = Parameter<String>(urlParamName, urlParamDescription, optional = false)
 
     val serveCommand = Command(
         name = serveCommandName,
         title = "Serve a CV document",
         description = "Serve the CV document supplied, allowing it to be rendered on a browser",
-        properties = setOf(HELP, browseFlag, urlParam),
+        properties = setOf(HELP, browseFlag, addressParam, urlParam),
     )
 
     val createCommand = Command(
@@ -173,7 +183,7 @@ private fun urlParameter(command: Command): URL {
 private fun validate(command: Command) {
     val url = urlParameter(command)
 
-    if(!url.exists())
+    if (!url.exists())
         throw CodedException(404, "CV url not found: $url")
 
     val valid = validate(url.parseMap())
@@ -185,9 +195,10 @@ private fun validate(command: Command) {
 private fun serve(command: Command) {
     TemplateManager.defaultAdapter = PebbleAdapter(false, 1 * 1024 * 1024)
 
+    val address = addressParameter(command)
     val url = urlParameter(command)
     val urlString = url.toString()
-    val serverSettings = HttpServerSettings(zip = true)
+    val serverSettings = HttpServerSettings(address, zip = true)
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
     val adapter = NettyServerAdapter(executorThreads = 4, soBacklog = 1024)
 
@@ -203,6 +214,14 @@ private fun serve(command: Command) {
 
     if (command.propertyValueOrNull<Boolean>("b") == true)
         Desktop.getDesktop().browse(URI("http://localhost:${server.runtimePort}/cv"))
+}
+
+private fun addressParameter(command: Command): InetAddress {
+    command.propertyValue<String>(addressParamName).split('.').let {
+        if (it.size == 4)
+            return InetAddress.getByAddress(it.map(String::toInt).map(Int::toByte).toByteArray())
+    }
+    return InetAddress.getByAddress(byteArrayOf(127, 0, 0, 0))
 }
 
 private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
@@ -242,8 +261,7 @@ private fun resolve(url: URL, base: URL): URL {
     return if (url.protocol == "file") {
         val cvBase = Path.of(base.path).parent
         cvBase.resolve(Path.of(url.path)).toUri().toURL()
-    }
-    else {
+    } else {
         url
     }
 }
@@ -271,8 +289,10 @@ private fun toCamelCase(data: Any?): Any? =
                     if (k.lowercase() == "variables") v
                     else toCamelCase(v)
                 }
+
         is List<*> ->
             data.map { toCamelCase(it) }
+
         else ->
             data
     }
