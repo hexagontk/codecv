@@ -100,7 +100,7 @@ private fun createProgram(buildProperties: Map<String, String>): Program {
     val browseFlag = Flag('b', "browse", "Open browser with served CV")
     val addressParam = Option<String>(
         shortName = 'a',
-        name = "address",
+        name = addressParamName,
         description ="Address to bind the server to",
         Regex("^(?:(?:25[0-5]|2[0-4]\\d|1?\\d{1,2})(?:\\.(?!\$)|\$)){4}\$"),
         value = "127.0.0.1"
