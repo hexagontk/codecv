@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  cv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 2010:2010
+    volumes:
+      - "./:/data"
+    command:
+      - "serve"
+      - "data/examples/full.cv.yml"
