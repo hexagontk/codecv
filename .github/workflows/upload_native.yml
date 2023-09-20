@@ -1,76 +1,60 @@
 
-name: Upload Binaries
-
 on:
   release:
     types: [ published ]
 
 jobs:
-  uploadDistribution:
-    name: Upload Distribution
+  upload_distribution:
     runs-on: ubuntu-latest
     defaults:
       run: { shell: bash }
     steps:
-      - name: Check Out
-        uses: actions/checkout@v3
-      - name: Install Java
-        uses: graalvm/setup-graalvm@v1
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
         with:
           version: latest
           distribution: graalvm-community
-          java-version: 17
+          java-version: 21
           cache: gradle
-      - name: Build Distribution
-        run: ./gradlew installDist
-      - name: Rename Distribution
-        run: mv build/install/codecv build/install/codecv-${{ github.ref_name }}
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      - run: ./gradlew installDist
+      - run: mv build/install/codecv build/install/codecv-${{ github.ref_name }}
+      - uses: actions/upload-artifact@v3
         with:
           name: CodeCV-${{ github.ref_name }}
           path: build/install/codecv-${{ github.ref_name }}
           retention-days: 1
 
-  uploadNative:
+  upload_native:
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
-    name: Upload Native (${{ matrix.os }})
+    name: upload_native (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
     steps:
-      - name: Check Out
-        uses: actions/checkout@v3
-      - name: Install Java
-        uses: graalvm/setup-graalvm@v1
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
         with:
           version: latest
           distribution: graalvm-community
-          java-version: 17
+          java-version: 21
           cache: gradle
-      - name: Run Tests
-        run: ./gradlew nativeTest
-      - name: Build Native
-        run: ./gradlew zipNative
-      - name: Start Native (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+      - run: ./gradlew nativeTest
+      - run: ./gradlew zipNative
+      - if: ${{ matrix.os == 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv.exe
           ./build/native/nativeCompile/codecv.exe examples/full.cv.json &
-      - name: Start Native (Unix)
-        if: ${{ matrix.os != 'windows-latest' }}
+      - if: ${{ matrix.os != 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv
           ./build/native/nativeCompile/codecv examples/full.cv.json &
-      - name: Test Native (Unix)
-        if: ${{ matrix.os != 'windows-latest' }}
+      - if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
           retention-days: 1

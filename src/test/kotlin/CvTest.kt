@@ -89,11 +89,9 @@ internal class CvTest {
         server.stop()
         checkExitCode()
 
-        main("file:build/invalid.cv.yml")
-        checkExitCode(404)
         main("serve", "file:build/invalid.cv.yml")
         checkExitCode(404)
-        main("build/invalid.cv.yml")
+        main("serve", "build/invalid.cv.yml")
         checkExitCode(404)
 
         main("serve", "file:src/test/resources/incorrect.cv.yml")
@@ -107,7 +105,7 @@ internal class CvTest {
 
     private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml")) {
         extensions.forEach {
-            main("${url}.${it}")
+            main("serve", "${url}.${it}")
             testHttp(server.runtimePort)
             server.stop()
         }

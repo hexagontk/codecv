@@ -3,15 +3,15 @@ import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.0")
-    id("org.graalvm.buildtools.native") version("0.9.24")
+    kotlin("jvm") version("1.9.10")
+    id("org.graalvm.buildtools.native") version("0.9.27")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.0.0"
-val hexagonExtraVersion = "3.0.0"
-val vertxVersion = "4.4.4"
+val hexagonVersion = "3.1.0"
+val hexagonExtraVersion = "3.1.0"
+val vertxVersion = "4.4.5"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
