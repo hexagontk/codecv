@@ -28,7 +28,7 @@ group = "com.hexagonkt.tools"
 version = "0.9.21"
 description = "CVs for programmers"
 
-if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20))
+if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
     error("This build must be run with JDK 16+. Current: ${current()}")
 
 dependencies {
