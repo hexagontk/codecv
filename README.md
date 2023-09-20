@@ -66,6 +66,13 @@ patterns:
 - `cv.{json,yaml,yml,toml}`
 - `*.cv.{json,yaml,yml,toml}`
 
+Follow the @hexagon_kt Twitter account to be updated with the improvements on this and other
+development tools.
+
+Files can end with a locale code
+- *\[en_US].cv.yaml (cv)
+- *\[en_US].cv.json (cv)
+
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [VS Code]: https://code.visualstudio.com
 [JetBrains IDEs]: https://www.jetbrains.com
@@ -129,3 +136,7 @@ Thanks for your support!
 
 [@hexagon_tk]: https://twitter.com/hexagon_kt
 [GitHub organization]: https://github.com/hexagonkt
+
+# TODO
+* Scenarios for modular CVs. I.e.: different target jobs
+* Translations how-to
