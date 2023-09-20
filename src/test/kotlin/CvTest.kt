@@ -43,6 +43,14 @@ internal class CvTest {
         testCv("file:examples/regular.cv")
     }
 
+    @Test fun `Check examples with valid address`() {
+        val extensions: Set<String> = setOf("json", "toml", "yml")
+
+        testCv("file:examples/full.cv", extensions, "0.0.0.0")
+        testCv("file:examples/minimum.cv", extensions, "0.0.0.0")
+        testCv("file:examples/regular.cv", extensions, "0.0.0.0")
+    }
+
     @Test fun `Check create command`() {
         setProperty(preventExitFlag, true.toString())
 
@@ -105,9 +113,9 @@ internal class CvTest {
         server.stop()
     }
 
-    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml")) {
+    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml"), address: String = "127.0.0.1") {
         extensions.forEach {
-            main("${url}.${it}")
+            main("-a", address, "${url}.${it}")
             testHttp(server.runtimePort)
             server.stop()
         }
