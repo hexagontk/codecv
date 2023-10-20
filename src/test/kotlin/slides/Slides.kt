@@ -1,4 +1,4 @@
-package co.codecv
+package co.codecv.slides
 
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.FileCallback
