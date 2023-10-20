@@ -33,6 +33,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.json.schema.Draft.DRAFT7
 import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
+import io.vertx.json.schema.OutputFormat.Basic
 import io.vertx.json.schema.Validator
 import java.io.File
 import java.net.InetAddress
@@ -195,10 +196,13 @@ private fun validate(command: Command) {
     if (!url.exists())
         throw CodedException(404, "CV url not found: $url")
 
-    val valid = validate(url.parseMap())
+    val errors = validate(url.parseMap())
 
-    if (!valid)
-        throw CodedException(400, "Document in '$url' don't comply with CV schema")
+    if (errors.isNotEmpty()) {
+        val errorsDetail = errors.joinToString("\n - ", "\n")
+        val message = "Document in '$url' don't comply with CV schema. Errors: $errorsDetail"
+        throw CodedException(400, message)
+    }
 }
 
 private fun serve(command: Command) {
@@ -253,9 +257,11 @@ private fun HttpContext.getReformattedData(url: String): HttpContext {
 private fun HttpContext.renderCv(cvUrl: String, bindUrl: String): HttpContext {
     val url = urlOf(cvUrl)
     val cvData = url.parseMap()
-    val valid = validate(cvData)
-    if (!valid)
-        return badRequest("CV does not complain with schema")
+    val errors = validate(cvData)
+    if (errors.isNotEmpty()) {
+        val errorsDetail = errors.joinToString("\n - ", "\n")
+        return badRequest("CV does not complain with schema. Errors: $errorsDetail")
+    }
 
     val cv = decode(cvData, url)
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
@@ -306,11 +312,12 @@ private fun toCamelCase(data: Any?): Any? =
             data
     }
 
-private fun validate(data: Map<*, *>): Boolean {
-    val schemaMap = URL(schema).parseMap()
+private fun validate(data: Map<*, *>): List<String> {
+    val schemaMap = urlOf(schema).parseMap()
     val jsonSchema = JsonSchema.of(JsonObject.mapFrom(schemaMap))
-    val options = JsonSchemaOptions().setDraft(DRAFT7).apply { baseUri = "file:./" }
+    val draft = JsonSchemaOptions().setDraft(DRAFT7)
+    val options = draft.setOutputFormat(Basic).setBaseUri("file:./")
     val validator = Validator.create(jsonSchema, options)
 
-    return validator.validate(JsonObject.mapFrom(data)).valid
+    return validator.validate(JsonObject.mapFrom(data)).errors?.map { e -> e.error } ?: emptyList()
 }
