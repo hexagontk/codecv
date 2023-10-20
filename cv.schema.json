@@ -1,5 +1,5 @@
 {
-  "$schema" : "https://json-schema.org/draft-07/schema",
+  "$schema" : "https://json-schema.org/draft-04/schema",
   "$id" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
   "$ref" : "#/$defs/Cv",
   "$defs" : {
@@ -194,6 +194,10 @@
             "$ref" : "#/$defs/DrivingLicense"
           }
         },
+        "Own Vehicle" : {
+          "title" : "True if the CV holder have his own vehicle",
+          "type" : "boolean"
+        },
         "Ids" : {
           "title" : "Id documents owned by country",
           "type" : "array",
@@ -284,7 +288,7 @@
       "properties" : {
         "Address" : {
           "title" : "Link's URI",
-          "type" : "string"
+          "$ref" : "#/$defs/Uri"
         },
         "Title" : {
           "title" : "Description of the link's purpose",
@@ -337,22 +341,82 @@
         }
       }
     },
-    "NullableRemote" : {
+    "Frequency" : {
+      "type" : "object",
+      "required" : [
+        "Times",
+        "Interval"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Times" : {
+          "$ref" : "#/$defs/Period"
+        },
+        "Interval" : {
+          "$ref" : "#/$defs/Period"
+        }
+      }
+    },
+    "NullableFrequency" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Times",
+        "Interval"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Times" : {
+          "$ref" : "#/$defs/Period"
+        },
+        "Interval" : {
+          "$ref" : "#/$defs/Period"
+        }
+      }
+    },
+    "NullableNoticePeriod" : {
       "type" : [
         "object",
         "null"
       ],
       "required" : [
         "Days",
-        "Period"
+        "Working Days"
       ],
       "additionalProperties" : false,
       "properties" : {
         "Days" : {
-          "$ref" : "#/$defs/Period"
+          "type" : "number"
         },
-        "Period" : {
-          "$ref" : "#/$defs/Period"
+        "Working Days" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "NullableTravelAvailability" : {
+      "type" : [
+        "object",
+        "null"
+      ],
+      "required" : [
+        "Frequency",
+        "Reach"
+      ],
+      "additionalProperties" : false,
+      "properties" : {
+        "Frequency" : {
+          "$ref" : "#/$defs/Frequency"
+        },
+        "Reach" : {
+          "type" : "string",
+          "enum" : [
+            "region",
+            "country",
+            "continent",
+            "international"
+          ]
         }
       }
     },
@@ -364,7 +428,13 @@
           "$ref" : "#/$defs/NullableSalary"
         },
         "Remote" : {
-          "$ref" : "#/$defs/NullableRemote"
+          "$ref" : "#/$defs/NullableFrequency"
+        },
+        "Notice Period" : {
+          "$ref" : "#/$defs/NullableNoticePeriod"
+        },
+        "Travel Availability" : {
+          "$ref" : "#/$defs/NullableTravelAvailability"
         },
         "Roles" : {
           "type" : "array",
@@ -495,7 +565,7 @@
           "type" : "string"
         },
         "Website" : {
-          "title" : "URL of the organization's website",
+          "title" : "URI of the organization's website",
           "$ref" : "#/$defs/NullableUri"
         },
         "Type" : {
@@ -528,7 +598,7 @@
           "type" : "string"
         },
         "Website" : {
-          "title" : "URL of the organization's website",
+          "title" : "URI of the organization's website",
           "$ref" : "#/$defs/NullableUri"
         },
         "Type" : {
@@ -544,6 +614,7 @@
       }
     },
     "Project" : {
+      "title" : "A span of time planned for achieving a goal or deliver a product",
       "type" : "object",
       "required" : [
         "Title"
@@ -551,37 +622,54 @@
       "additionalProperties" : false,
       "properties" : {
         "Title" : {
+          "title" : "Descriptive title of the professional experience",
+          "description" : "Descriptive title of the professional experience. Cannot be blank",
           "type" : "string"
         },
         "Website" : {
+          "title" : "URI with more information about the project",
           "$ref" : "#/$defs/NullableUri"
         },
         "From" : {
+          "title" : "Project start date",
+          "description" : "Project start date. It must be equals or before the end date",
           "$ref" : "#/$defs/NullableYearMonth"
         },
         "Persons" : {
+          "title" : "People involved in the project (without including yourself)",
+          "description" : "People involved in the project (without including yourself). Must be greater than zero",
           "type" : "number"
         },
         "Type" : {
-          "title" : "Web Application, Mobile Application, REST service, CLI, library, Desktop Application",
+          "title" : "Project kind",
+          "description" : "Project kind, i.e.: Web Application, Mobile Application, REST service, CLI, etc",
           "$ref" : "#/$defs/NullableString"
         },
         "To" : {
+          "title" : "Finish date of the project",
+          "description" : "Finish date of the project. Should be set to a date equals or before today",
           "$ref" : "#/$defs/NullableYearMonth"
         },
         "Summary" : {
+          "title" : "Brief description of the project",
+          "description" : "Brief description of the project. If set, blank values aren't allowed",
           "$ref" : "#/$defs/NullableString"
         },
         "Client" : {
+          "title" : "Third party for which the project was developed",
+          "description" : "Third party for which the project was developed. If set can not be blank",
           "$ref" : "#/$defs/NullableOrganization"
         },
         "Production" : {
+          "title" : "True if the project was also maintained in production",
           "type" : [
             "null",
             "boolean"
           ]
         },
         "Highlights" : {
+          "title" : "Remarkable items achieved on this project",
+          "description" : "Remarkable items achieved on this project. Empty text is not allowed",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -589,6 +677,8 @@
           }
         },
         "Roles" : {
+          "title" : "Set of roles played on the project",
+          "description" : "Set of roles played on the project. Blank items are not allowed",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -596,6 +686,8 @@
           }
         },
         "Skills" : {
+          "title" : "Skills used in the development of the project",
+          "description" : "Skills used in the development of the project. Empty texts are not allowed",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -613,6 +705,8 @@
       "additionalProperties" : false,
       "properties" : {
         "Position" : {
+          "title" : "Main role for which the person was hired at this professional experience",
+          "description" : "Main role for which the person was hired at this professional experience. It can not be blank",
           "type" : "string"
         },
         "Company" : {
@@ -621,21 +715,31 @@
           "$ref" : "#/$defs/NullableOrganization"
         },
         "From" : {
+          "title" : "Start date of the professional experience",
+          "description" : "Start date of the professional experience. It must be before the end date",
           "$ref" : "#/$defs/NullableYearMonth"
         },
         "To" : {
+          "title" : "End date of the professional experience",
+          "description" : "End date of the professional experience. Should be set to a date before today",
           "$ref" : "#/$defs/NullableYearMonth"
         },
         "Location" : {
+          "title" : "Location where the profesional experience was done",
+          "description" : "Location where the profesional experience was done. If set, no blanks allowed",
           "$ref" : "#/$defs/NullableLocation"
         },
         "Summary" : {
+          "title" : "Brief description of the profesional experience",
+          "description" : "Brief description of the profesional experience. Blank values other than 'null' aren't allowed",
           "$ref" : "#/$defs/NullableString"
         },
         "Quit Reason" : {
+          "title" : "Reason that led to leave this professional experience",
           "$ref" : "#/$defs/NullableString"
         },
         "Projects" : {
+          "title" : "List of projects developed during this professional experience",
           "type" : "array",
           "items" : {
             "$ref" : "#/$defs/Project"
@@ -644,6 +748,7 @@
       }
     },
     "Education" : {
+      "title" : "Formal education studies",
       "type" : "object",
       "required" : [
         "Title",
@@ -654,36 +759,53 @@
       "additionalProperties" : false,
       "properties" : {
         "Title" : {
+          "title" : "Descriptive title of the education",
+          "description" : "Descriptive title of the education. Cannot be blank",
           "type" : "string"
         },
         "Type" : {
+          "title" : "Education kind",
+          "description" : "Education kind, i.e.: professional education or college. Cannot be blank",
           "type" : "string"
         },
         "Institution" : {
+          "title" : "Organization in which the classes took place",
           "$ref" : "#/$defs/Organization"
         },
         "From" : {
+          "title" : "Start date of the classes",
+          "description" : "Start date of the classes. It must be equals or before the end date",
           "$ref" : "#/$defs/YearMonth"
         },
         "Website" : {
+          "title" : "URI with more information about the studies",
           "$ref" : "#/$defs/NullableUri"
         },
         "To" : {
+          "title" : "End date of the classes",
+          "description" : "End date of the classes. Should be set to a date equals or before today",
           "$ref" : "#/$defs/NullableYearMonth"
         },
         "Area" : {
+          "title" : "Studies subject",
+          "description" : "Studies subject, i.e.: Computer Science. If set, it cannot be blank",
           "$ref" : "#/$defs/NullableString"
         },
         "Location" : {
+          "title" : "Location where the classes took place",
           "$ref" : "#/$defs/NullableLocation"
         },
         "Summary" : {
+          "title" : "Brief description of the studies",
+          "description" : "Brief description of the studies. If set, blank values aren't allowed",
           "$ref" : "#/$defs/NullableString"
         },
         "Score" : {
+          "title" : "Score of the studies (if any)",
           "$ref" : "#/$defs/NullableString"
         },
         "Subjects" : {
+          "title" : "Set of topics covered in the studies",
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
@@ -714,7 +836,7 @@
         },
         "From" : {
           "title" : "Start date of the course",
-          "description" : "Start date of the course. It must be a date before the end date",
+          "description" : "Start date of the course. It must be before the end date",
           "$ref" : "#/$defs/Date"
         },
         "To" : {
@@ -723,8 +845,7 @@
           "$ref" : "#/$defs/Date"
         },
         "Website" : {
-          "title" : "URL with more information about the course",
-          "description" : "URL with more information about the course. The URL must return a success code",
+          "title" : "URI with more information about the course",
           "$ref" : "#/$defs/NullableUri"
         },
         "Area" : {
@@ -734,6 +855,7 @@
         },
         "Location" : {
           "title" : "Location where the training took place",
+          "description" : "Location where the training took place. If set, no blanks allowed",
           "$ref" : "#/$defs/NullableLocation"
         },
         "Summary" : {
@@ -800,7 +922,7 @@
         },
         "Website" : {
           "title" : "Link with further information of the achievement, I",
-          "description" : "Link with further information of the achievement, I.e.: the URL of a publication. The URL must exist and be readable",
+          "description" : "Link with further information of the achievement, I.e.: the URI of a publication",
           "$ref" : "#/$defs/NullableUri"
         },
         "Summary" : {
@@ -931,7 +1053,7 @@
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
-            "$ref" : "#/$defs/Uri"
+            "type" : "string"
           }
         },
         "Templates" : {
@@ -940,7 +1062,7 @@
           "type" : "array",
           "uniqueItems" : true,
           "items" : {
-            "$ref" : "#/$defs/Uri"
+            "type" : "string"
           }
         },
         "Variables" : {
