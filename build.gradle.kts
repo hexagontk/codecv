@@ -5,7 +5,7 @@ import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.9.10")
-    id("org.graalvm.buildtools.native") version("0.9.27")
+    id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
