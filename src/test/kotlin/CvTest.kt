@@ -1,5 +1,6 @@
 package co.codecv
 
+import com.hexagonkt.core.urlOf
 import com.hexagonkt.http.client.HttpClient
 import com.hexagonkt.http.client.HttpClientSettings
 import com.hexagonkt.http.client.jetty.JettyClientAdapter
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.io.File
 import java.lang.System.getProperty
 import java.lang.System.setProperty
-import java.net.URL
 import kotlin.test.assertEquals
 
 @TestInstance(PER_CLASS)
@@ -103,7 +103,7 @@ internal class CvTest {
         checkExitCode(404)
 
         main("serve", "file:src/test/resources/incorrect.cv.yml")
-        val baseUrl = URL("http://localhost:${server.runtimePort}")
+        val baseUrl = urlOf("http://localhost:${server.runtimePort}")
         val settings = HttpClientSettings(baseUrl = baseUrl)
         val http = HttpClient(JettyClientAdapter(), settings)
         http.start()
@@ -111,7 +111,11 @@ internal class CvTest {
         server.stop()
     }
 
-    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml"), address: String = "127.0.0.1") {
+    private fun testCv(
+        url: String,
+        extensions: Set<String> = setOf("json", "toml", "yml"),
+        address: String = "127.0.0.1",
+    ) {
         extensions.forEach {
             main("-a", address, "serve", "${url}.${it}")
             testHttp(server.runtimePort)
@@ -120,7 +124,7 @@ internal class CvTest {
     }
 
     private fun testHttp(port: Int) {
-        val baseUrl = URL("http://localhost:$port")
+        val baseUrl = urlOf("http://localhost:$port")
         val settings = HttpClientSettings(baseUrl = baseUrl)
         val http = HttpClient(JettyClientAdapter(), settings)
 
