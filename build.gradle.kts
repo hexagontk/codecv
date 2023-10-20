@@ -1,5 +1,6 @@
 import org.gradle.api.JavaVersion.*
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
@@ -9,9 +10,9 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.1.0"
-val hexagonExtraVersion = "3.1.0"
-val vertxVersion = "4.4.5"
+val hexagonVersion = "3.3.1"
+val hexagonExtraVersion = "3.3.1"
+val vertxVersion = "4.4.6"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
@@ -39,7 +40,6 @@ dependencies {
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
     "implementation"("com.hexagonkt:web:$hexagonVersion")
-    "implementation"("com.hexagonkt.extra:helpers:$hexagonExtraVersion")
     "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
 
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
@@ -72,7 +72,7 @@ tasks.create<Copy>("addResources") {
     from(projectDir)
     include("examples/**")
     include("cv.schema.json")
-    into(buildDir.resolve("resources/main"))
+    into(layout.buildDirectory.file("resources/main"))
 }
 
 tasks.create("release") {
@@ -86,4 +86,9 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
     }
+}
+
+tasks.wrapper {
+    gradleVersion = "8.4"
+    distributionType = ALL
 }
