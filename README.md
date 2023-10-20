@@ -104,7 +104,7 @@ project root directory will create a binary on `/build/codecv/bin/codecv`.
 
 To use the tool in CVs' [shebangs][shebang] you need to copy or link the binary to a directory in
 the `$PATH` variable. On Unix systems you can do so with (assuming `~/.local/bin` is in the path):
-`ln -s "$(pwd)/build/codecv/bin/codecv" "$HOME/.local/bin/cv"`
+`ln -s "$(pwd)/build/codecv/bin/codecv" "$HOME/.local/bin/codecv"`
 
 ## 🎚️️ Editor Settings
 JSON schemas are assigned to files based on patterns registered on a [central repository]. As the
