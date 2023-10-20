@@ -1,17 +1,18 @@
 import org.gradle.api.JavaVersion.*
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.8.22")
-    id("org.graalvm.buildtools.native") version("0.9.23")
+    kotlin("jvm") version("1.9.10")
+    id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "2.8.6"
-val hexagonExtraVersion = "2.8.4"
-val vertxVersion = "4.4.4"
+val hexagonVersion = "3.3.1"
+val hexagonExtraVersion = "3.3.1"
+val vertxVersion = "4.4.6"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
@@ -25,10 +26,10 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.20"
+version = "0.9.21"
 description = "CVs for programmers"
 
-if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20))
+if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
     error("This build must be run with JDK 16+. Current: ${current()}")
 
 dependencies {
@@ -38,9 +39,8 @@ dependencies {
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
     "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
-    "implementation"("com.hexagonkt.extra:helpers:$hexagonExtraVersion")
+    "implementation"("com.hexagonkt:web:$hexagonVersion")
     "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
-    "implementation"("com.hexagonkt.extra:web:$hexagonExtraVersion")
 
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
 
@@ -72,7 +72,7 @@ tasks.create<Copy>("addResources") {
     from(projectDir)
     include("examples/**")
     include("cv.schema.json")
-    into(buildDir.resolve("resources/main"))
+    into(layout.buildDirectory.file("resources/main"))
 }
 
 tasks.create("release") {
@@ -86,4 +86,9 @@ tasks.create("release") {
         project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
         project.exec { commandLine = listOf("git", "push", "--tags") }
     }
+}
+
+tasks.wrapper {
+    gradleVersion = "8.4"
+    distributionType = ALL
 }

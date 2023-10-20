@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  cv:
+    build:
+      context: .
+    restart: always
+    ports:
+      - "2010:2010"
+    volumes:
+      - "./:/data"
+    command:
+      - "serve"
+      - "-a"
+      - "0.0.0.0"
+      - "/data/examples/full.cv.yml"

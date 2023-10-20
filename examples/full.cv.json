@@ -4,8 +4,8 @@
   "Job Status" : "not moving",
 
   "Locale" : "en_US",
-  "Last Update" : "2022-12-27",
-  "Templates" : [ "file:cv.html" ],
+  "Last Update" : "2022-01-01",
+  "Templates" : [ "cv.html" ],
   "Variables" : {
     "gaFont" : "family=Roboto+Slab:wght@400;500;700",
     "colorPrimary" : "#087cfa",
@@ -40,6 +40,7 @@
         "License" : "Class B"
       }
     ],
+    "Own Vehicle" : true,
     "Ids" : [
       {
         "Country" : "US",
@@ -60,7 +61,7 @@
   "Contact" : [
     { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
     { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
-    { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+    { "Address" : "mailto:erlich@aviato.com", "Title" : "Email", "Tags" : [ "Work" ] }
   ],
 
   "Target Job" : {
@@ -69,7 +70,12 @@
       "Period" : "1y",
       "Gross" : true
     },
-    "Remote" : { "Days" : "4d", "Period" : "7d" },
+    "Remote" : { "Times" : "4d", "Interval" : "7d" },
+    "Notice Period" : { "Days" : 10, "Working Days" : true },
+    "Travel Availability" : {
+      "Frequency" : { "Times" : "14d", "Interval" : "35d" },
+      "Reach" : "country"
+    },
     "Roles" : [ "Developer", "CEO" ],
     "Operating Systems" : [ "linux", "macos" ],
     "Features" : [ "Courses platform" ],
@@ -275,7 +281,7 @@
       "Contact" : [
         { "Address" : "tel:+1-678-20-41-05", "Title" : "Mobile" },
         { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
-        { "Address" : "mailto:erlich@aviato.com", "Title" : "Email" }
+        { "Address" : "mailto:erlich@aviato.com", "Title" : "Email", "Tags" : [ "Work" ] }
       ],
       "Social Profiles" : [ "https://github.com/hexagonkt/hexagon" ],
       "Projects" : [ "middle-out" ]

@@ -8,6 +8,10 @@ This project has two sides:
 
 Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
 
+> [!NOTE]
+> Follow the @hexagon_kt Twitter account to be updated with the improvements on this and other
+> development tools.
+
 ## 💻 Install
 1. Download the latest binary from the [releases page](https://github.com/hexagonkt/codecv/releases)
 2. Copy or link the binary to a directory in the PATH
@@ -66,6 +70,9 @@ patterns:
 - `cv.{json,yaml,yml,toml}`
 - `*.cv.{json,yaml,yml,toml}`
 
+Files can end with a locale code. I.e.:
+- `*\[_en_US].cv.{json,yaml,yml,toml}`
+
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [VS Code]: https://code.visualstudio.com
 [JetBrains IDEs]: https://www.jetbrains.com
@@ -97,7 +104,7 @@ project root directory will create a binary on `/build/codecv/bin/codecv`.
 
 To use the tool in CVs' [shebangs][shebang] you need to copy or link the binary to a directory in
 the `$PATH` variable. On Unix systems you can do so with (assuming `~/.local/bin` is in the path):
-`ln -s "$(pwd)/build/codecv/bin/codecv" "$HOME/.local/bin/cv"`
+`ln -s "$(pwd)/build/codecv/bin/codecv" "$HOME/.local/bin/codecv"`
 
 ## 🎚️️ Editor Settings
 JSON schemas are assigned to files based on patterns registered on a [central repository]. As the

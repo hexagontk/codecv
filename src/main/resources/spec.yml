@@ -225,6 +225,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DrivingLicense'
+        Own Vehicle:
+          title: True if the CV holder have his own vehicle
+          type: boolean
         Ids:
           title: Id documents owned by country
           type: array
@@ -293,10 +296,16 @@ components:
       properties:
         Address:
           title: Link's URI
-          type: string
+          $ref: '#/components/schemas/Uri'
         Title:
           title: Description of the link's purpose
           $ref: '#/components/schemas/NullableString'
+        Tags:
+          title: Set of tags that can be used to group a collection of links
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     Money:
       type: object
       required:
@@ -322,19 +331,61 @@ components:
           $ref: '#/components/schemas/Period'
         Gross:
           type: boolean
-    NullableRemote:
+    Frequency:
+      type: object
+      required:
+        - Times
+        - Interval
+      additionalProperties: false
+      properties:
+        Times:
+          $ref: '#/components/schemas/Period'
+        Interval:
+          $ref: '#/components/schemas/Period'
+    NullableFrequency:
+      type:
+        - object
+        - "null"
+      required:
+        - Times
+        - Interval
+      additionalProperties: false
+      properties:
+        Times:
+          $ref: '#/components/schemas/Period'
+        Interval:
+          $ref: '#/components/schemas/Period'
+    NullableNoticePeriod:
       type:
         - object
         - "null"
       required:
         - Days
-        - Period
+        - Working Days
       additionalProperties: false
       properties:
         Days:
-          $ref: '#/components/schemas/Period'
-        Period:
-          $ref: '#/components/schemas/Period'
+          type: number
+        Working Days:
+          type: boolean
+    NullableTravelAvailability:
+      type:
+        - object
+        - "null"
+      required:
+        - Frequency
+        - Reach
+      additionalProperties: false
+      properties:
+        Frequency:
+          $ref: '#/components/schemas/Frequency'
+        Reach:
+          type: string
+          enum:
+            - region
+            - country
+            - continent
+            - international
     TargetJob:
       type: object
       additionalProperties: false
@@ -342,7 +393,11 @@ components:
         Salary:
           $ref: '#/components/schemas/NullableSalary'
         Remote:
-          $ref: '#/components/schemas/NullableRemote'
+          $ref: '#/components/schemas/NullableFrequency'
+        Notice Period:
+          $ref: '#/components/schemas/NullableNoticePeriod'
+        Travel Availability:
+          $ref: '#/components/schemas/NullableTravelAvailability'
         Roles:
           type: array
           uniqueItems: true
@@ -431,8 +486,7 @@ components:
             - c1
             - c2
     Organization:
-      title: "Organization data (can be used for companies, educational institutions, etc"
-      description: "Organization data (can be used for companies, educational institutions, etc.)"
+      title: "Organization data (can be used for companies, educational institutions, etc.)"
       type: object
       required:
         - Name
@@ -443,7 +497,7 @@ components:
           description: Name of the organization. If set can not be blank
           type: string
         Website:
-          title: URL of the organization's website
+          title: URI of the organization's website
           $ref: '#/components/schemas/NullableUri'
         Type:
           title: "Organization's type (NGO, educational, government, etc"
@@ -454,8 +508,7 @@ components:
           description: "Industry (financial, industry, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
     NullableOrganization:
-      title: "Organization data (can be used for companies, educational institutions, etc"
-      description: "Organization data (can be used for companies, educational institutions, etc.)"
+      title: "Organization data (can be used for companies, educational institutions, etc.)"
       type:
         - object
         - "null"
@@ -468,7 +521,7 @@ components:
           description: Name of the organization. If set can not be blank
           type: string
         Website:
-          title: URL of the organization's website
+          title: URI of the organization's website
           $ref: '#/components/schemas/NullableUri'
         Type:
           title: "Organization's type (NGO, educational, government, etc"
@@ -479,43 +532,65 @@ components:
           description: "Industry (financial, industry, etc.). If set can not be blank"
           $ref: '#/components/schemas/NullableString'
     Project:
+      title: A span of time planned for achieving a goal or deliver a product
       type: object
       required:
         - Title
       additionalProperties: false
       properties:
         Title:
+          title: Descriptive title of the professional experience
+          description: Descriptive title of the professional experience. Cannot be blank
           type: string
         Website:
+          title: URI with more information about the project
           $ref: '#/components/schemas/NullableUri'
         From:
+          title: Project start date
+          description: Project start date. It must be equals or before the end date
           $ref: '#/components/schemas/NullableYearMonth'
         Persons:
+          title: People involved in the project (without including yourself)
+          description: People involved in the project (without including yourself). Must be greater than zero
           type: number
         Type:
-          title: "Web Application, Mobile Application, REST service, CLI, library, Desktop Application"
+          title: "Project kind"
+          description: "Project kind, i.e.: Web Application, Mobile Application, REST service, CLI, etc"
           $ref: '#/components/schemas/NullableString'
         To:
+          title: Finish date of the project
+          description: Finish date of the project. Should be set to a date equals or before today
           $ref: '#/components/schemas/NullableYearMonth'
         Summary:
+          title: Brief description of the project
+          description: "Brief description of the project. If set, blank values aren't allowed"
           $ref: '#/components/schemas/NullableString'
         Client:
+          title: Third party for which the project was developed
+          description: Third party for which the project was developed. If set can not be blank
           $ref: '#/components/schemas/NullableOrganization'
         Production:
+          title: True if the project was also maintained in production
           type:
             - "null"
             - boolean
         Highlights:
+          title: Remarkable items achieved on this project
+          description: Remarkable items achieved on this project. Empty text is not allowed
           type: array
           uniqueItems: true
           items:
             type: string
         Roles:
+          title: Set of roles played on the project
+          description: Set of roles played on the project. Blank items are not allowed
           type: array
           uniqueItems: true
           items:
             type: string
         Skills:
+          title: Skills used in the development of the project
+          description: Skills used in the development of the project. Empty texts are not allowed
           type: array
           uniqueItems: true
           items:
@@ -528,26 +603,39 @@ components:
       additionalProperties: false
       properties:
         Position:
+          title: Main role for which the person was hired at this professional experience
+          description: Main role for which the person was hired at this professional experience. It can not be blank
           type: string
         Company:
           title: Permanent role company
           description: "Permanent role company. If null, it means this is a contractor experience"
           $ref: '#/components/schemas/NullableOrganization'
         From:
+          title: Start date of the professional experience
+          description: Start date of the professional experience. It must be before the end date
           $ref: '#/components/schemas/NullableYearMonth'
         To:
+          title: End date of the professional experience
+          description: End date of the professional experience. Should be set to a date before today
           $ref: '#/components/schemas/NullableYearMonth'
         Location:
+          title: Location where the profesional experience was done
+          description: "Location where the profesional experience was done. If set, no blanks allowed"
           $ref: '#/components/schemas/NullableLocation'
         Summary:
+          title: Brief description of the profesional experience
+          description: Brief description of the profesional experience. Blank values other than 'null' aren't allowed
           $ref: '#/components/schemas/NullableString'
         Quit Reason:
+          title: Reason that led to leave this professional experience
           $ref: '#/components/schemas/NullableString'
         Projects:
+          title: List of projects developed during this professional experience
           type: array
           items:
             $ref: '#/components/schemas/Project'
     Education:
+      title: Formal education studies
       type: object
       required:
         - Title
@@ -557,26 +645,43 @@ components:
       additionalProperties: false
       properties:
         Title:
+          title: Descriptive title of the education
+          description: Descriptive title of the education. Cannot be blank
           type: string
         Type:
+          title: "Education kind, i"
+          description: "Education kind, i.e.: professional education or college. Cannot be blank"
           type: string
         Institution:
+          title: Organization in which the classes took place
           $ref: '#/components/schemas/Organization'
         From:
+          title: Start date of the classes
+          description: Start date of the classes. It must be equals or before the end date
           $ref: '#/components/schemas/YearMonth'
         Website:
+          title: URI with more information about the studies
           $ref: '#/components/schemas/NullableUri'
         To:
+          title: End date of the classes
+          description: End date of the classes. Should be set to a date equals or before today
           $ref: '#/components/schemas/NullableYearMonth'
         Area:
+          title: "Studies subject, i"
+          description: "Studies subject, i.e.: Computer Science. If set, it cannot be blank"
           $ref: '#/components/schemas/NullableString'
         Location:
+          title: Location where the classes took place
           $ref: '#/components/schemas/NullableLocation'
         Summary:
+          title: Brief description of the studies
+          description: "Brief description of the studies. If set, blank values aren't allowed"
           $ref: '#/components/schemas/NullableString'
         Score:
+          title: Score of the studies (if any)
           $ref: '#/components/schemas/NullableString'
         Subjects:
+          title: Set of topics covered in the studies
           type: array
           uniqueItems: true
           items:
@@ -600,17 +705,14 @@ components:
           $ref: '#/components/schemas/Organization'
         From:
           title: Start date of the course
-          description: Start date of the course. It must be a date before the end
-            date
+          description: Start date of the course. It must be before the end date
           $ref: '#/components/schemas/Date'
         To:
           title: End date of the course
           description: End date of the course. Should be set to a date before today
           $ref: '#/components/schemas/Date'
         Website:
-          title: URL with more information about the course
-          description: URL with more information about the course. The URL must return
-            a success code
+          title: URI with more information about the course
           $ref: '#/components/schemas/NullableUri'
         Area:
           title: Course subject
@@ -618,6 +720,7 @@ components:
           $ref: '#/components/schemas/NullableString'
         Location:
           title: Location where the training took place
+          description: "Location where the training took place. If set, no blanks allowed"
           $ref: '#/components/schemas/NullableLocation'
         Summary:
           title: Brief description of the course
@@ -674,9 +777,8 @@ components:
             today
           $ref: '#/components/schemas/Date'
         Website:
-          title: "Link with further information of the achievement, I"
-          description: "Link with further information of the achievement, I.e.: the\
-            \ URL of a publication. The URL must exist and be readable"
+          title: "Link with further information of the achievement"
+          description: "Link with further information of the achievement, I.e.: the URI of a publication"
           $ref: '#/components/schemas/NullableUri'
         Summary:
           title: Detailed description of the achievement
@@ -780,7 +882,7 @@ components:
           type: array
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/Uri'
+            type: string
         Templates:
           title: Templates used to render this CV
           description: Templates used to render this CV. Templates for different media
@@ -789,7 +891,7 @@ components:
           type: array
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/Uri'
+            type: string
         Variables:
           title: Configuration added to the context when the CV is rendered
           description: Configuration added to the context when the CV is rendered.

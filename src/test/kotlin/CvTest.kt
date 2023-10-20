@@ -1,6 +1,6 @@
 package co.codecv
 
-import com.hexagonkt.core.logging.info
+import com.hexagonkt.core.urlOf
 import com.hexagonkt.http.client.HttpClient
 import com.hexagonkt.http.client.HttpClientSettings
 import com.hexagonkt.http.client.jetty.JettyClientAdapter
@@ -8,9 +8,6 @@ import com.hexagonkt.http.model.BAD_REQUEST_400
 import com.hexagonkt.http.model.HttpResponsePort
 import com.hexagonkt.http.model.HttpStatus
 import com.hexagonkt.http.model.OK_200
-import com.hexagonkt.serialization.jackson.yaml.Yaml
-import com.hexagonkt.serialization.parseMap
-import com.hexagonkt.serialization.serialize
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,7 +16,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.io.File
 import java.lang.System.getProperty
 import java.lang.System.setProperty
-import java.net.URL
 import kotlin.test.assertEquals
 
 @TestInstance(PER_CLASS)
@@ -45,6 +41,14 @@ internal class CvTest {
         testCv("file:examples/full.cv")
         testCv("file:examples/minimum.cv")
         testCv("file:examples/regular.cv")
+    }
+
+    @Test fun `Check examples with valid address`() {
+        val extensions: Set<String> = setOf("json", "toml", "yml")
+
+        testCv("file:examples/full.cv", extensions, "0.0.0.0")
+        testCv("file:examples/minimum.cv", extensions, "0.0.0.0")
+        testCv("file:examples/regular.cv", extensions, "0.0.0.0")
     }
 
     @Test fun `Check create command`() {
@@ -93,15 +97,13 @@ internal class CvTest {
         server.stop()
         checkExitCode()
 
-        main("file:build/invalid.cv.yml")
-        checkExitCode(404)
         main("serve", "file:build/invalid.cv.yml")
         checkExitCode(404)
-        main("build/invalid.cv.yml")
+        main("serve", "build/invalid.cv.yml")
         checkExitCode(404)
 
         main("serve", "file:src/test/resources/incorrect.cv.yml")
-        val baseUrl = URL("http://localhost:${server.runtimePort}")
+        val baseUrl = urlOf("http://localhost:${server.runtimePort}")
         val settings = HttpClientSettings(baseUrl = baseUrl)
         val http = HttpClient(JettyClientAdapter(), settings)
         http.start()
@@ -109,20 +111,20 @@ internal class CvTest {
         server.stop()
     }
 
-//    private fun testCv(url: String, extensions: Set<String> = setOf("json", "toml", "yml")) {
-    private fun testCv(url: String, extensions: Set<String> = setOf("json", "yml")) {
+    private fun testCv(
+        url: String,
+        extensions: Set<String> = setOf("json", "toml", "yml"),
+        address: String = "127.0.0.1",
+    ) {
         extensions.forEach {
-//            main("${url}.${it}".info(">>>>>>> "))
-//            if (it == "toml")
-//                URL("${url}.${it}").parseMap().serialize(Yaml).info()
-            main("${url}.${it}")
+            main("-a", address, "serve", "${url}.${it}")
             testHttp(server.runtimePort)
             server.stop()
         }
     }
 
     private fun testHttp(port: Int) {
-        val baseUrl = URL("http://localhost:$port")
+        val baseUrl = urlOf("http://localhost:$port")
         val settings = HttpClientSettings(baseUrl = baseUrl)
         val http = HttpClient(JettyClientAdapter(), settings)
 

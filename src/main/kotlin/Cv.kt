@@ -7,22 +7,24 @@ import com.hexagonkt.core.*
 import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.logging.logger
 import com.hexagonkt.core.media.mediaTypeOfOrNull
-import com.hexagonkt.helpers.CodedException
-import com.hexagonkt.helpers.properties
-import com.hexagonkt.helpers.wordsToCamel
-import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.core.CodedException
+import com.hexagonkt.core.properties
+import com.hexagonkt.core.text.wordsToCamel
+import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.Header
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
-import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
-import com.hexagonkt.serialization.*
+import com.hexagonkt.logging.jul.JulLoggingAdapter
+import com.hexagonkt.serialization.SerializationManager
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.jackson.toml.Toml
 import com.hexagonkt.serialization.jackson.yaml.Yaml
+import com.hexagonkt.serialization.parseMap
+import com.hexagonkt.serialization.serialize
 import com.hexagonkt.templates.TemplateManager
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.web.callContext
@@ -31,9 +33,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.json.schema.Draft.DRAFT7
 import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
+import io.vertx.json.schema.OutputFormat.Basic
 import io.vertx.json.schema.Validator
-import java.awt.Desktop
 import java.io.File
+import java.net.InetAddress
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
@@ -53,15 +56,25 @@ const val createCommandName: String = "create"
 const val validateCommandName: String = "validate"
 
 const val urlParamName: String = "url"
+const val addressParamName: String = "address"
 const val fileParamName: String = "file"
 const val templateOptShortName: Char = 't'
 const val formatOptShortName: Char = 'f'
+
+private val os: String = System.getProperty("os.name") ?: error("OS property not found")
+private val browseCommand: List<String> =
+    when {
+        os.contains("win") -> listOf("start")
+        os.contains("mac") -> listOf("open")
+        os.contains("nix") || os.contains("nux") || os.contains("aix") -> listOf("xdg-open")
+        else -> error("Unsupported OS: $os")
+    }
 
 lateinit var server: HttpServer
 
 fun main(vararg args: String) {
     try {
-        val buildProperties = properties(URL(buildProperties))
+        val buildProperties = properties(urlOf(buildProperties))
         val project = buildProperties.require("project")
 
         LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
@@ -95,13 +108,20 @@ private fun exit(exception: Exception) {
 private fun createProgram(buildProperties: Map<String, String>): Program {
     val urlParamDescription = "URL for the CV file to use. If no schema, 'file' is assumed"
     val browseFlag = Flag('b', "browse", "Open browser with served CV")
+    val addressParam = Option<String>(
+        shortName = 'a',
+        name = addressParamName,
+        description ="Address to bind the server to",
+        Regex("^(?:(?:25[0-5]|2[0-4]\\d|1?\\d{1,2})(?:\\.(?!\$)|\$)){4}\$"),
+        value = "127.0.0.1"
+    )
     val urlParam = Parameter<String>(urlParamName, urlParamDescription, optional = false)
 
     val serveCommand = Command(
         name = serveCommandName,
         title = "Serve a CV document",
         description = "Serve the CV document supplied, allowing it to be rendered on a browser",
-        properties = setOf(HELP, browseFlag, urlParam),
+        properties = setOf(HELP, browseFlag, addressParam, urlParam),
     )
 
     val createCommand = Command(
@@ -153,7 +173,7 @@ private fun create(command: Command) {
     val extension = if (format == "yaml") "yml" else format
     val file = command.propertyValueOrNull<String>(fileParamName)
 
-    val url = URL("classpath:examples/$template.cv.$extension")
+    val url = urlOf("classpath:examples/$template.cv.$extension")
     val content = url.readText()
 
     if (file != null)
@@ -166,32 +186,32 @@ private fun urlParameter(command: Command): URL {
     val urlParameter = command.propertyValue<String>(urlParamName)
         .let { if (URI(it).scheme != null) it else "file:$it" }
 
-    val url = URL(urlParameter)
+    val url = urlOf(urlParameter)
     return if (!url.exists()) throw CodedException(404, "CV url not found: $url") else url
 }
 
 private fun validate(command: Command) {
     val url = urlParameter(command)
 
-    if(!url.exists())
+    if (!url.exists())
         throw CodedException(404, "CV url not found: $url")
 
-    val valid = validate(url.parseMap())
+    val errors = validate(url.parseMap())
 
-    if (!valid)
-        throw CodedException(400, "Document in '$url' don't comply with CV schema")
+    if (errors.isNotEmpty()) {
+        val errorsDetail = errors.joinToString("\n - ", "\n")
+        val message = "Document in '$url' don't comply with CV schema. Errors: $errorsDetail"
+        throw CodedException(400, message)
+    }
 }
 
 private fun serve(command: Command) {
     TemplateManager.defaultAdapter = PebbleAdapter(false, 1 * 1024 * 1024)
 
+    val address = addressParameter(command)
     val url = urlParameter(command)
     val urlString = url.toString()
-    val serverSettings = HttpServerSettings(zip = true)
-    val protocol = serverSettings.protocol.toString().lowercase()
-    val hostName = serverSettings.bindAddress.hostName
-    val bindPort = serverSettings.bindPort
-    val base = "$protocol://$hostName:$bindPort"
+    val serverSettings = HttpServerSettings(address, zip = true)
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
     val adapter = NettyServerAdapter(executorThreads = 4, soBacklog = 1024)
 
@@ -201,12 +221,20 @@ private fun serve(command: Command) {
         get("/openapi.{format}") { getReformattedData(spec) }
         get("/schema.{format}") { getReformattedData(schema) }
         get("/cv.{format}") { getReformattedData(urlString) }
-        get("/cv") { renderCv(urlString, base) }
-        get(callback = UrlCallback(URL(mainPage)))
+        get("/cv") { renderCv(urlString, serverSettings.bindUrl.toString()) }
+        get(callback = UrlCallback(urlOf(mainPage)))
     }
 
     if (command.propertyValueOrNull<Boolean>("b") == true)
-        Desktop.getDesktop().browse(URI("http://localhost:${server.runtimePort}/cv"))
+        (browseCommand + "http://localhost:${server.runtimePort}/cv").exec()
+}
+
+private fun addressParameter(command: Command): InetAddress {
+    command.propertyValue<String>(addressParamName).split('.').let {
+        if (it.size == 4)
+            return InetAddress.getByAddress(it.map(String::toInt).map(Int::toByte).toByteArray())
+    }
+    return InetAddress.getByAddress(byteArrayOf(127, 0, 0, 0))
 }
 
 private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
@@ -218,7 +246,7 @@ private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
 }
 
 private fun HttpContext.getReformattedData(url: String): HttpContext {
-    val data = URL(url).parseMap()
+    val data = urlOf(url).parseMap()
     val format = pathParameters.require("format")
     val mediaType = mediaTypeOfOrNull(format)
         ?: return badRequest("Invalid extension (only 'yaml', 'yml', 'toml' and 'json'): $format")
@@ -226,29 +254,31 @@ private fun HttpContext.getReformattedData(url: String): HttpContext {
     return ok(data.serialize(mediaType), contentType = ContentType(mediaType))
 }
 
-private fun HttpContext.renderCv(cvUrl: String, base: String): HttpContext {
-    val url = URL(cvUrl)
+private fun HttpContext.renderCv(cvUrl: String, bindUrl: String): HttpContext {
+    val url = urlOf(cvUrl)
     val cvData = url.parseMap()
-    val valid = validate(cvData)
-    if (!valid)
-        return badRequest("CV does not complain with schema")
+    val errors = validate(cvData)
+    if (errors.isNotEmpty()) {
+        val errorsDetail = errors.joinToString("\n - ", "\n")
+        return badRequest("CV does not complain with schema. Errors: $errorsDetail")
+    }
 
     val cv = decode(cvData, url)
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
-    val templateUrl = resolve(URL(template), url)
+    val templateUrl = resolve(template, url)
     val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
-    val templateContext = variables + mapOf("cv" to cv, "base" to base)
+    val templateContext = variables + mapOf("cv" to cv, "bindUrl" to bindUrl)
 
     return template(templateUrl, templateContext + callContext())
 }
 
-private fun resolve(url: URL, base: URL): URL {
-    return if (url.protocol == "file") {
+private fun resolve(url: String, base: URL): URL {
+    return if (!url.startsWith("classpath:")) {
         val cvBase = Path.of(base.path).parent
-        cvBase.resolve(Path.of(url.path)).toUri().toURL()
+        cvBase.resolve(Path.of(url)).toUri().toURL()
     }
     else {
-        url
+        urlOf(url)
     }
 }
 
@@ -259,7 +289,6 @@ private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
 
 private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
     val includes = data.getPath<List<String>>("Resources")
-        ?.map(::URL)
         ?.map { resolve(it, base) }
         ?: emptyList()
 
@@ -275,17 +304,20 @@ private fun toCamelCase(data: Any?): Any? =
                     if (k.lowercase() == "variables") v
                     else toCamelCase(v)
                 }
+
         is List<*> ->
             data.map { toCamelCase(it) }
+
         else ->
             data
     }
 
-private fun validate(data: Map<*, *>): Boolean {
-    val schemaMap = URL(schema).parseMap()
+private fun validate(data: Map<*, *>): List<String> {
+    val schemaMap = urlOf(schema).parseMap()
     val jsonSchema = JsonSchema.of(JsonObject.mapFrom(schemaMap))
-    val options = JsonSchemaOptions().setDraft(DRAFT7).apply { baseUri = "file:./" }
+    val draft = JsonSchemaOptions().setDraft(DRAFT7)
+    val options = draft.setOutputFormat(Basic).setBaseUri("file:./")
     val validator = Validator.create(jsonSchema, options)
 
-    return validator.validate(JsonObject.mapFrom(data)).valid
+    return validator.validate(JsonObject.mapFrom(data)).errors?.map { e -> e.error } ?: emptyList()
 }

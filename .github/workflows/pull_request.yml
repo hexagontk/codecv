@@ -1,6 +1,4 @@
 
-name: Test Binaries
-
 on: pull_request
 
 jobs:
@@ -10,34 +8,27 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
-    name: Test Binary (${{ matrix.os }})
+    name: test_binary (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run: { shell: bash }
     steps:
-      - name: Check Out
-        uses: actions/checkout@v3
-      - name: Install Java
-        uses: graalvm/setup-graalvm@v1
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
         with:
           version: latest
-          java-version: 17
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          distribution: graalvm-community
+          java-version: 21
           cache: gradle
-      - name: Run Tests
-        run: ./gradlew test
-      - name: Build Native
-        run: ./gradlew zipNative
-      - name: Start Native (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+      - run: ./gradlew nativeTest
+      - run: ./gradlew zipNative
+      - if: ${{ matrix.os == 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv.exe
-          ./build/native/nativeCompile/codecv.exe examples/full.cv.json &
-      - name: Start Native (Unix)
-        if: ${{ matrix.os != 'windows-latest' }}
+          ./build/native/nativeCompile/codecv.exe serve examples/full.cv.json &
+      - if: ${{ matrix.os != 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv
-          ./build/native/nativeCompile/codecv examples/full.cv.json &
-      - name: Test Native (Unix)
-        if: ${{ matrix.os != 'windows-latest' }}
+          ./build/native/nativeCompile/codecv serve examples/full.cv.json &
+      - if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml

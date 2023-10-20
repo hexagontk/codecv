@@ -5,9 +5,9 @@ $schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.jso
 
 Locale: en_US
 Resources:
-  - file:common.cv.yml
-  - file:additional_experiences.cv.yml
-  - file:courses.cv.yml
+  - common.cv.yml
+  - additional_experiences.cv.yml
+  - courses.cv.yml
 
 Variables:
   faVersion: 5.15.4

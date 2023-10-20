@@ -1,12 +1,10 @@
 
-name: Build
-
 on:
   push:
     branches-ignore: [ master ]
 
 jobs:
   build:
-    name: Build
-    permissions: read-all
     uses: hexagonkt/.github/.github/workflows/gradle.yml@master
+    permissions:
+      contents: read

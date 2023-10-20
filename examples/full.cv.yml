@@ -6,8 +6,8 @@ $schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.jso
 Job Status: not moving
 
 Locale: en_US
-Last Update: 2022-12-27
-Templates: [ file:cv.html ]
+Last Update: 2022-01-01
+Templates: [ cv.html ]
 Variables:
   gaFont: family=Roboto+Slab:wght@400;500;700
   colorPrimary: '#087cfa'
@@ -35,6 +35,7 @@ Personal:
   Driving Licenses:
     - Country: US
       License: Class B
+  Own Vehicle: true
   Ids:
     - Country: US
       Document: Passport
@@ -54,13 +55,18 @@ Contact:
     Title: Landline
   - Address: mailto:erlich@aviato.com
     Title: Email
+    Tags: [ Work ]
 
 Target Job:
   Salary:
     Money: { Amount: 120000.0, Currency: USD }
     Period: 1y
     Gross: true
-  Remote: { Days: 4d, Period: 7d }
+  Remote: { Times: 4d, Interval: 7d }
+  Notice Period: { Days: 10, Working Days: true }
+  Travel Availability:
+    Frequency: { Times: 14d, Interval: 35d }
+    Reach: country
   Roles: [ Developer, CEO ]
   Operating Systems: [ linux, macos ]
   Features: [ Courses platform ]
@@ -230,6 +236,7 @@ References:
         Title: Landline
       - Address: mailto:erlich@aviato.com
         Title: Email
+        Tags: [ Work ]
     Social Profiles: [ https://github.com/hexagonkt/hexagon ]
     Projects: [ middle-out ]
 
