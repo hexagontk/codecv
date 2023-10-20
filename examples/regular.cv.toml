@@ -3,7 +3,7 @@
 "$schema" = "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json"
 
 Locale = "en_US"
-Templates = [ "file:cv.html" ]
+Templates = [ "cv.html" ]
 
 Bio = """\
   Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. \

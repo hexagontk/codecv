@@ -2,7 +2,7 @@
   "$schema" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
 
   "Locale" : "en_US",
-  "Templates" : [ "file:cv.html" ],
+  "Templates" : [ "cv.html" ],
   "Variables" : {
     "gaFont" : "family=Roboto+Slab:wght@400;500;700",
     "colorPrimary" : "#087cfa",

@@ -6,7 +6,7 @@
 "Last Update" = 2022-12-27
 
 Locale = "en_US"
-Templates = [ "file:cv.html" ]
+Templates = [ "cv.html" ]
 
 Bio = """\
   Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. \
@@ -61,6 +61,7 @@ Nationalities = [ "US" ]
 Disabilities = [ { Type = "visual", Level = 0.1, Summary = "Can't set font size less than 16." } ]
 Ids = [ { Country = "US", Document = "Passport", Id = "A012BC34" } ]
 "Driving Licenses" = [ { Country = "US", License = "Class B" } ]
+"Own Vehicle" = true
 
 [Residence]
 Country = "US"
@@ -87,7 +88,15 @@ Address = "richard@piedpiper.com"
 "Excluded Skills" = [ "Node JS" ]
 Roles = [ "Developer", "CEO" ]
 Features = [ "Courses platform" ]
-Remote = { Days = "4d", Period = "7d" }
+Remote = { Times = "4d", Interval = "7d" }
+
+  ["Target Job"."Notice Period"]
+  Days = 10
+  "Working Days" = true
+
+  ["Target Job"."Travel Availability"]
+  Frequency = { Times = "14d", Interval = "35d" }
+  Reach = "country"
 
   [["Target Job".Locations]]
   Country = "US"
