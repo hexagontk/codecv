@@ -8,6 +8,10 @@ This project has two sides:
 
 Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
 
+> [!NOTE]
+> Follow the @hexagon_kt Twitter account to be updated with the improvements on this and other
+> development tools.
+
 ## 💻 Install
 1. Download the latest binary from the [releases page](https://github.com/hexagonkt/codecv/releases)
 2. Copy or link the binary to a directory in the PATH
@@ -66,12 +70,8 @@ patterns:
 - `cv.{json,yaml,yml,toml}`
 - `*.cv.{json,yaml,yml,toml}`
 
-Follow the @hexagon_kt Twitter account to be updated with the improvements on this and other
-development tools.
-
-Files can end with a locale code
-- *\[en_US].cv.yaml (cv)
-- *\[en_US].cv.json (cv)
+Files can end with a locale code. I.e.:
+- `*\[_en_US].cv.{json,yaml,yml,toml}`
 
 [shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [VS Code]: https://code.visualstudio.com
@@ -136,7 +136,3 @@ Thanks for your support!
 
 [@hexagon_tk]: https://twitter.com/hexagon_kt
 [GitHub organization]: https://github.com/hexagonkt
-
-# TODO
-* Scenarios for modular CVs. I.e.: different target jobs
-* Translations how-to
