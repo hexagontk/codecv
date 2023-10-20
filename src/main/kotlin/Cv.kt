@@ -7,9 +7,9 @@ import com.hexagonkt.core.*
 import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.logging.logger
 import com.hexagonkt.core.media.mediaTypeOfOrNull
-import com.hexagonkt.helpers.CodedException
-import com.hexagonkt.helpers.properties
-import com.hexagonkt.helpers.wordsToCamel
+import com.hexagonkt.core.CodedException
+import com.hexagonkt.core.properties
+import com.hexagonkt.core.text.wordsToCamel
 import com.hexagonkt.http.handlers.HttpContext
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.Header
@@ -34,7 +34,6 @@ import io.vertx.json.schema.Draft.DRAFT7
 import io.vertx.json.schema.JsonSchema
 import io.vertx.json.schema.JsonSchemaOptions
 import io.vertx.json.schema.Validator
-import java.awt.Desktop
 import java.io.File
 import java.net.InetAddress
 import java.net.URI
@@ -61,11 +60,20 @@ const val fileParamName: String = "file"
 const val templateOptShortName: Char = 't'
 const val formatOptShortName: Char = 'f'
 
+private val os: String = System.getProperty("os.name") ?: error("OS property not found")
+private val browseCommand: List<String> =
+    when {
+        os.contains("win") -> listOf("start")
+        os.contains("mac") -> listOf("open")
+        os.contains("nix") || os.contains("nux") || os.contains("aix") -> listOf("xdg-open")
+        else -> error("Unsupported OS: $os")
+    }
+
 lateinit var server: HttpServer
 
 fun main(vararg args: String) {
     try {
-        val buildProperties = properties(URL(buildProperties))
+        val buildProperties = properties(urlOf(buildProperties))
         val project = buildProperties.require("project")
 
         LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
@@ -164,7 +172,7 @@ private fun create(command: Command) {
     val extension = if (format == "yaml") "yml" else format
     val file = command.propertyValueOrNull<String>(fileParamName)
 
-    val url = URL("classpath:examples/$template.cv.$extension")
+    val url = urlOf("classpath:examples/$template.cv.$extension")
     val content = url.readText()
 
     if (file != null)
@@ -177,7 +185,7 @@ private fun urlParameter(command: Command): URL {
     val urlParameter = command.propertyValue<String>(urlParamName)
         .let { if (URI(it).scheme != null) it else "file:$it" }
 
-    val url = URL(urlParameter)
+    val url = urlOf(urlParameter)
     return if (!url.exists()) throw CodedException(404, "CV url not found: $url") else url
 }
 
@@ -210,11 +218,11 @@ private fun serve(command: Command) {
         get("/schema.{format}") { getReformattedData(schema) }
         get("/cv.{format}") { getReformattedData(urlString) }
         get("/cv") { renderCv(urlString, serverSettings.bindUrl.toString()) }
-        get(callback = UrlCallback(URL(mainPage)))
+        get(callback = UrlCallback(urlOf(mainPage)))
     }
 
     if (command.propertyValueOrNull<Boolean>("b") == true)
-        Desktop.getDesktop().browse(URI("http://localhost:${server.runtimePort}/cv"))
+        (browseCommand + "http://localhost:${server.runtimePort}/cv").exec()
 }
 
 private fun addressParameter(command: Command): InetAddress {
@@ -234,7 +242,7 @@ private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
 }
 
 private fun HttpContext.getReformattedData(url: String): HttpContext {
-    val data = URL(url).parseMap()
+    val data = urlOf(url).parseMap()
     val format = pathParameters.require("format")
     val mediaType = mediaTypeOfOrNull(format)
         ?: return badRequest("Invalid extension (only 'yaml', 'yml', 'toml' and 'json'): $format")
@@ -243,7 +251,7 @@ private fun HttpContext.getReformattedData(url: String): HttpContext {
 }
 
 private fun HttpContext.renderCv(cvUrl: String, bindUrl: String): HttpContext {
-    val url = URL(cvUrl)
+    val url = urlOf(cvUrl)
     val cvData = url.parseMap()
     val valid = validate(cvData)
     if (!valid)
@@ -251,20 +259,20 @@ private fun HttpContext.renderCv(cvUrl: String, bindUrl: String): HttpContext {
 
     val cv = decode(cvData, url)
     val template = cv.getPath<Collection<String>>("templates")?.firstOrNull() ?: defaultTemplate
-    val templateUrl = resolve(URL(template), url)
+    val templateUrl = resolve(template, url)
     val variables = cv.getPath<Map<String, Any>>("variables") ?: emptyMap()
     val templateContext = variables + mapOf("cv" to cv, "bindUrl" to bindUrl)
 
     return template(templateUrl, templateContext + callContext())
 }
 
-private fun resolve(url: URL, base: URL): URL {
-    return if (url.protocol == "file") {
+private fun resolve(url: String, base: URL): URL {
+    return if (!url.startsWith("classpath:")) {
         val cvBase = Path.of(base.path).parent
-        cvBase.resolve(Path.of(url.path)).toUri().toURL()
+        cvBase.resolve(Path.of(url)).toUri().toURL()
     }
     else {
-        url
+        urlOf(url)
     }
 }
 
@@ -275,7 +283,6 @@ private fun decode(data: Map<*, *>, url: URL): Map<*, *> {
 
 private fun mergeIncludes(data: Map<*, *>, base: URL): Map<*, *> {
     val includes = data.getPath<List<String>>("Resources")
-        ?.map(::URL)
         ?.map { resolve(it, base) }
         ?: emptyList()
 
