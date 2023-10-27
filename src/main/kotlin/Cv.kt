@@ -61,14 +61,15 @@ const val fileParamName: String = "file"
 const val templateOptShortName: Char = 't'
 const val formatOptShortName: Char = 'f'
 
-private val os: String = System.getProperty("os.name") ?: error("OS property not found")
-private val browseCommand: List<String> =
+private val os: String by lazy { System.getProperty("os.name") ?: error("OS property not found") }
+private val browseCommand: List<String> by lazy {
     when {
         os.contains("win") -> listOf("start")
         os.contains("mac") -> listOf("open")
         os.contains("nix") || os.contains("nux") || os.contains("aix") -> listOf("xdg-open")
         else -> error("Unsupported OS: $os")
     }
+}
 
 lateinit var server: HttpServer
 
