@@ -4,14 +4,14 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.10")
+    kotlin("jvm") version("1.9.20-RC2")
     id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.3.1"
-val hexagonExtraVersion = "3.3.1"
+val hexagonVersion = "3.4.0"
+val hexagonExtraVersion = "3.4.0"
 val vertxVersion = "4.4.6"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
