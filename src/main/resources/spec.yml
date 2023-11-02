@@ -385,7 +385,7 @@ components:
             - region
             - country
             - continent
-            - international
+            - worldwide
     TargetJob:
       type: object
       additionalProperties: false
