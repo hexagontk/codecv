@@ -8,6 +8,7 @@ import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.logging.logger
 import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.core.CodedException
+import com.hexagonkt.core.OsKind.*
 import com.hexagonkt.core.properties
 import com.hexagonkt.core.text.wordsToCamel
 import com.hexagonkt.http.handlers.HttpContext
@@ -61,13 +62,11 @@ const val fileParamName: String = "file"
 const val templateOptShortName: Char = 't'
 const val formatOptShortName: Char = 'f'
 
-private val os: String by lazy { System.getProperty("os.name") ?: error("OS property not found") }
 private val browseCommand: List<String> by lazy {
-    when {
-        os.contains("win") -> listOf("start")
-        os.contains("mac") -> listOf("open")
-        os.contains("nix") || os.contains("nux") || os.contains("aix") -> listOf("xdg-open")
-        else -> error("Unsupported OS: $os")
+    when (Jvm.osKind){
+        WINDOWS -> listOf("start")
+        MACOS -> listOf("open")
+        LINUX, UNIX -> listOf("xdg-open")
     }
 }
 

@@ -4,14 +4,14 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.20-RC2")
+    kotlin("jvm") version("1.9.20")
     id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.4.0"
-val hexagonExtraVersion = "3.4.0"
+val hexagonVersion = "3.4.1"
+val hexagonExtraVersion = "3.4.1"
 val vertxVersion = "4.4.6"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
@@ -29,8 +29,8 @@ group = "com.hexagonkt.tools"
 version = "0.9.23"
 description = "CVs for programmers"
 
-if (current() !in setOf(VERSION_16, VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
-    error("This build must be run with JDK 16+. Current: ${current()}")
+if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
+    error("This build must be run with JDK 17+. Current: ${current()}")
 
 dependencies {
     "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
