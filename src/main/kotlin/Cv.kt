@@ -225,6 +225,8 @@ private fun serve(command: Command) {
         get(callback = UrlCallback(urlOf(mainPage)))
     }
 
+//    ManagementFactory.getRuntimeMXBean().uptime.info("START MS: ")
+
     if (command.propertyValueOrNull<Boolean>("b") == true)
         (browseCommand + "http://localhost:${server.runtimePort}/cv").exec()
 }

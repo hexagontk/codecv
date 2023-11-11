@@ -16,7 +16,8 @@ val vertxVersion = "4.4.6"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
-ext.set("modules", "java.logging,java.desktop")
+//ext.set("modules", "java.logging,java.management")
+ext.set("modules", "java.logging")
 ext.set("options", "-Xmx32m")
 ext.set("icon", "$projectDir/logo.png")
 ext.set("applicationClass", "co.codecv.CvKt")
