@@ -4,19 +4,18 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.20")
+    kotlin("jvm") version("1.9.21")
     id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.4.1"
+val hexagonVersion = "3.4.4"
 val hexagonExtraVersion = "3.4.1"
-val vertxVersion = "4.4.6"
+val vertxVersion = "4.5.0"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
-//ext.set("modules", "java.logging,java.management")
 ext.set("modules", "java.logging")
 ext.set("options", "-Xmx32m")
 ext.set("icon", "$projectDir/logo.png")
@@ -90,6 +89,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.4"
+    gradleVersion = "8.5"
     distributionType = ALL
 }
