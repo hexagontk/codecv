@@ -4,13 +4,13 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.21")
+    kotlin("jvm") version("1.9.22")
     id("org.graalvm.buildtools.native") version("0.9.28")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.4.4"
+val hexagonVersion = "3.4.5"
 val hexagonExtraVersion = "3.4.1"
 val vertxVersion = "4.5.0"
 
