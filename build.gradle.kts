@@ -5,14 +5,14 @@ import java.lang.System.getProperty
 
 plugins {
     kotlin("jvm") version("1.9.22")
-    id("org.graalvm.buildtools.native") version("0.9.28")
+    id("org.graalvm.buildtools.native") version("0.10.1")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.4.5"
-val hexagonExtraVersion = "3.4.1"
-val vertxVersion = "4.5.0"
+val hexagonVersion = "3.4.7"
+val hexagonExtraVersion = "3.4.6"
+val vertxVersion = "4.5.3"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
 
@@ -89,6 +89,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.5"
+    gradleVersion = "8.6"
     distributionType = ALL
 }
