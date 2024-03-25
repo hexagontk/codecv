@@ -10,9 +10,9 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.5.0"
+val hexagonVersion = "3.5.2"
 val hexagonExtraVersion = "3.4.6"
-val vertxVersion = "4.5.4"
+val vertxVersion = "4.5.6"
 val slf4jVersion = "2.0.12"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
@@ -92,6 +92,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.6"
+    gradleVersion = "8.7"
     distributionType = ALL
 }
