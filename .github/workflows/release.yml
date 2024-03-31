@@ -5,6 +5,6 @@ on:
 
 jobs:
   release:
-    uses: hexagonkt/.github/.github/workflows/gradle.yml@master
+    uses: hexagontk/.github/.github/workflows/gradle.yml@master
     with:
       tasks: release

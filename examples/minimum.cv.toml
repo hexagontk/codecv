@@ -1,6 +1,6 @@
 #!/usr/bin/env codecv
 
-"$schema" = "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json"
+"$schema" = "https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json"
 
 Locale = "en"
 

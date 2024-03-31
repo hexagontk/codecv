@@ -10,12 +10,12 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.5.2"
+val hexagonVersion = "3.5.3"
 val hexagonExtraVersion = "3.4.6"
 val vertxVersion = "4.5.6"
 val slf4jVersion = "2.0.12"
 
-val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
+val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
 ext.set("modules", "java.logging")
 ext.set("options", "-Xmx32m")

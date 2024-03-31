@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
 
-$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+$schema: https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
 
 Job Status: not moving
 Last Update: 2022-12-27
@@ -92,7 +92,7 @@ Top Skills:
 Links:
   - Title: Website
     Address: https://example.net
-  - Address: https://github.com/hexagonkt/hexagon
+  - Address: https://github.com/hexagontk/hexagon
   - Address: https://twitter.com/hexagon_kt
   - Address: https://dev.to/hexagonkt
 
@@ -187,7 +187,7 @@ References:
         Address: tel:+1-91-106-28-01
       - Title: Email
         Address: mailto:erlich@aviato.com
-    Social Profiles: [ https://github.com/hexagonkt/hexagon ]
+    Social Profiles: [ https://github.com/hexagontk/hexagon ]
     Projects: [ middle-out ]
 
 Technical Skills:
