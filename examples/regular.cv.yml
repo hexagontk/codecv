@@ -1,7 +1,7 @@
 #!/usr/bin/env codecv
-# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
 
-$schema: https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json
+$schema: https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
 
 Locale: en_US
 Templates: [ cv.html ]
@@ -64,7 +64,7 @@ Top Skills:
   - Low level Programming
 
 Links:
-  - Address: https://github.com/hexagonkt/hexagon
+  - Address: https://github.com/hexagontk/hexagon
   - Address: https://twitter.com/hexagon_kt
   - Address: https://dev.to/hexagonkt
 

@@ -4,19 +4,20 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("1.9.20")
-    id("org.graalvm.buildtools.native") version("0.9.28")
+    kotlin("jvm") version("1.9.23")
+    id("org.graalvm.buildtools.native") version("0.10.1")
 }
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.4.1"
-val hexagonExtraVersion = "3.4.1"
-val vertxVersion = "4.4.6"
+val hexagonVersion = "3.5.3"
+val hexagonExtraVersion = "3.4.6"
+val vertxVersion = "4.5.6"
+val slf4jVersion = "2.0.12"
 
-val gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
+val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
-ext.set("modules", "java.logging,java.desktop")
+ext.set("modules", "java.logging")
 ext.set("options", "-Xmx32m")
 ext.set("icon", "$projectDir/logo.png")
 ext.set("applicationClass", "co.codecv.CvKt")
@@ -26,7 +27,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.23"
+version = "0.9.24"
 description = "CVs for programmers"
 
 if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
@@ -34,7 +35,6 @@ if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_
 
 dependencies {
     "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
-    "implementation"("com.hexagonkt:logging_slf4j_jul:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
@@ -43,6 +43,9 @@ dependencies {
     "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
 
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
+    "implementation"("org.slf4j:log4j-over-slf4j:$slf4jVersion")
+    "implementation"("org.slf4j:jcl-over-slf4j:$slf4jVersion")
+    "implementation"("org.slf4j:slf4j-jdk14:$slf4jVersion")
 
     "testImplementation"("com.hexagonkt:http_client_jetty:$hexagonVersion")
 }
@@ -89,6 +92,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.4"
+    gradleVersion = "8.7"
     distributionType = ALL
 }

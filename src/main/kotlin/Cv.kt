@@ -4,7 +4,6 @@ import com.hexagonkt.args.*
 import com.hexagonkt.args.Property.Companion.HELP
 import com.hexagonkt.args.Property.Companion.VERSION
 import com.hexagonkt.core.*
-import com.hexagonkt.core.logging.LoggingManager
 import com.hexagonkt.core.logging.logger
 import com.hexagonkt.core.media.mediaTypeOfOrNull
 import com.hexagonkt.core.CodedException
@@ -19,7 +18,6 @@ import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.callbacks.UrlCallback
 import com.hexagonkt.http.server.netty.NettyServerAdapter
 import com.hexagonkt.http.server.serve
-import com.hexagonkt.logging.jul.JulLoggingAdapter
 import com.hexagonkt.serialization.SerializationManager
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.jackson.toml.Toml
@@ -41,6 +39,7 @@ import java.net.InetAddress
 import java.net.URI
 import java.net.URL
 import java.nio.file.Path
+import java.util.logging.LogManager
 import kotlin.system.exitProcess
 
 const val preventExitFlag: String = "PREVENT_EXIT"
@@ -76,9 +75,10 @@ fun main(vararg args: String) {
     try {
         val buildProperties = properties(urlOf(buildProperties))
         val project = buildProperties.require("project")
+        val loggingConfiguration = urlOf("classpath:logging.properties")
 
-        LoggingManager.adapter = JulLoggingAdapter(messageOnly = true, stream = System.err)
-        LoggingManager.defaultLoggerName = project
+        System.setProperty("hexagonkt_logging_logger_name", project)
+        LogManager.getLogManager().readConfiguration(loggingConfiguration.openStream())
         SerializationManager.formats = linkedSetOf(Yaml, Json, Toml)
 
         val program = createProgram(buildProperties)
@@ -224,6 +224,8 @@ private fun serve(command: Command) {
         get("/cv") { renderCv(urlString, serverSettings.bindUrl.toString()) }
         get(callback = UrlCallback(urlOf(mainPage)))
     }
+
+//    ManagementFactory.getRuntimeMXBean().uptime.info("START MS: ")
 
     if (command.propertyValueOrNull<Boolean>("b") == true)
         (browseCommand + "http://localhost:${server.runtimePort}/cv").exec()

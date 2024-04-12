@@ -1,6 +1,6 @@
 #!/usr/bin/env codecv
 
-"$schema" = "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json"
+"$schema" = "https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json"
 
 "Job Status" = "not moving"
 "Last Update" = 2022-12-27
@@ -33,7 +33,7 @@ Goals = [
 ]
 
 Links = [
-  { Address = "https://github.com/hexagonkt/hexagon" },
+  { Address = "https://github.com/hexagontk/hexagon" },
   { Address = "https://twitter.com/hexagon_kt" },
   { Address = "https://dev.to/hexagonkt" },
 ]
@@ -226,7 +226,7 @@ Issuer.Name = "Hooli"
 
 [[References]]
 "Full Name" = "Erlich Bachman"
-"Social Profiles" = [ "https://github.com/hexagonkt/hexagon" ]
+"Social Profiles" = [ "https://github.com/hexagontk/hexagon" ]
 Type = "manager"
 Projects = [ "middle-out" ]
 Summary = """\

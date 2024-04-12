@@ -1,6 +1,6 @@
 {
   "$schema" : "https://json-schema.org/draft-04/schema",
-  "$id" : "https://raw.githubusercontent.com/hexagonkt/codecv/master/cv.schema.json",
+  "$id" : "https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json",
   "$ref" : "#/$defs/Cv",
   "$defs" : {
     "Language" : {
