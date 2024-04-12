@@ -12,7 +12,7 @@ val os = getProperty("os.name").lowercase()
 
 val hexagonVersion = "3.5.3"
 val hexagonExtraVersion = "3.4.6"
-val vertxVersion = "4.5.6"
+val vertxVersion = "4.5.7"
 val slf4jVersion = "2.0.12"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
@@ -27,7 +27,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "0.9.24"
+version = "0.9.25"
 description = "CVs for programmers"
 
 if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
