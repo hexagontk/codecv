@@ -9,7 +9,7 @@ This project has two sides:
 Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
 
 > [!NOTE]
-> Follow the @hexagon_kt Twitter account to be updated with the improvements on this and other
+> Follow the @hexagontk Twitter account to be updated with the improvements on this and other
 > development tools.
 
 ## 💻 Install
