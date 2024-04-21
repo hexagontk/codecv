@@ -13,7 +13,7 @@ val os = getProperty("os.name").lowercase()
 val hexagonVersion = "3.5.3"
 val hexagonExtraVersion = "3.4.6"
 val vertxVersion = "4.5.7"
-val slf4jVersion = "2.0.12"
+val slf4jVersion = "2.0.13"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
