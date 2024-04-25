@@ -860,15 +860,16 @@ components:
             on some editors
           type: string
           format: URI
-        Job Status:
+        Job Search:
           title: Job search status
+          description: "Job search status. By default, is 'unavailable' to change"
           type:
             - "null"
             - string
           enum:
             - active search
-            - open to challenges
-            - not moving
+            - open to change
+            - unavailable
         Locale:
           title: Locale representing the CV's content
           description: "Locale representing the CV's content. If not set, it will be `en`"

@@ -1026,7 +1026,7 @@
           "type" : "string",
           "format" : "URI"
         },
-        "Job Status" : {
+        "Job Search" : {
           "title" : "Job search status",
           "type" : [
             "null",
@@ -1034,8 +1034,8 @@
           ],
           "enum" : [
             "active search",
-            "open to challenges",
-            "not moving"
+            "open to change",
+            "unavailable"
           ]
         },
         "Locale" : {
