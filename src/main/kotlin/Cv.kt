@@ -172,7 +172,7 @@ private fun addressParameter(command: Command): InetAddress {
 }
 
 private fun HttpContext.addHeaders(scriptSources: String): HttpContext {
-    val contentSecurityValues = listOf("script-src $scriptSources", "object-src none")
+    val contentSecurityValues = listOf("script-src $scriptSources", "object-src 'none'")
     val contentSecurityPolicy = Header("content-security-policy", contentSecurityValues)
     val xUaCompatible = Header("x-ua-compatible", "IE=edge")
 
