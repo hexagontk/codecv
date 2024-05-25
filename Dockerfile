@@ -1,8 +1,11 @@
-FROM docker.io/gradle:jdk21-jammy AS build
+#FROM ghcr.io/graalvm/native-image-community:21-muslib AS build
+FROM ghcr.io/graalvm/native-image-community:21 AS build
 COPY --chown=gradle:gradle . /home/gradle/codecv
 WORKDIR /home/gradle/codecv
-RUN ./gradlew installDist --no-daemon
+RUN microdnf -y install findutils
+RUN ./gradlew installDist zipNative --no-daemon
 
+# TODO Native image from scratch
 FROM docker.io/amazoncorretto:21
 EXPOSE 2010
 
