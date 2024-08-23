@@ -140,7 +140,7 @@ private fun validate(command: Command) {
 }
 
 private fun serve(command: Command) {
-    TemplateManager.defaultAdapter = PebbleAdapter(false, 1 * 1024 * 1024)
+    TemplateManager.adapters = mapOf(Regex(".*") to PebbleAdapter(false, 1 * 1024 * 1024))
 
     val address = addressParameter(command)
     val url = urlParameter(command)
