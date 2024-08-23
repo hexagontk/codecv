@@ -9,7 +9,7 @@ jobs:
     defaults:
       run: { shell: bash }
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
           version: latest
@@ -35,7 +35,7 @@ jobs:
     defaults:
       run: { shell: bash }
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
           version: latest
@@ -54,7 +54,7 @@ jobs:
           ./build/native/nativeCompile/codecv serve examples/full.cv.json &
       - if: ${{ matrix.os != 'windows-latest' }}
         run: curl http://localhost:2010/openapi.yml
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: CodeCV-${{ github.ref_name }}-${{ runner.os }}-${{ runner.arch }}
           retention-days: 1
