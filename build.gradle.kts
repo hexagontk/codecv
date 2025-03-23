@@ -4,16 +4,16 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("2.0.20")
-    id("org.graalvm.buildtools.native") version("0.10.2")
+    kotlin("jvm") version("2.1.20")
+    id("org.graalvm.buildtools.native") version("0.10.6")
 }
 
 val os = getProperty("os.name").lowercase()
 
 val hexagonVersion = "3.6.6"
 val hexagonExtraVersion = "3.6.0"
-val vertxVersion = "4.5.9"
-val slf4jVersion = "2.0.13"
+val vertxVersion = "4.5.13"
+val slf4jVersion = "2.0.17"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
@@ -27,7 +27,7 @@ apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
 group = "com.hexagonkt.tools"
-version = "1.0.0"
+version = "0.9.26"
 description = "CVs for programmers"
 
 if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
@@ -92,6 +92,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.10"
+    gradleVersion = "8.13"
     distributionType = ALL
 }
