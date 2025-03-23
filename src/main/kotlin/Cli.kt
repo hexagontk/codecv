@@ -1,9 +1,9 @@
 package co.codecv
 
-import com.hexagonkt.args.*
-import com.hexagonkt.args.Property.Companion.HELP
-import com.hexagonkt.args.Property.Companion.VERSION
-import com.hexagonkt.core.require
+import com.hexagontk.shell.*
+import com.hexagontk.shell.Property.Companion.HELP
+import com.hexagontk.shell.Property.Companion.VERSION
+import com.hexagontk.core.require
 
 internal fun createProgram(buildProperties: Map<String, String>): Program {
     val urlParamDescription = "URL for the CV file to use. If no schema, 'file' is assumed"

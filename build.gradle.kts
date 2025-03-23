@@ -10,8 +10,7 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.7.4"
-val hexagonExtraVersion = "3.6.0"
+val hexagonVersion = "4.1.0"
 val vertxVersion = "4.5.13"
 val slf4jVersion = "2.0.17"
 
@@ -34,20 +33,21 @@ if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_
     error("This build must be run with JDK 17+. Current: ${current()}")
 
 dependencies {
-    "implementation"("com.hexagonkt:http_server_netty:$hexagonVersion")
-    "implementation"("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
-    "implementation"("com.hexagonkt:serialization_jackson_yaml:$hexagonVersion")
-    "implementation"("com.hexagonkt:serialization_jackson_toml:$hexagonVersion")
-    "implementation"("com.hexagonkt:templates_pebble:$hexagonVersion")
-    "implementation"("com.hexagonkt:web:$hexagonVersion")
-    "implementation"("com.hexagonkt.extra:args:$hexagonExtraVersion")
+    "implementation"("com.hexagontk:helpers:$hexagonVersion")
+    "implementation"("com.hexagontk.http:http_server_netty:$hexagonVersion")
+    "implementation"("com.hexagontk.serialization:serialization_jackson_json:$hexagonVersion")
+    "implementation"("com.hexagontk.serialization:serialization_jackson_yaml:$hexagonVersion")
+    "implementation"("com.hexagontk.serialization:serialization_jackson_toml:$hexagonVersion")
+    "implementation"("com.hexagontk.templates:templates_pebble:$hexagonVersion")
+    "implementation"("com.hexagontk.http:web:$hexagonVersion")
+    "implementation"("com.hexagontk.extra:shell:$hexagonVersion")
 
     "implementation"("io.vertx:vertx-json-schema:$vertxVersion")
     "implementation"("org.slf4j:log4j-over-slf4j:$slf4jVersion")
     "implementation"("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     "implementation"("org.slf4j:slf4j-jdk14:$slf4jVersion")
 
-    "testImplementation"("com.hexagonkt:http_client_jetty:$hexagonVersion")
+    "testImplementation"("com.hexagontk.http:http_client_jetty:$hexagonVersion")
 }
 
 tasks.named("classes") { dependsOn("addResources") }

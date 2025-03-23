@@ -1,13 +1,11 @@
 package co.codecv
 
-import com.hexagonkt.core.urlOf
-import com.hexagonkt.http.client.HttpClient
-import com.hexagonkt.http.client.HttpClientSettings
-import com.hexagonkt.http.client.jetty.JettyClientAdapter
-import com.hexagonkt.http.model.BAD_REQUEST_400
-import com.hexagonkt.http.model.HttpResponsePort
-import com.hexagonkt.http.model.HttpStatus
-import com.hexagonkt.http.model.OK_200
+import com.hexagontk.http.client.HttpClient
+import com.hexagontk.http.client.HttpClientSettings
+import com.hexagontk.http.client.jetty.JettyHttpClient
+import com.hexagontk.http.model.BAD_REQUEST_400
+import com.hexagontk.http.model.HttpResponsePort
+import com.hexagontk.http.model.OK_200
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,6 +14,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.io.File
 import java.lang.System.getProperty
 import java.lang.System.setProperty
+import java.net.URI
 import kotlin.test.assertEquals
 
 @TestInstance(PER_CLASS)
@@ -103,9 +102,9 @@ internal class CvTest {
         checkExitCode(404)
 
         main("serve", "file:src/test/resources/incorrect.cv.yml")
-        val baseUrl = urlOf("http://localhost:${server.runtimePort}")
-        val settings = HttpClientSettings(baseUrl = baseUrl)
-        val http = HttpClient(JettyClientAdapter(), settings)
+        val baseUri = URI("http://localhost:${server.runtimePort}")
+        val settings = HttpClientSettings(baseUri = baseUri)
+        val http = HttpClient(JettyHttpClient(), settings)
         http.start()
         assertEquals(BAD_REQUEST_400, http.get("/cv").status)
         server.stop()
@@ -124,9 +123,9 @@ internal class CvTest {
     }
 
     private fun testHttp(port: Int) {
-        val baseUrl = urlOf("http://localhost:$port")
-        val settings = HttpClientSettings(baseUrl = baseUrl)
-        val http = HttpClient(JettyClientAdapter(), settings)
+        val baseUri = URI("http://localhost:$port")
+        val settings = HttpClientSettings(baseUri = baseUri)
+        val http = HttpClient(JettyHttpClient(), settings)
 
         http.start()
         http.get("/openapi.json").checkResponse()
@@ -153,7 +152,7 @@ internal class CvTest {
         setProperty(exitCodeProperty, "")
     }
 
-    private fun HttpResponsePort.checkResponse(expectedStatus: HttpStatus = OK_200) {
+    private fun HttpResponsePort.checkResponse(expectedStatus: Int = OK_200) {
         assertEquals(expectedStatus, status)
     }
 }
