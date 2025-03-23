@@ -10,7 +10,7 @@ plugins {
 
 val os = getProperty("os.name").lowercase()
 
-val hexagonVersion = "3.6.6"
+val hexagonVersion = "3.7.4"
 val hexagonExtraVersion = "3.6.0"
 val vertxVersion = "4.5.13"
 val slf4jVersion = "2.0.17"
