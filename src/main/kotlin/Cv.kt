@@ -148,7 +148,7 @@ private fun serve(command: Command) {
     val urlString = url.toString()
     val serverSettings = HttpServerSettings(address, zip = true)
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
-    val adapter = NettyHttpServer(executorThreads = 4, soBacklog = 1024)
+    val adapter = NettyHttpServer(soBacklog = 1024)
 
     server = serve(adapter, serverSettings) {
         after("*") { addHeaders(scriptSources) }
