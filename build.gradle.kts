@@ -1,17 +1,14 @@
 import org.gradle.api.JavaVersion.*
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
-import java.lang.System.getProperty
 
 plugins {
-    kotlin("jvm") version("2.1.20")
+    kotlin("jvm") version("2.1.21")
     id("org.graalvm.buildtools.native") version("0.10.6")
 }
 
-val os = getProperty("os.name").lowercase()
-
-val hexagonVersion = "4.1.1"
-val vertxVersion = "4.5.14"
+val hexagonVersion = "4.2.0"
+val vertxVersion = "5.0.0"
 val slf4jVersion = "2.0.17"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
@@ -34,7 +31,7 @@ if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_
 
 dependencies {
     "implementation"("com.hexagontk:helpers:$hexagonVersion")
-    "implementation"("com.hexagontk.http:http_server_netty:$hexagonVersion")
+    "implementation"("com.hexagontk.http:http_server_helidon:$hexagonVersion")
     "implementation"("com.hexagontk.serialization:serialization_jackson_json:$hexagonVersion")
     "implementation"("com.hexagontk.serialization:serialization_jackson_yaml:$hexagonVersion")
     "implementation"("com.hexagontk.serialization:serialization_jackson_toml:$hexagonVersion")
@@ -92,6 +89,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.13"
+    gradleVersion = "8.14"
     distributionType = ALL
 }

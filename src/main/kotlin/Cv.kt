@@ -13,7 +13,7 @@ import com.hexagontk.http.model.Header
 import com.hexagontk.http.server.HttpServer
 import com.hexagontk.http.server.HttpServerSettings
 import com.hexagontk.http.server.callbacks.UrlCallback
-import com.hexagontk.http.server.netty.NettyHttpServer
+import com.hexagontk.http.server.helidon.HelidonHttpServer
 import com.hexagontk.http.server.serve
 import com.hexagontk.serialization.SerializationManager
 import com.hexagontk.serialization.jackson.json.Json
@@ -148,7 +148,7 @@ private fun serve(command: Command) {
     val urlString = url.toString()
     val serverSettings = HttpServerSettings(address, zip = true)
     val scriptSources = "https://unpkg.com/rapidoc/ 'unsafe-inline'"
-    val adapter = NettyHttpServer(soBacklog = 1024)
+    val adapter = HelidonHttpServer(backlog = 1024)
 
     server = serve(adapter, serverSettings) {
         after("*") { addHeaders(scriptSources) }
