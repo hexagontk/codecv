@@ -3,12 +3,12 @@ import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 
 plugins {
-    kotlin("jvm") version("2.1.21")
+    kotlin("jvm") version("2.2.0")
     id("org.graalvm.buildtools.native") version("0.10.6")
 }
 
-val hexagonVersion = "4.2.0"
-val vertxVersion = "5.0.0"
+val hexagonVersion = "4.2.2"
+val vertxVersion = "5.0.1"
 val slf4jVersion = "2.0.17"
 
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
@@ -89,6 +89,6 @@ tasks.create("release") {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.14"
+    gradleVersion = "8.14.2"
     distributionType = ALL
 }
