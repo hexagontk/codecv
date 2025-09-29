@@ -13,7 +13,7 @@ Here you can see a [3 min quick demo](https://youtu.be/t4aOSJibuzs).
 > development tools.
 
 ## 💻 Install
-1. Download the latest binary from the [releases page](https://github.com/hexagontk/codecv/releases)
+1. Download the latest binary from the [releases page](https://github.com/codecv-co/codecv/releases)
 2. Copy or link the binary to a directory in the PATH
 3. Type `codecv --help` to check how to use the reference tool
 
@@ -49,7 +49,7 @@ requirement.
 
 ## 📄 CV Format Schema
 The CV JSON schema is located at [/cv.schema.json](/cv.schema.json). The URL to use on the CVs will
-be: `https://raw.githubusercontent.com/hexagontk/codecv/<version>/cv.schema.json`. Being `version`
+be: `https://raw.githubusercontent.com/codecv-co/codecv/<version>/cv.schema.json`. Being `version`
 the schema version (`master` can be used to link to the latest published version).
 
 The schema can be used to validate documents in different formats (YAML, JSON and TOML at the
@@ -123,7 +123,7 @@ improvement, file a bug or resolve a usage doubt, you are absolutely encouraged 
 Also, if you want to contribute a new feature on the tool or a change on the schema. You can also
 do so by creating an issue and filing a PR. Please read the [contributing guide] before doing so.
 
-[contributing guide]: https://github.com/hexagontk/codecv/contribute
+[contributing guide]: https://github.com/codecv-co/codecv/contribute
 
 ## ❤️ Support the Project
 If you want to see more progress on this project, and see more developer targeted tools,
@@ -135,4 +135,4 @@ account ([@hexagontk]) and the [GitHub organization].
 Thanks for your support!
 
 [@hexagontk]: https://twitter.com/hexagontk
-[GitHub organization]: https://github.com/hexagonkt
+[GitHub organization]: https://github.com/codecv-co

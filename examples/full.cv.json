@@ -1,5 +1,5 @@
 {
-  "$schema" : "https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json",
+  "$schema" : "https://raw.githubusercontent.com/codecv-co/codecv/master/cv.schema.json",
 
   "Job Search" : "unavailable",
 
@@ -110,7 +110,7 @@
   ],
 
   "Links" : [
-    { "Address" : "https://github.com/hexagontk/hexagon" },
+    { "Address" : "https://github.com/codecv-co/hexagon" },
     { "Address" : "https://twitter.com/hexagon_kt" },
     { "Address" : "https://dev.to/hexagonkt" }
   ],
@@ -283,7 +283,7 @@
         { "Address" : "tel:+1-91-106-28-01", "Title" : "Landline" },
         { "Address" : "mailto:erlich@aviato.com", "Title" : "Email", "Tags" : [ "Work" ] }
       ],
-      "Social Profiles" : [ "https://github.com/hexagontk/hexagon" ],
+      "Social Profiles" : [ "https://github.com/codecv-co/hexagon" ],
       "Projects" : [ "middle-out" ]
     }
   ],

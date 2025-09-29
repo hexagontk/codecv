@@ -22,7 +22,7 @@ apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
 apply(from = "$gradleScripts/native.gradle")
 
-group = "com.hexagontk.tools"
+group = "co.codecv.tools"
 version = "0.9.26"
 description = "CVs for programmers"
 

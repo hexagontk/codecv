@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/codecv-co/codecv/master/cv.schema.json
 
-$schema: https://raw.githubusercontent.com/hexagontk/codecv/master/cv.schema.json
+$schema: https://raw.githubusercontent.com/codecv-co/codecv/master/cv.schema.json
 
 Job Search: unavailable
 Last Update: 2022-12-27
