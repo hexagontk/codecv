@@ -20,7 +20,7 @@ jobs:
           distribution: graalvm-community
           java-version: 25
           cache: gradle
-      - run: ./gradlew nativeTest
+      - run: ./gradlew --debug nativeTest
       - run: ./gradlew zipNative
       - if: ${{ matrix.os == 'windows-latest' }}
         run: |
