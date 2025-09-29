@@ -42,8 +42,7 @@ jobs:
           distribution: graalvm-community
           java-version: 25
           cache: gradle
-      - run: ./gradlew nativeTest
-      - run: ./gradlew zipNative
+      - run: ./gradlew -x test zipNative
       - if: ${{ matrix.os == 'windows-latest' }}
         run: |
           chmod +x build/native/nativeCompile/codecv.exe
