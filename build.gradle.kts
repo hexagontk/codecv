@@ -5,7 +5,7 @@ import java.io.BufferedReader
 
 plugins {
     kotlin("jvm") version("2.2.20")
-    id("org.graalvm.buildtools.native") version("0.11.0")
+    id("org.graalvm.buildtools.native") version("0.11.1")
 }
 
 val hexagonVersion = "4.2.3"
