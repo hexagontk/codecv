@@ -27,7 +27,7 @@ group = "co.codecv.tools"
 version = "0.9.26"
 description = "CVs for programmers"
 
-if (current() !in setOf(VERSION_17, VERSION_18, VERSION_19, VERSION_20, VERSION_21))
+if (current() !in setOf(VERSION_17, VERSION_21, VERSION_25))
     error("This build must be run with JDK 17+. Current: ${current()}")
 
 dependencies {
