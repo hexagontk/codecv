@@ -1,6 +1,7 @@
 import org.gradle.api.JavaVersion.*
 import org.gradle.api.internal.plugins.DefaultTemplateBasedStartScriptGenerator
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+import java.io.BufferedReader
 
 plugins {
     kotlin("jvm") version("2.2.20")
@@ -68,27 +69,41 @@ tasks.named<CreateStartScripts>("startScripts") {
     }
 }
 
-tasks.create<Copy>("addResources") {
+tasks.register<Copy>("addResources") {
     from(projectDir)
     include("examples/**")
     include("cv.schema.json")
     into(layout.buildDirectory.file("resources/main"))
 }
 
-tasks.create("release") {
+tasks.register("release") {
     dependsOn("build")
 
     doLast {
         val release = version.toString()
         val actor = System.getenv("GITHUB_ACTOR")
 
-        project.exec { commandLine = listOf("git", "config", "user.name", actor) }
-        project.exec { commandLine = listOf("git", "tag", "-m", "Release $release", release) }
-        project.exec { commandLine = listOf("git", "push", "--tags") }
+        execute(listOf("git", "config", "user.name", actor))
+        execute(listOf("git", "tag", "-m", "Release $release", release))
+        execute(listOf("git", "push", "--tags"))
     }
 }
 
+private fun execute(command: List<String>) {
+    Runtime
+        .getRuntime()
+        .exec(command.toTypedArray())
+        .let { process ->
+            process.waitFor()
+            val output = process.inputStream.use {
+                it.bufferedReader().use(BufferedReader::readText)
+            }
+            process.destroy()
+            output.trim()
+        }
+}
+
 tasks.wrapper {
-    gradleVersion = "8.14.3"
+    gradleVersion = "9.1.0"
     distributionType = ALL
 }
