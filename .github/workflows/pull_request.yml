@@ -18,7 +18,7 @@ jobs:
         with:
           version: latest
           distribution: graalvm-community
-          java-version: 21
+          java-version: 25
           cache: gradle
       - run: ./gradlew nativeTest
       - run: ./gradlew zipNative
