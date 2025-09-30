@@ -8,7 +8,7 @@ plugins {
     id("org.graalvm.buildtools.native") version("0.11.1")
 }
 
-val hexagonVersion = "4.2.3"
+val hexagonVersion = "4.2.4"
 val vertxVersion = "5.0.4"
 val slf4jVersion = "2.0.17"
 
